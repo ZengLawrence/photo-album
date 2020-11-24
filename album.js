@@ -3,8 +3,10 @@ const fs = require('fs');
 
  function list() {
     var dirs = [];
-    fs.readdirSync(rootFolder).forEach(file => {
-        dirs.push(file);
+    fs.readdirSync(rootFolder, {withFileTypes: true}).forEach(file => {
+        if (file.isDirectory()) {
+            dirs.push(file.name);
+        }
       });
     return dirs;
 };
