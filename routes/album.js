@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var album = require('../album');
 
-/* GET home page. */
+/* GET list all albums */
 router.get('/', function(req, res, next) {
   res.render('index', { 
       title: 'Photo Album',
