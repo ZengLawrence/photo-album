@@ -19,7 +19,7 @@ router.get('/:albumName', function(req, res, next) {
   const albumName = req.params['albumName'];
   res.render('album', { 
     title: albumName,
-    photos: ['photo 1', 'photo 2', 'photo 3']
+    photos: album.listPhotoNames(albumName)
     });
 });
 
