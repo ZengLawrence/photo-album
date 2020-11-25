@@ -6,8 +6,12 @@ var album = require('../album');
 router.get('/', function(req, res, next) {
   res.render('index', { 
       title: 'Photo Album',
-      albums: album.list()
+      albums: album.list().map(albumAttribute)
     });
 });
+
+function albumAttribute(albumName) {
+  return {name: albumName, link: './albums/' + albumName};
+}
 
 module.exports = router;
