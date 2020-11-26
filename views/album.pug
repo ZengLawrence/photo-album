@@ -3,4 +3,5 @@ extends layout
 block content
   h1= title
   each val in photos
-    p= val
+    p 
+      img(src=val.link, alt=val.name)

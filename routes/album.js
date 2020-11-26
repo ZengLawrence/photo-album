@@ -19,9 +19,16 @@ router.get('/:albumName', function(req, res, next) {
   const albumName = req.params['albumName'];
   res.render('album', { 
     title: albumName,
-    photos: album.listPhotoNames(albumName)
+    photos: album.listPhotoNames(albumName).map(photoName => photoEntry(albumName, photoName))
     });
 });
+
+function photoEntry(albumName, photoName) {
+  return {
+    name: photoName, 
+    link: './' + albumName + '/' + photoName
+  };
+}
 
 /* GET one photo */
 router.get('/:albumName/:photoName', function(req, res, next) {
