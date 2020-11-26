@@ -23,4 +23,12 @@ router.get('/:albumName', function(req, res, next) {
     });
 });
 
+/* GET one photo */
+router.get('/:albumName/:photoName', function(req, res, next) {
+  const albumName = req.params['albumName'];
+  const photoName = req.params['photoName'];
+  const fileName = album.getPhotoFileName(albumName, photoName);
+  res.sendFile(fileName);
+});
+
 module.exports = router;

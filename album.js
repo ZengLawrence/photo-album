@@ -27,5 +27,10 @@ function listPhotoNames(albumName) {
     return fileNames;
 }
 
+function getPhotoFileName(albumName, photoName) {
+    return rootFolder + '/' + albumName + '/' + photoName;
+}
+
 exports.list = list;
 exports.listPhotoNames = listPhotoNames;
+exports.getPhotoFileName = getPhotoFileName;
