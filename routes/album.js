@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 function albumEntry(albumName) {
   return {
     name: albumName, 
-    link: './' + albumName,
+    link: '/albums/' + albumName,
     thumbnailLink: thumbnailLink(albumName)
   };
 }
@@ -39,7 +39,7 @@ function photoEntries(albumName) {
 function photoEntry(albumName, photoName) {
   return {
     name: photoName, 
-    link: './' + albumName + '/' + photoName
+    link: '/albums/' + albumName + '/' + photoName
   };
 }
 
