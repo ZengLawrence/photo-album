@@ -20,7 +20,7 @@ function albumEntry(albumName) {
 }
 
 function thumbnailLink(albumName) {
-  return photoEntries(albumName).shift().link;
+  return '/albums/' + albumName + '/thumbnail';
 }
 
 /* GET one album */
@@ -42,6 +42,14 @@ function photoEntry(albumName, photoName) {
     link: '/albums/' + albumName + '/' + photoName
   };
 }
+
+/* GET thumbnail */
+router.get('/:albumName/thumbnail', function(req, res, next) {
+  const albumName = req.params['albumName'];
+  const photoName = album.listPhotoNames(albumName).shift();
+  const fileName = album.getPhotoFileName(albumName, photoName);
+  res.sendFile(fileName);
+});
 
 /* GET one photo */
 router.get('/:albumName/:photoName', function(req, res, next) {
