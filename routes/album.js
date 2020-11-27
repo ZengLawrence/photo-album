@@ -4,7 +4,7 @@ var album = require('../album');
 
 /* GET list all albums */
 router.get('/', function(req, res, next) {
-  res.render('index', { 
+  res.render('albums', { 
       title: 'Photo Album',
       albums: album.list().map(albumEntry),
       thumbnailSize: {width: 100, height: 100}
