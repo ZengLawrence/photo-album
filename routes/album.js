@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { 
       title: 'Photo Album',
       albums: album.list().map(albumEntry),
-      thumbnailSize: {width: 75, height: 75}
+      thumbnailSize: {width: 100, height: 100}
     });
 });
 
@@ -20,9 +20,7 @@ function albumEntry(albumName) {
 }
 
 function thumbnailLink(albumName) {
-  var photoEntries = album.listPhotoNames(albumName).map(photoName => photoEntry(albumName, photoName));
-  console.log('first entry:' + photoEntries[0]);
-  return photoEntries.shift().link;
+  return album.listPhotoNames(albumName).map(photoName => photoEntry(albumName, photoName)).shift().link;
 }
 
 /* GET one album */
