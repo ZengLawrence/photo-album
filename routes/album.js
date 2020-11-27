@@ -6,12 +6,23 @@ var album = require('../album');
 router.get('/', function(req, res, next) {
   res.render('index', { 
       title: 'Photo Album',
-      albums: album.list().map(albumAttribute)
+      albums: album.list().map(albumEntry),
+      thumbnailSize: {width: 75, height: 75}
     });
 });
 
-function albumAttribute(albumName) {
-  return {name: albumName, link: './' + albumName};
+function albumEntry(albumName) {
+  return {
+    name: albumName, 
+    link: './' + albumName,
+    thumbnailLink: thumbnailLink(albumName)
+  };
+}
+
+function thumbnailLink(albumName) {
+  var photoEntries = album.listPhotoNames(albumName).map(photoName => photoEntry(albumName, photoName));
+  console.log('first entry:' + photoEntries[0]);
+  return photoEntries.shift().link;
 }
 
 /* GET one album */

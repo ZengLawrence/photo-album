@@ -1,4 +1,4 @@
-const rootFolder = '/Users/lawrencezeng/Pictures';
+const rootFolder = '/Users/lawrencezeng/Projects/Pictures';
 const fs = require('fs');
 
 /* list all albums */

@@ -4,4 +4,5 @@ block content
   h1= title
   each val in albums
     h2 
+      img(src=val.thumbnailLink, width=75, height=75)
       a(href=val.link) #{val.name}
