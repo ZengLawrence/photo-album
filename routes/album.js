@@ -51,11 +51,12 @@ router.get('/:albumName/thumbnail', function(req, res, next) {
   const fileName = album.getPhotoFileName(albumName, photoName);
   sharp(fileName)
     .resize({
-      width: 200,
-      height: 200,
-      fit: sharp.fit.contain,
+      width: 100,
+      height: 100,
+      fit: sharp.fit.cover,
       position: sharp.strategy.entropy
     })
+    .withMetadata()
     .toBuffer()
     .then(data => {
       res.writeHead(200, {
