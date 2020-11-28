@@ -57,12 +57,11 @@ router.get('/:albumName/thumbnail', function(req, res, next) {
       height: 100
     })
     .then(data => {
-      res.writeHead(200, {
-        'Content-Type': 'image/jpeg',
-        'Content-Length': data.length
-      });
-      res.write(data);
-      res.end();
+      res
+        .status(200)
+        .append('Content-Type', 'image/jpeg')
+        .append('Content-Length', data.length)
+        .end(data);
     })
     .catch(err => { 
       console.error(err); 
