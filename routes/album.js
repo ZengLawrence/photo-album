@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var album = require('../album');
-const image = require('../image/image');
+const image = require('../image');
 
 /* GET list all albums */
 router.get('/', function(req, res, next) {
