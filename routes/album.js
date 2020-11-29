@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var album = require('../album');
-const sharp = require('sharp');
+const image = require('../image');
 
 /* GET list all albums */
 router.get('/', function(req, res, next) {
@@ -49,24 +49,24 @@ router.get('/:albumName/thumbnail', function(req, res, next) {
   const albumName = req.params['albumName'];
   const photoName = album.listPhotoNames(albumName).shift();
   const fileName = album.getPhotoFileName(albumName, photoName);
-  sharp(fileName)
-    .resize({
-      width: 100,
-      height: 100,
-      fit: sharp.fit.cover,
-      position: sharp.strategy.entropy
+  
+  image.resize(
+    {
+      filePath: fileName, 
+      width: 100, 
+      height: 100
     })
-    .withMetadata()
-    .toBuffer()
     .then(data => {
-      res.writeHead(200, {
-        'Content-Type': 'image/jpeg',
-        'Content-Length': data.length
-      });
-      res.write(data); 
-      res.end();
+      res
+        .status(200)
+        .append('Content-Type', 'image/jpeg')
+        .append('Content-Length', data.length)
+        .end(data);
     })
-    .catch(err => console.error(err));
+    .catch(err => { 
+      console.error(err); 
+      res.status(404).end();
+    });
 });
 
 /* GET one photo */
