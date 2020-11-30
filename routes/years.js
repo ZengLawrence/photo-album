@@ -4,15 +4,32 @@ var chrono = require('../chrono');
 
 /* GET list all years */
 router.get('/', function (req, res, next) {
-  res.render('years', {years: yearsView()});
+    chrono.albumPhotoMetadatas().then( metadatas => {
+        res.render('years', {years: yearsView(metadatas)});
+    });
+  
 });
 
-function yearsView() {
-  var yearLinks = [];
-  for (const [year, thumbnailLinks] of Object.entries(chrono.years())) {
-    yearLinks.push({year, thumbnailLinks});
-  }
-  return yearLinks;
-}
+function yearsView(metadatas) {
+    const yearLinksMap = metadatas.reduce(groupByYear, {});
+    var yearLinks = [];
+    for (const [year, thumbnailLinks] of Object.entries(yearLinksMap)) {
+        yearLinks.push({year, thumbnailLinks});
+    }
+    return yearLinks;
+}  
 
+function groupByYear(map, {createTimestamp, albumName, photoName}) {
+    const year = createTimestamp.substring(0, 4);
+    var links = map[year];
+    const thumbnailLink = albumName + '/' + photoName;
+    if (links) {
+      links.push(thumbnailLink);
+    } else {
+      links = [thumbnailLink];
+    }
+    map[year] = links;
+    return map;
+  }
+  
 module.exports = router;
