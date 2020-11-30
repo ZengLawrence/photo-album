@@ -22,7 +22,7 @@ function yearsView(metadatas) {
 function groupByYear(map, {createTimestamp, albumName, photoName}) {
     const year = createTimestamp.substring(0, 4);
     var links = map[year];
-    const thumbnailLink = albumName + '/' + photoName;
+    const thumbnailLink = 'thumbnails/' + albumName + '/' + photoName;
     if (links) {
       links.push(thumbnailLink);
     } else {
