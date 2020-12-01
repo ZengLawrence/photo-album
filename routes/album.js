@@ -48,8 +48,12 @@ function photoEntry(albumName, photoName) {
 router.get('/:albumName/thumbnail', function(req, res, next) {
   const albumName = req.params['albumName'];
   const photoName = album.listPhotoNames(albumName).shift();
+  if (!photoName) {
+    res.status(404).end();
+    return;
+  }
+
   const fileName = album.getPhotoFileName(albumName, photoName);
-  
   image.resize(
     {
       filePath: fileName, 
