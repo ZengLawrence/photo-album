@@ -1,5 +1,5 @@
-//const rootFolder = '/Users/lawrencezeng/Projects/Pictures';
-const rootFolder = '/Volumes/TOSHIBA EXT/Shared Pictures';
+const rootFolder = '/Users/lawrencezeng/Projects/Pictures';
+//const rootFolder = '/Volumes/TOSHIBA EXT/Shared Pictures';
 const fs = require('fs');
 
 /* list all albums */
@@ -31,7 +31,8 @@ function listPhotoNames(albumName) {
 }
 
 function isJpeg(fileName) {
-    return fileName.toLowerCase().endsWith('.jpg');
+    return fileName.toLowerCase().endsWith('.jpg') ||
+    fileName.toLowerCase().endsWith('.jpeg');
 }
 function getPhotoFileName(albumName, photoName) {
     return rootFolder + '/' + albumName + '/' + photoName;
