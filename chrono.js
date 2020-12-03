@@ -15,15 +15,9 @@ function albumPhoto(albumName) {
 
 function addCreateTimestamp({albumName, photoName}) {
   const path = album.getPhotoFileName(albumName, photoName);
-  const metadata = getMetadata(path);
   return image.metadata(path).then( metadata => {
     return {albumName, photoName, createTimestamp: metadata.createTimestamp};
   });
-}
-
-async function getMetadata(path) {
-  const data = await image.metadata(path);
-  return data;
 }
 
 exports.albumPhotoMetadatas = albumPhotoMetadatas
