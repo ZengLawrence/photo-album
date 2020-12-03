@@ -1,5 +1,6 @@
-const rootFolder = '/Users/lawrencezeng/Projects/Pictures';
-//const rootFolder = '/Volumes/TOSHIBA EXT/Shared Pictures';
+const config = require('./config');
+const rootFolder = config.rootFolder;
+
 const fs = require('fs');
 
 /* list all albums */
