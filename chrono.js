@@ -13,11 +13,10 @@ function albumPhoto(albumName) {
     }).map(addCreateTimestamp);
 }
 
-function addCreateTimestamp({albumName, photoName}) {
+async function addCreateTimestamp({albumName, photoName}) {
   const path = album.getPhotoFileName(albumName, photoName);
-  return image.metadata(path).then( metadata => {
-    return {albumName, photoName, createTimestamp: metadata.createTimestamp};
-  });
+  const metadata = await image.metadata(path);
+  return { albumName, photoName, createTimestamp: metadata.createTimestamp };
 }
 
 exports.albumPhotoMetadatas = albumPhotoMetadatas
