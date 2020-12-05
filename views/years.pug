@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  each val in years
+    h1= val.year
+    p 
+      each link in val.thumbnailLinks
+        img(src=link, width=100, height=100)
