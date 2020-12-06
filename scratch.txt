@@ -1,3 +1,0 @@
-Error getting metadata for Forest Hills 2000 - 2006/1-18-2009_034.JPG. Reason: Error: No Exif segment found in the given image.
-Error getting metadata for Forest Hills 2000 - 2006/1-2-2009_002.JPG. Reason: Error: No Exif segment found in the given image.
-Error getting metadata for Forest Hills 2000 - 2006/1-2-2009_001.JPG. Reason: Error: No Exif segment found in the given image.
