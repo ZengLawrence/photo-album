@@ -64,16 +64,24 @@ function isAlbumFolder(folder) {
     return folder.isDirectory() && !isHiddenDirectoryOrFile(folder.name);
 }
 
-function scanAlbumFolder(albumFolderName) {
-    return photoFileNames(albumFolderName).then(fileNames => {
-        return Promise
-            .all(fileNames.map(photoFileName =>
-                photoMetadata(albumFolderName, photoFileName)
-                    .then(save))
-            ).then(data => {
-                console.log(`Done scanning folder ${albumFolderName}`);
-            });
-    });
+async function scanAlbumFolder(albumFolderName) {
+    const fileNames = await photoFileNames(albumFolderName);
+    const data = await Promise
+        .all(
+            fileNames.map(photoFileName => {
+
+                exists({ albumName: albumFolderName, photoName: photoFileName }).then(exists => {
+                    if (exists) {
+                        return 0;
+                    } else {
+                        return photoMetadata(albumFolderName, photoFileName)
+                            .then(save);;
+                    }
+                })
+
+            })
+        );
+    console.log(`Done scanning folder ${albumFolderName}`);
 }
 
 function photoMetadata(albumName, photoName) {
@@ -105,14 +113,8 @@ function isPhotoFile(file) {
 }
 
 function save(photoMetadata) {
-    exists(photoMetadata).then(exists => {
-        if (exists) {
-            return 0;
-        } else {
-            db.photos.insert(photoMetadata);
-            return 1;
-        }
-    })
+    db.photos.insert(photoMetadata);
+    return 1;
 }
 
 function exists({ albumName, photoName }) {
