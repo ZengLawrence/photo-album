@@ -1,6 +1,8 @@
 /* wrapper over sharp library */
 const sharp = require('sharp');
 const exif = require('exif');
+const fs = require('fs');
+const moment = require('moment');
 
 function resize({ filePath, width, height }) {
   return sharp(filePath)
@@ -21,7 +23,12 @@ function metadata(filePath) {
         reject(err);
       }
       else {
-          resolve({ createTimestamp:  createTimestamp(data.exif)});
+        var ts = createTimestamp(data.exif);
+        if (!isValidTimestamp(ts)) {
+          const fstat = fs.statSync(filePath);
+          ts = moment(fstat.birthtime).format("YYYY:MM:DD HH:mm:ss");
+        }
+        resolve({ createTimestamp: ts });
       }
     });
   });
@@ -29,6 +36,10 @@ function metadata(filePath) {
 
 function createTimestamp(exif) {
   return (exif.CreateDate != null ? exif.CreateDate : exif.DateTimeOriginal);
+}
+
+function isValidTimestamp(ts) {
+  return (ts!=null && ts.substring(0, 4) != '0000');
 }
 
 exports.resize = resize;
