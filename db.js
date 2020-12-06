@@ -8,6 +8,8 @@ if (!fs.existsSync(rootDbFolder)) {
 
 var Datastore = require('nedb')
 var db = {};
-db.photos = new Datastore({ filename: rootDbFolder + '/photos.dat', autoload: true}); // in memory for now
+db.photos = new Datastore({ filename: rootDbFolder + '/photos.dat', autoload: true});
+db.photos.ensureIndex({ fieldName: 'albumName' });
+db.photos.ensureIndex({ fieldName: 'photoName' });
 
 exports.photos = db.photos;
