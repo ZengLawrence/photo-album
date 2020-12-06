@@ -16,6 +16,7 @@ function yearsView(metadatas) {
     for (const [year, thumbnailLinks] of Object.entries(yearLinksMap)) {
         yearLinks.push({year, thumbnailLinks});
     }
+    yearLinks.reverse();
     return yearLinks;
 }  
 
