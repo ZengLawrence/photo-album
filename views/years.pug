@@ -1,6 +1,12 @@
 extends layout
 
 block content
+  #nag
+    p
+      if prevPage
+        a(href=prevPage) <<
+      if nextPage
+        a(href=nextPage) >>
   each val in years
     h1= val.year
     p 
