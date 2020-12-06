@@ -5,7 +5,7 @@ const db = require('./db');
 
 function albumPhotoMetadatas() {
    return new Promise((resolve, reject) => {
-      db.photos.find({}).sort({createTimestamp: -1}).exec( (err, docs) => {
+      db.photos.find({}, (err, docs) => {
         if (err) {
           reject(err);
         } else {
