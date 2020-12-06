@@ -39,7 +39,9 @@ function createTimestamp(exif) {
 }
 
 function isValidTimestamp(ts) {
-  return (ts!=null && ts.substring(0, 4) != '0000');
+  return (ts!=null && 
+    ts.length > 18 && // format: "YYYY:MM:DD HH:mm:ss"
+    ts.substring(0, 4) != '0000');
 }
 
 exports.resize = resize;
