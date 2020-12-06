@@ -15,12 +15,20 @@ function resize({ filePath, width, height }) {
 }
 
 function metadata(filePath) {
-  return new Promise(function(resolve, reject) {
-    exif({image: filePath}, function(err, data) {
-        if (err !== null) reject(err);
-        else resolve({createTimestamp: data.exif.DateTimeOriginal});
+  return new Promise(function (resolve, reject) {
+    exif({ image: filePath }, function (err, data) {
+      if (err !== null) {
+        reject(err);
+      }
+      else {
+          resolve({ createTimestamp:  createTimestamp(data.exif)});
+      }
     });
-});
+  });
+}
+
+function createTimestamp(exif) {
+  return (exif.CreateDate != null ? exif.CreateDate : exif.DateTimeOriginal);
 }
 
 exports.resize = resize;
