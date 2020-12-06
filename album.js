@@ -66,7 +66,13 @@ function isAlbumFolder(folder) {
 
 function scanAlbumFolder(albumFolderName) {
     return photoFileNames(albumFolderName).then(fileNames => {
-        return Promise.all(fileNames.map(photoFileName => photoMetadata(albumFolderName,  photoFileName).then(save)));
+        return Promise
+            .all(fileNames.map(photoFileName => 
+                    photoMetadata(albumFolderName,  photoFileName)
+                        .then(save))
+            ).then(data =>{
+                console.log(`Done scanning folder ${albumFolderName}`);
+            });
     });
 }
 
@@ -74,6 +80,8 @@ function  photoMetadata(albumName, photoName) {
     return new Promise((resolve, reject) => {
         image.metadata(getPhotoFileName(albumName, photoName)).then( metadata => {
             resolve({albumName, photoName, createTimestamp: metadata.createTimestamp});
+        }).catch(reason => {
+            console.log(`Error getting metadata for ${albumName}/${photoName}. Reason: ${reason}`);
         });
     });
 }
