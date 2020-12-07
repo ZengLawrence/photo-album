@@ -1,21 +1,7 @@
-const config = require('../config');
-const rootFolder = config.rootFolder;
-
 const db = require('../db');
 const fs = require('fs');
 const image = require('../image');
-
-function isHiddenDirectoryOrFile(fileName) {
-    return fileName.startsWith(".");
-}
-
-function isJpeg(fileName) {
-    return fileName.toLowerCase().endsWith('.jpg') ||
-        fileName.toLowerCase().endsWith('.jpeg');
-}
-function getPhotoFileName(albumName, photoName) {
-    return rootFolder + '/' + albumName + '/' + photoName;
-}
+const util = require('./util');
 
 /* scan album folders */
 async function scanAlbumFolders() {
@@ -25,19 +11,15 @@ async function scanAlbumFolders() {
 
 function albumFolderNames() {
     return new Promise((resolve, reject) => {
-        fs.readdir(rootFolder, { withFileTypes: true }, function (err, files) {
+        fs.readdir(util.rootFolder, { withFileTypes: true }, function (err, files) {
             if (err) {
                 reject(err);
             } else {
-                const folderNames = files.filter(isAlbumFolder).map(folder => folder.name);
+                const folderNames = files.filter(util.isAlbumFolder).map(folder => folder.name);
                 resolve(folderNames);
             }
         });
     });
-}
-
-function isAlbumFolder(folder) {
-    return folder.isDirectory() && !isHiddenDirectoryOrFile(folder.name);
 }
 
 async function scanAlbumFolder(albumFolderName) {
@@ -62,7 +44,7 @@ async function scanAlbumFolder(albumFolderName) {
 
 function photoMetadata(albumName, photoName) {
     return new Promise((resolve, reject) => {
-        image.metadata(getPhotoFileName(albumName, photoName)).then(metadata => {
+        image.metadata(util.getPhotoFilePathName(albumName, photoName)).then(metadata => {
             resolve({ albumName, photoName, createTimestamp: metadata.createTimestamp });
         }).catch(reason => {
             console.log(`Error getting metadata for ${albumName}/${photoName}. Reason: ${reason}`);
@@ -72,20 +54,14 @@ function photoMetadata(albumName, photoName) {
 
 function photoFileNames(albumFolderName) {
     return new Promise((resolve, reject) => {
-        fs.readdir(rootFolder + '/' + albumFolderName, { withFileTypes: true }, (err, files) => {
+        fs.readdir(util.getAlbumFolderPathName(albumFolderName), { withFileTypes: true }, (err, files) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(files.filter(isPhotoFile).map(file => file.name));
+                resolve(files.filter(util.isPhotoFile).map(file => file.name));
             }
         });
     });
-}
-
-function isPhotoFile(file) {
-    return file.isFile() &&
-        !isHiddenDirectoryOrFile(file.name) &&
-        isJpeg(file.name);
 }
 
 function save(photoMetadata) {
