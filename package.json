@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "async": "^0.2.10",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "exif": "^0.6.0",

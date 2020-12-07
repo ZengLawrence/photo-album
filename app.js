@@ -8,8 +8,7 @@ var logger = require('morgan');
 var album = require('./album');
 setTimeout(() => {
   album
-    .scanAlbumFolders()
-    .then(data => {
+    .scanAlbumFolders( (err, data) => {
       console.log('Done scanning folders');
     })
   }, 1000);
