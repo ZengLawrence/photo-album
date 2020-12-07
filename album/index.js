@@ -1,9 +1,9 @@
-const config = require('./config');
+const config = require('../config');
 const rootFolder = config.rootFolder;
 
-const db = require('./db');
+const db = require('../db');
 const fs = require('fs');
-const image = require('./image');
+const image = require('../image');
 
 /* list all albums */
 function list() {
