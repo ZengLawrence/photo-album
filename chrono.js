@@ -9,7 +9,7 @@ function albumPhotoMetadatas(skipPage = 0) {
   return new Promise((resolve, reject) => {
     db.photos
       .find({})
-      .sort({ createTimestamp: -1 })
+      .sort({ createTimestamp: 1 })
       .skip(NUMB_PHOTO_PER_PAGE * skipPage)
       .limit(NUMB_PHOTO_PER_PAGE)
       .exec((err, docs) => {
