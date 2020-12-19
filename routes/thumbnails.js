@@ -12,8 +12,8 @@ router.get('/:albumName/:photoName', function(req, res, next) {
   image.resize(
     {
       filePath: fileName, 
-      width: 100, 
-      height: 100
+      width: 50, 
+      height: 50
     })
     .then(data => {
       res

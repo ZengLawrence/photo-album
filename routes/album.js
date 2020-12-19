@@ -3,12 +3,16 @@ var router = express.Router();
 var album = require('../album');
 const image = require('../image');
 
+const THUMBNAIL_SIZE = {
+  width: 50, height: 50
+}
+
 /* GET list all albums */
 router.get('/', function(req, res, next) {
   res.render('albums', { 
       title: 'Photo Album',
       albums: album.list().map(albumEntry),
-      thumbnailSize: {width: 100, height: 100}
+      thumbnailSize: THUMBNAIL_SIZE
     });
 });
 
@@ -57,8 +61,8 @@ router.get('/:albumName/thumbnail', function(req, res, next) {
   image.resize(
     {
       filePath: fileName, 
-      width: 100, 
-      height: 100
+      width: THUMBNAIL_SIZE.width, 
+      height: THUMBNAIL_SIZE.height
     })
     .then(data => {
       res

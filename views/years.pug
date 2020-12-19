@@ -1,8 +1,14 @@
 extends layout
 
 block content
+  #nag
+    p
+      if prevPage
+        a(href=prevPage) <<
+      if nextPage
+        a(href=nextPage) >>
   each val in years
     h1= val.year
     p 
       each link in val.thumbnailLinks
-        img(src=link, width=100, height=100)
+        img(src=link, width=50, height=50)

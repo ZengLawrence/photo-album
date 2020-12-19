@@ -4,6 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// scan folders
+var album = require('./album');
+setTimeout(() => {
+  album
+    .scanAlbumFolders( (err, data) => {
+      console.log('Done scanning folders');
+    })
+  }, 1000);
+
 var indexRouter = require('./routes/index');
 var albumRouter = require('./routes/album');
 var thumbnailsRouter = require('./routes/thumbnails');
