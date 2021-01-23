@@ -28,24 +28,23 @@ router.get('/:page', function (req, res, next) {
 });
 
 function yearsView(metadatas) {
-  const yearLinksMap = metadatas.reduce(groupByYear, {});
-  var yearLinks = [];
-  for (const [year, thumbnailLinks] of Object.entries(yearLinksMap)) {
-    yearLinks.push({ year, thumbnailLinks });
+  const yearPhotosMap = metadatas.reduce(groupByYear, {});
+  var photosByYear = [];
+  for (const [year, photos] of Object.entries(yearPhotosMap)) {
+    photosByYear.push({ year, photos });
   }
-  return yearLinks;
+  return photosByYear;
 }
 
 function groupByYear(map, { createTimestamp, albumName, photoName }) {
   const year = createTimestamp.substring(0, 4);
-  var links = map[year];
-  const thumbnailLink = '/thumbnails/' + albumName + '/' + photoName;
-  if (links) {
-    links.push(thumbnailLink);
+  var photosByYear = map[year];
+  if (photosByYear) {
+    photosByYear.push({albumName, photoName});
   } else {
-    links = [thumbnailLink];
+    photosByYear = [{albumName, photoName}];
   }
-  map[year] = links;
+  map[year] = photosByYear;
   return map;
 }
 

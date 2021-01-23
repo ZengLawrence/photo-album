@@ -10,5 +10,6 @@ block content
   each val in years
     h1= val.year
     p 
-      each link in val.thumbnailLinks
-        img(src=link, width=50, height=50)
+      each photo in val.photos
+        - var thumbnailLink = "/thumbnails/" + photo.albumName + "/" + photo.photoName
+        img(src=thumbnailLink, width=50, height=50)
