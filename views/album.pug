@@ -2,8 +2,9 @@ extends layout
 
 block content
   h1= title
+  - var thumbnailHeight = 100, thumbnailWidth = 100
   each photo in photos
     - var photoLink = "./" + photo.name
-    - var thumbnailLink = "/thumbnails/" + albumName + "/" + photo.name
+    - var thumbnailLink = "/thumbnails/" + albumName + "/" + photo.name + "?height=" + thumbnailHeight + "&width=" + thumbnailWidth
     a(href=photoLink)
-      img(src=thumbnailLink, alt=photo.name, height=100, width=100)
+      img(src=thumbnailLink, alt=photo.name, height=thumbnailHeight, width=thumbnailWidth)

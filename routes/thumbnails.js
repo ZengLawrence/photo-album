@@ -13,12 +13,14 @@ router.get('/:albumName/:photoName', function(req, res, next) {
   }
 
   const fileName = album.getPhotoFileName(albumName, photoName);
+  const height = getIntOrDefault(req.query.height, 50);
+  const width = getIntOrDefault(req.query.width, 50);
 
   image.resize(
     {
       filePath: fileName, 
-      width: 50, 
-      height: 50
+      width, 
+      height
     })
     .then(data => {
       res
@@ -39,6 +41,10 @@ function getPhotoName(albumName, photoName) {
   } else {
     return photoName;
   }
+}
+
+function getIntOrDefault(val, defaultVal) {
+  return val ? parseInt(val) : defaultVal;
 }
 
 module.exports = router;
