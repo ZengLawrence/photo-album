@@ -6,7 +6,12 @@ const image = require('../image');
 /* GET one photo */
 router.get('/:albumName/:photoName', function(req, res, next) {
   const albumName = req.params['albumName'];
-  const photoName = req.params['photoName'];
+  const photoName = getPhotoName(albumName, req.params['photoName']);
+  if (!photoName) {
+    res.status(404).end();
+    return;
+  }
+
   const fileName = album.getPhotoFileName(albumName, photoName);
 
   image.resize(
@@ -27,5 +32,13 @@ router.get('/:albumName/:photoName', function(req, res, next) {
       res.status(404).end();
     });
 });
+
+function getPhotoName(albumName, photoName) {
+  if ("_cover" == photoName) {
+    return album.listPhotoNames(albumName).shift();
+  } else {
+    return photoName;
+  }
+}
 
 module.exports = router;
