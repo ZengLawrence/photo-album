@@ -26,6 +26,7 @@ router.get('/:albumName', function(req, res, next) {
   const albumName = req.params['albumName'];
   res.render('album', { 
     title: albumName,
+    albumName,
     photos: photoEntries(albumName)
     });
 });

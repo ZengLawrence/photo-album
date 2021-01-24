@@ -2,6 +2,8 @@ extends layout
 
 block content
   h1= title
-  each val in photos
-    p 
-      img(src=val.link, alt=val.name)
+  each photo in photos
+    - var photoLink = "./" + photo.name
+    - var thumbnailLink = "/thumbnails/" + albumName + "/" + photo.name
+    a(href=photoLink)
+      img(src=thumbnailLink, alt=photo.name, height=100, width=100)
