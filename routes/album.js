@@ -33,13 +33,12 @@ router.get('/:albumName', function(req, res, next) {
 });
 
 function photoEntries(albumName) {
-  return album.listPhotoNames(albumName).map(photoName => photoEntry(albumName, photoName));
+  return album.listPhotoNames(albumName).map(photoEntry);
 }
 
-function photoEntry(albumName, photoName) {
+function photoEntry(photoName) {
   return {
-    name: photoName, 
-    link: '/albums/' + albumName + '/' + photoName
+    name: photoName
   };
 }
 
