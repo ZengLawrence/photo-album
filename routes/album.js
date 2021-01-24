@@ -17,8 +17,7 @@ router.get('/', function(req, res, next) {
 
 function albumEntry(albumName) {
   return {
-    name: albumName, 
-    link: '/albums/' + albumName
+    name: albumName
   };
 }
 

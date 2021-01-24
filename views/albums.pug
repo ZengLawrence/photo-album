@@ -6,4 +6,5 @@ block content
     h2 
       - var thumbnailLink = "/thumbnails/" + album.name + "/_cover"
       img(src=thumbnailLink, width=thumbnailSize.width, height=thumbnailSize.height)
-      a(href=album.link) #{album.name}
+      - var albumLink = '/albums/' + album.name + "/"
+      a(href=albumLink) #{album.name}
