@@ -25,6 +25,7 @@ function albumEntry(albumName) {
 router.get('/:albumName', function(req, res, next) {
   const albumName = req.params['albumName'];
   res.render('album', { 
+    basepath: appendSlashIfMissing(req.originalUrl),
     title: albumName,
     albumName,
     photos: photoEntries(albumName)
@@ -40,6 +41,14 @@ function photoEntry(albumName, photoName) {
     name: photoName, 
     link: '/albums/' + albumName + '/' + photoName
   };
+}
+
+function appendSlashIfMissing(path) {
+  if (path.substring(path.length - 1) == "/") {
+    return path;
+  } else {
+    return path + "/";
+  }
 }
 
 /* GET one photo */

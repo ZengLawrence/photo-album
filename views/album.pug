@@ -1,5 +1,8 @@
 extends layout
 
+block headProperties
+  base(href=basepath)
+
 block content
   h1= title
   - var thumbnailHeight = 100, thumbnailWidth = 100
