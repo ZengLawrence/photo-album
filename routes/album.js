@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var album = require('../album');
-const image = require('../image');
 
 const THUMBNAIL_SIZE = {
   width: 50, height: 50
@@ -18,64 +17,38 @@ router.get('/', function(req, res, next) {
 
 function albumEntry(albumName) {
   return {
-    name: albumName, 
-    link: '/albums/' + albumName,
-    thumbnailLink: thumbnailLink(albumName)
+    name: albumName
   };
-}
-
-function thumbnailLink(albumName) {
-  return '/albums/' + albumName + '/thumbnail';
 }
 
 /* GET one album */
 router.get('/:albumName', function(req, res, next) {
   const albumName = req.params['albumName'];
   res.render('album', { 
+    basepath: appendSlashIfMissing(req.originalUrl),
     title: albumName,
+    albumName,
     photos: photoEntries(albumName)
     });
 });
 
 function photoEntries(albumName) {
-  return album.listPhotoNames(albumName).map(photoName => photoEntry(albumName, photoName));
+  return album.listPhotoNames(albumName).map(photoEntry);
 }
 
-function photoEntry(albumName, photoName) {
+function photoEntry(photoName) {
   return {
-    name: photoName, 
-    link: '/albums/' + albumName + '/' + photoName
+    name: photoName
   };
 }
 
-/* GET thumbnail */
-router.get('/:albumName/thumbnail', function(req, res, next) {
-  const albumName = req.params['albumName'];
-  const photoName = album.listPhotoNames(albumName).shift();
-  if (!photoName) {
-    res.status(404).end();
-    return;
+function appendSlashIfMissing(path) {
+  if (path.substring(path.length - 1) == "/") {
+    return path;
+  } else {
+    return path + "/";
   }
-
-  const fileName = album.getPhotoFileName(albumName, photoName);
-  image.resize(
-    {
-      filePath: fileName, 
-      width: THUMBNAIL_SIZE.width, 
-      height: THUMBNAIL_SIZE.height
-    })
-    .then(data => {
-      res
-        .status(200)
-        .append('Content-Type', 'image/jpeg')
-        .append('Content-Length', data.length)
-        .end(data);
-    })
-    .catch(err => { 
-      console.error(err); 
-      res.status(404).end();
-    });
-});
+}
 
 /* GET one photo */
 router.get('/:albumName/:photoName', function(req, res, next) {

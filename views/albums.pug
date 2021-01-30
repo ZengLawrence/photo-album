@@ -2,7 +2,9 @@ extends layout
 
 block content
   h1= title
-  each val in albums
+  each album in albums
     h2 
-      img(src=val.thumbnailLink, width=thumbnailSize.width, height=thumbnailSize.height)
-      a(href=val.link) #{val.name}
+      - var thumbnailLink = "/thumbnails/" + album.name + "/_cover"
+      img(src=thumbnailLink, width=thumbnailSize.width, height=thumbnailSize.height)
+      - var albumLink = '/albums/' + album.name + "/"
+      a(href=albumLink) #{album.name}

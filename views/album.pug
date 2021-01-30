@@ -1,7 +1,13 @@
 extends layout
 
+block headProperties
+  base(href=basepath)
+
 block content
   h1= title
-  each val in photos
-    p 
-      img(src=val.link, alt=val.name)
+  - var thumbnailHeight = 100, thumbnailWidth = 100
+  each photo in photos
+    - var photoLink = "./" + photo.name
+    - var thumbnailLink = "/thumbnails/" + albumName + "/" + photo.name + "?height=" + thumbnailHeight + "&width=" + thumbnailWidth
+    a(href=photoLink)
+      img(src=thumbnailLink, alt=photo.name, height=thumbnailHeight, width=thumbnailWidth)
