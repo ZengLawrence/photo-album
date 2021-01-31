@@ -1,25 +1,26 @@
 import React from 'react';
-import logo from './photo-gallery-96.png';
-import './App.css';
+import Container from 'react-bootstrap/Container';
+import {TimelineView} from './components/TimelineView';
+import {Photo, PhotoCollection} from './models/Photo';
+
+function mockData() {
+  
+  const photo1 : Photo = {name: "photo 1"};
+  const photo2 : Photo = {name: "photo 2"};
+
+  const photoCollections : PhotoCollection[] = [
+    {title: "2020", photos: [photo1, photo2]},
+    {title: "2021", photos: [photo1, photo2]}
+  ];
+  return photoCollections;
+}
 
 function App() {
+  const photoCollections = mockData();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <TimelineView photosByYears={photoCollections}/>
+    </Container>
   );
 }
 
