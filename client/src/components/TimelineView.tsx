@@ -1,7 +1,7 @@
 /** Photo thumbnails in chronological order */
 import React from 'react';
 import { PhotoCollectionRow } from './PhotoCollectionRow';
-import { Photo, PhotoCollection } from '../models/Photo';
+import { PhotoCollection } from '../models/Photo';
 
 export const TimelineView = (props: { photosByYears: PhotoCollection[] }) => {
   const { photosByYears } = props;
