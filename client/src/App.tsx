@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import {TimelineView} from './components/TimelineView';
+import {AlbumView} from './components/AlbumView';
 import {Photo, PhotoCollection} from './models/Photo';
 
 function mockData() {
@@ -9,8 +9,8 @@ function mockData() {
   const photo2 : Photo = {name: "photo 2"};
 
   const photoCollections : PhotoCollection[] = [
-    {title: "2020", photos: [photo1, photo2]},
-    {title: "2021", photos: [photo1, photo2]}
+    {title: "NYC", photos: [photo1, photo2]},
+    {title: "Hong Kong", photos: [photo1, photo2]}
   ];
   return photoCollections;
 }
@@ -19,7 +19,7 @@ function App() {
   const photoCollections = mockData();
   return (
     <Container>
-      <TimelineView photosByYears={photoCollections}/>
+      <AlbumView albums={photoCollections}/>
     </Container>
   );
 }
