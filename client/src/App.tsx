@@ -24,7 +24,7 @@ function App() {
         setPhotoCollections(photoCol);
       });
 
-  });
+  }, []);
 
   return (
     <Container>
