@@ -4,6 +4,10 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 import {PhotoCollection} from '../models/Photo';
 
+function thumbnailLink(albumName: string, photoName: string) {
+  return "/thumbnails/" + albumName + "/" + photoName;
+}
+
 export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) => {
   const {title, photos} = props.photoCollection;
   return (
@@ -15,7 +19,7 @@ export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) =>
         <p>
           {photos.map(p => (
             // Without the `key`, React will fire a key warning
-            <Image key={p.name} height="50" width="50" alt={p.name}/>
+            <Image key={p.name} src={thumbnailLink(title, p.name)} height="50" width="50" alt={p.name}/>
           ))}
         </p>
       </Row>      
