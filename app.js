@@ -17,6 +17,7 @@ var indexRouter = require('./routes/index');
 var albumRouter = require('./routes/album');
 var thumbnailsRouter = require('./routes/thumbnails');
 var yearsRouter = require('./routes/years');
+var apiRouter = require('./routes/api/index');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use('/', indexRouter);
 app.use('/albums', albumRouter);
 app.use('/thumbnails', thumbnailsRouter);
 app.use('/years', yearsRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
