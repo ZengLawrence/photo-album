@@ -1,8 +1,9 @@
 import axios from "axios";
 import { PhotoCollection } from "../models/Photo";
 
-export async function fecthAll(): Promise<PhotoCollection[]> {
-  const res = await axios.get('/api/albums');
+export async function fecthAll(limit?: number): Promise<PhotoCollection[]> {
+  const urlPath = (limit ? '/api/albums?limit=' + limit : '/api/albums');
+  const res = await axios.get(urlPath);
   const data = res.data;
   const albums = data.albums;
   return albums.map(
