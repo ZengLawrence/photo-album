@@ -5,7 +5,7 @@ import Image from 'react-bootstrap/Image';
 import {PhotoCollection} from '../models/Photo';
 
 function thumbnailLink(albumName: string, photoName: string) {
-  return "/thumbnails/" + albumName + "/" + photoName;
+  return "/api/media/" + albumName + "/" + photoName + "?width=300&height=300";
 }
 
 export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) => {
@@ -19,7 +19,7 @@ export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) =>
         <p>
           {photos.map(p => (
             // Without the `key`, React will fire a key warning
-            <Image key={p.name} src={thumbnailLink(title, p.name)} height="50" width="50" alt={p.name}/>
+            <Image key={p.name} src={thumbnailLink(title, p.name)} height="300" width="300" alt={p.name} thumbnail/>
           ))}
         </p>
       </Row>      
