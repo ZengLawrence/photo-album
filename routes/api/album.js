@@ -1,3 +1,5 @@
+const express = require('express');
+const router = express.Router();
 const album = require('../../album');
 
 /** fetch all albums with photo names */
@@ -12,4 +14,10 @@ function albumEntry(albumName) {
   };
 }
 
-exports.fetchAll = fetchAll;
+router.get('/', function(req, res, next) {
+  res.json({ 
+      albums: fetchAll()
+    });
+});
+
+module.exports = router;

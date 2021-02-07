@@ -17,7 +17,7 @@ var indexRouter = require('./routes/index');
 var albumRouter = require('./routes/album');
 var thumbnailsRouter = require('./routes/thumbnails');
 var yearsRouter = require('./routes/years');
-var apiRouter = require('./routes/api/index');
+var apiRouter = require('./routes/api');
 
 var app = express();
 
