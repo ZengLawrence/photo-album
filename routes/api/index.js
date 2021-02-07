@@ -1,8 +1,7 @@
-var express = require('express');
-var router = express.Router();
-const albumRouter = require('./album');
+const express = require('express');
+const router = express.Router();
 
-/* GET list all albums along with photo names*/
-router.use('/albums', albumRouter);
+router.use('/albums', require('./album'));
+router.use('/media', require('./media'));
 
 module.exports = router;
