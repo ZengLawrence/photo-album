@@ -18,20 +18,21 @@ function isValidTimestamp(ts) {
     ts.substring(0, 4) != '0000');
 }
 
-function metadata(filePath) {
-  return readMetadata(filePath).then(data => {
+async function metadata(filePath) {
+  try {
+    const data = await readMetadata(filePath);
     var ts = createTimestamp(data.exif);
     if (!isValidTimestamp(ts)) {
       ts = fileCreateTimestamp(filePath);
     }
     return { createTimestamp: ts };
-  }).catch(err => {
+  } catch (err) {
     if (err.code == "NO_EXIF_SEGMENT") {
       return { createTimestamp: fileCreateTimestamp(filePath) };
     } else {
       throw (err);
     }
-  });
+  }
 
 }
 
