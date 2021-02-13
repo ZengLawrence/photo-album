@@ -19,21 +19,30 @@ function isValidTimestamp(ts) {
 }
 
 function metadata(filePath) {
+  return readMetadata(filePath).then(data => {
+    var ts = createTimestamp(data.exif);
+    if (!isValidTimestamp(ts)) {
+      ts = fileCreateTimestamp(filePath);
+    }
+    return { createTimestamp: ts };
+  }).catch(err => {
+    if (err.code == "NO_EXIF_SEGMENT") {
+      return { createTimestamp: fileCreateTimestamp(filePath) };
+    } else {
+      throw (err);
+    }
+  });
+
+}
+
+function readMetadata(filePath) {
   return new Promise(function (resolve, reject) {
     exif({ image: filePath }, function (err, data) {
       if (err !== null) {
-        if (err.code == "NO_EXIF_SEGMENT") {
-          resolve({ createTimestamp: fileCreateTimestamp(filePath) });
-        } else {
-          reject(err);
-        }
+        reject(err);
       }
       else {
-        var ts = createTimestamp(data.exif);
-        if (!isValidTimestamp(ts)) {
-          ts = fileCreateTimestamp(filePath);
-        }
-        resolve({ createTimestamp: ts });
+        resolve(data);
       }
     });
   });
