@@ -9,8 +9,8 @@ function resize({ filePath, width, height }) {
     .resize({
       width: width,
       height: height,
-      fit: sharp.fit.cover,
-      position: sharp.strategy.entropy
+      fit: sharp.fit.contain,
+      background:  {r:255,g:255,b:255,alpha:1}
     })
     .withMetadata()
     .toBuffer();
