@@ -21,9 +21,10 @@ function isValidTimestamp(ts) {
 }
 
 async function metadata(filePath) {
+  const exifMetadata = util.promisify(exif);
   try {
-    const data = await readMetadata(filePath);
-    var ts = createTimestamp(data.exif);
+    const data = await exifMetadata(filePath);
+    const ts = createTimestamp(data.exif);
     if (!isValidTimestamp(ts)) {
       return fileCreateTimestamp(filePath).then(createTimestamp => { return { createTimestamp }; });
     }
@@ -35,19 +36,6 @@ async function metadata(filePath) {
       throw (err);
     }
   }
-}
-
-function readMetadata(filePath) {
-  return new Promise(function (resolve, reject) {
-    exif({ image: filePath }, function (err, data) {
-      if (err !== null) {
-        reject(err);
-      }
-      else {
-        resolve(data);
-      }
-    });
-  });
 }
 
 exports.default = metadata;
