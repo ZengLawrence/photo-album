@@ -1,10 +1,21 @@
 /** Photo thumbnails by album */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PhotoCollectionRow } from './PhotoCollectionRow';
 import { PhotoCollection } from '../models/Photo';
+import * as Albums from '../api/Albums';
 
-export const AlbumView = (props: { albums: PhotoCollection[] }) => {
-  const { albums } = props;
+export const AlbumView = () => {
+
+  const [albums, setAlbums] = useState([] as PhotoCollection[]);
+
+  useEffect(() => {
+    Albums.fecthAll(3)
+      .then( (photoCol : PhotoCollection[]) => {
+        setAlbums(photoCol);
+      });
+
+  }, []);
+
   return (
     <div>
       {
