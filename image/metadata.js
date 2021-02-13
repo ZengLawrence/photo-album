@@ -1,11 +1,13 @@
 const sharp = require('sharp');
 const exif = require('exif');
+const util = require('util');
 const fs = require('fs');
 const moment = require('moment');
 
-function fileCreateTimestamp(filePath) {
-  const fstat = fs.statSync(filePath);
-  return moment(fstat.birthtime).format("YYYY:MM:DD HH:mm:ss");
+async function fileCreateTimestamp(filePath) {
+  const stat = util.promisify(fs.stat);
+  const data = await stat(filePath);
+  return moment(data.birthtime).format("YYYY:MM:DD HH:mm:ss");
 }
 
 function createTimestamp(exif) {
@@ -23,17 +25,16 @@ async function metadata(filePath) {
     const data = await readMetadata(filePath);
     var ts = createTimestamp(data.exif);
     if (!isValidTimestamp(ts)) {
-      ts = fileCreateTimestamp(filePath);
+      return fileCreateTimestamp(filePath).then(createTimestamp => { return { createTimestamp }; });
     }
     return { createTimestamp: ts };
   } catch (err) {
     if (err.code == "NO_EXIF_SEGMENT") {
-      return { createTimestamp: fileCreateTimestamp(filePath) };
+      return fileCreateTimestamp(filePath).then(createTimestamp => { return { createTimestamp }; });
     } else {
       throw (err);
     }
   }
-
 }
 
 function readMetadata(filePath) {
