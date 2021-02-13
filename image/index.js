@@ -1,6 +1,6 @@
 /* wrapper over sharp library */
 const sharp = require('sharp');
-const metadata = require('./metadata');
+const metadata = require('./metadata').default;
 
 function resize({ filePath, width, height }) {
   return sharp(filePath)
