@@ -1,4 +1,3 @@
-const sharp = require('sharp');
 const exif = require('exif');
 const util = require('util');
 const fs = require('fs');
