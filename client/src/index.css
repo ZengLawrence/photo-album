@@ -14,4 +14,5 @@ code {
 
 .PA-Thumbnail {
   object-fit: scale-down;
+  margin: 1px;
 }
