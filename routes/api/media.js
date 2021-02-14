@@ -15,7 +15,8 @@ router.get('/:albumName/:photoName', function(req, res, next) {
     {
       filePath: fileName, 
       width, 
-      height
+      height,
+      fit: image.FitEnum.contain
     })
     .then(data => {
       res
