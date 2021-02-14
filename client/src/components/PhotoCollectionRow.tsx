@@ -18,12 +18,10 @@ export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) =>
         <h1>{title}</h1>
       </Row>
       <Row>
-        <p>
-          {photos.map(p => (
-            // Without the `key`, React will fire a key warning
-            <Image key={p.name} src={thumbnailLink(title, p.name)} height={SIZE} width={SIZE} alt={p.name} className="PA-Thumbnail"/>
-          ))}
-        </p>
+        {photos.map(p => (
+          // Without the `key`, React will fire a key warning
+          <Image key={p.name} src={thumbnailLink(title, p.name)} height={SIZE} width={SIZE} alt={p.name} className="PA-Thumbnail"/>
+        ))}
       </Row>      
     </div>
   );
