@@ -25,12 +25,12 @@ async function metadata(filePath) {
     const data = await exifMetadata(filePath);
     const ts = createTimestamp(data.exif);
     if (!isValidTimestamp(ts)) {
-      return fileCreateTimestamp(filePath).then(createTimestamp => { return { createTimestamp }; });
+      return fileCreateTimestamp(filePath);
     }
-    return { createTimestamp: ts };
+    return ts;
   } catch (err) {
     if (err.code == "NO_EXIF_SEGMENT") {
-      return fileCreateTimestamp(filePath).then(createTimestamp => { return { createTimestamp }; });
+      return fileCreateTimestamp(filePath);
     } else {
       throw (err);
     }
