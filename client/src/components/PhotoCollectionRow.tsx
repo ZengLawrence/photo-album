@@ -4,8 +4,10 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 import {PhotoCollection} from '../models/Photo';
 
+const SIZE = 300;
+
 function thumbnailLink(albumName: string, photoName: string) {
-  return "/api/media/" + albumName + "/" + photoName + "?width=300&height=300";
+  return "/api/media/" + albumName + "/" + photoName + "?maxSize=" + SIZE;
 }
 
 export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) => {
@@ -19,7 +21,7 @@ export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) =>
         <p>
           {photos.map(p => (
             // Without the `key`, React will fire a key warning
-            <Image key={p.name} src={thumbnailLink(title, p.name)} height="300" width="300" alt={p.name} thumbnail/>
+            <Image key={p.name} src={thumbnailLink(title, p.name)} height={SIZE} width={SIZE} alt={p.name} className="PA-Thumbnail"/>
           ))}
         </p>
       </Row>      

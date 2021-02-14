@@ -4,7 +4,8 @@ const metadata = require('./metadata').default;
 
 const FitEnum = {
   contain: "contain",
-  cover: "cover"
+  cover: "cover",
+  inside: "inside"
 };
 
 function resize({ filePath, width, height, fit = FitEnum.cover }) {
