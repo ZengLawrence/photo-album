@@ -16,7 +16,7 @@ export const PhotoCard = (props: {albumName: string, photo: Photo}) => {
 
 const Icons = () => {
   return (
-    <div className="text-end">
+    <div className="text-sm-right">
       <FontAwesomeIcon icon={faEdit} />
       <FontAwesomeIcon icon={faFileAlt} />
       <FontAwesomeIcon icon={faHeart} />
