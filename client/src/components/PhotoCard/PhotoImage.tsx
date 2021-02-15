@@ -1,5 +1,5 @@
 import Image from 'react-bootstrap/Image';
-import { Photo } from "../models/Photo";
+import { Photo } from "../../models/Photo";
 
 const SIZE = 300;
 

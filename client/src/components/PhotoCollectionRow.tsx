@@ -2,7 +2,7 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import {PhotoCollection} from '../models/Photo';
-import { PhotoImage } from './PhotoImage';
+import { PhotoCard } from './PhotoCard';
 
 export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) => {
   const {title, photos} = props.photoCollection;
@@ -14,7 +14,7 @@ export const PhotoCollectionRow = (props: {photoCollection: PhotoCollection}) =>
       <Row>
         {photos.map(p => (
           // Without the `key`, React will fire a key warning
-          <PhotoImage key={p.name} albumName={title} photo={p} />
+          <PhotoCard key={p.name} albumName={title} photo={p} />
         ))}
       </Row>      
     </div>
