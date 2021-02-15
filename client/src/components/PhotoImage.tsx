@@ -6,11 +6,8 @@ const SIZE = 300;
 export const PhotoImage = (props: {albumName: string, photo: Photo}) => {
   const {albumName, photo} = props;
   const src = thumbnailLink(albumName, photo.name);
-  const href = "/album/" + albumName + "/" + photo.name;
   return (
-    <a href={href}>
-      <Image src={src} height={SIZE} width={SIZE} alt={photo.name} className="PA-Thumbnail"/>
-    </a>
+    <Image src={src} height={SIZE} width={SIZE} alt={photo.name} className="PA-Thumbnail"/>
   );
 }
 
