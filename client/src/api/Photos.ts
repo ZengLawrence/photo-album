@@ -6,5 +6,5 @@ function descriptionUrl(albumName: string, photo: Photo){
 }
 
 export function saveDescription(albumName: string, photo: Photo, description?: string) {
-  return axios.put(descriptionUrl(albumName, photo), description);
+  return axios.put(descriptionUrl(albumName, photo), {data: description});
 }

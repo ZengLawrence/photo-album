@@ -26,4 +26,16 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.put('/:albumName/photos/:photoName/description', function(req, res, next) {
+  const albumName = req.params['albumName'];
+  const photoName = req.params['photoName'];
+  const description = req.body.data;
+  album.savePhotoDescription({albumName, photoName}, description)
+    .then(() => res.status(200).send())
+    .catch(err => {
+      console.log(err);
+      res.status(500).send();
+    });
+});
+
 module.exports = router;
