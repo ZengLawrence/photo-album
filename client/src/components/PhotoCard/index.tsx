@@ -1,7 +1,5 @@
-import { faEdit, faFileAlt, faHeart } from '@fortawesome/free-regular-svg-icons';
-import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Photo } from '../../models/Photo';
+import { Description } from './Description';
 import { PhotoImage } from './PhotoImage';
 
 export const PhotoCard = (props: {albumName: string, photo: Photo}) => {
@@ -9,18 +7,7 @@ export const PhotoCard = (props: {albumName: string, photo: Photo}) => {
   return (
     <div>
       <PhotoImage albumName={albumName} photo={photo} />
-      <Icons />
-    </div>
-  )
-}
-
-const Icons = () => {
-  return (
-    <div className="text-sm-right">
-      <FontAwesomeIcon icon={faEdit} />
-      <FontAwesomeIcon icon={faFileAlt} />
-      <FontAwesomeIcon icon={faHeart} />
-      <FontAwesomeIcon icon={faHeartSolid} color="red"/>
+      <Description />
     </div>
   )
 }
