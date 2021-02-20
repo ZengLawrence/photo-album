@@ -35,7 +35,7 @@ const DescriptionEdit = (props: {
 
   return (
     <Form>
-      <Form.Control as="textarea" onChange={(e) => { setNewDecription(e.target.value) }}>
+      <Form.Control as="textarea" defaultValue="" onChange={(e) => { setNewDecription(e.target.value) }}>
         {description}
       </Form.Control>
       <Button variant="primary" type="submit" size="sm" onClick={() => save()}>
