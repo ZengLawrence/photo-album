@@ -35,9 +35,7 @@ const DescriptionEdit = (props: {
 
   return (
     <Form>
-      <Form.Control as="textarea" defaultValue="" onChange={(e) => { setNewDecription(e.target.value) }}>
-        {description}
-      </Form.Control>
+      <Form.Control as="textarea" defaultValue={description} onChange={(e) => { setNewDecription(e.target.value) }} />
       <Button variant="primary" type="submit" size="sm" onClick={() => save()}>
         Save
     </Button>
@@ -48,13 +46,14 @@ const DescriptionEdit = (props: {
   )
 }
 
-export const Description = (props: { description?: string }) => {
+export const Description = (props: { description?: string, handleSave: (description?: string) => void }) => {
   const [edit, setEdit] = useState(false);
   const [description, setDecription] = useState(props.description);
 
   const save = (newDescription?: string) => {
     setDecription(newDescription);
     setEdit(false);
+    props.handleSave(newDescription);
   }
 
   return (
