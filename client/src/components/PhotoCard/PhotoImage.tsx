@@ -7,7 +7,7 @@ export const PhotoImage = (props: {albumName: string, photo: Photo}) => {
   const {albumName, photo} = props;
   const src = thumbnailLink(albumName, photo.name);
   return (
-    <Image src={src} height={SIZE} width={SIZE} alt={photo.name} className="PA-Thumbnail"/>
+    <Image src={src} alt={photo.name} />
   );
 }
 
