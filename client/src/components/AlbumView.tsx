@@ -3,23 +3,45 @@ import React, { useEffect, useState } from 'react';
 import { PhotoCollectionRow } from './PhotoCollectionRow';
 import { PhotoCollection } from '../models/Photo';
 import * as Albums from '../api/Albums';
+import { Pagination } from 'react-bootstrap';
 
 const PAGE_SIZE = 3;
 
 export const AlbumView = () => {
 
   const [albums, setAlbums] = useState([] as PhotoCollection[]);
+  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    Albums.fecthAll(PAGE_SIZE)
+  const fetchAlbums = (options: {skip: number}) => {
+    const { skip } = options;
+    Albums.fecthAll({limit: PAGE_SIZE, skip})
       .then( (photoCol : PhotoCollection[]) => {
         setAlbums(photoCol);
       });
+  }
 
+  const firstPage = () => {
+    fetchAlbums({skip: 0});
+  }
+
+  const nextPage = () => {
+    setPage(page + 1);
+    const skip = page;
+    fetchAlbums({skip})
+  }
+
+  useEffect(() => {
+    firstPage();
   }, []);
 
   return (
-    <AblumViewBody albums={albums}/>
+    <div>
+      <Pagination>
+        <Pagination.Prev />
+        <Pagination.Next onClick={nextPage} />
+      </Pagination>
+      <AblumViewBody albums={albums}/>
+    </div>
   );
 }
 
