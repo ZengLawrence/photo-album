@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PhotoCollection } from "../models/Photo";
+import { Photo, PhotoCollection } from "../models/Photo";
 
 export async function fecthAll(limit?: number): Promise<PhotoCollection[]> {
   const urlPath = (limit ? '/api/albums?limit=' + limit : '/api/albums');
@@ -7,10 +7,10 @@ export async function fecthAll(limit?: number): Promise<PhotoCollection[]> {
   const data = res.data;
   const albums = data.albums;
   return albums.map(
-    (albm: { albumName: string; photoNames: string[]; }) => {
+    (albm: { albumName: string; photos: Photo[]; }) => {
       return {
         title: albm.albumName,
-        photos: albm.photoNames.map(name => { return { name }; })
+        photos: albm.photos
       };
     }
   );

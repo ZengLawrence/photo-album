@@ -12,17 +12,23 @@ function fetchAll(limit) {
 }
 
 function albumEntry(albumName) {
-  return {
-    albumName,
-    photoNames: album.listPhotoNames(albumName)
-  };
+  return album.fetchPhotoMetadata(albumName)
+    .then(photos => {
+      return {
+        albumName,
+        photos
+      };  
+    });  
 }
 
 router.get('/', function(req, res, next) {
   const limit = req.query.limit;
-  const albums = fetchAll(limit);
-  res.json({ 
-    albums
+  Promise.all(fetchAll(limit))
+    .then(albums => {
+      res.json({ 
+        albums
+        });
+    
     });
 });
 
