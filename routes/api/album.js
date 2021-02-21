@@ -11,14 +11,12 @@ function fetchAll(limit) {
   }
 }
 
-function albumEntry(albumName) {
-  return album.fetchPhotoMetadata(albumName)
-    .then(photos => {
-      return {
-        albumName,
-        photos
-      };  
-    });  
+async function albumEntry(albumName) {
+  const photos = await album.fetchPhotoMetadata(albumName);
+  return {
+    albumName,
+    photos
+  };  
 }
 
 router.get('/', function(req, res, next) {

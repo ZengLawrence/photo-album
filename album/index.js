@@ -1,5 +1,4 @@
 const fs = require('fs');
-const util = require('util');
 const scanner = require('./scanner');
 const albumUtil = require('./util');
 const db = require('../db');
@@ -27,21 +26,20 @@ function listPhotoNames(albumName) {
 }
 
 /* list photo metadata for an album */
-function fetchPhotoMetadata(albumName) {
+async function fetchPhotoMetadata(albumName) {
     const findPhotos = new Promise((resolve, reject) => {
-        db.photos.find({albumName}, (err, docs) => {
+        db.photos.find({albumName}).sort({photoName: 1}).exec((err, docs) => {
             if (err) reject(err);
             resolve(docs)
         });
     })
-    return findPhotos.then(docs => {
-        return docs.map(photo => {
-            return {
-                name: photo.photoName,
-                description: photo.description
-            };
-        });
-    })
+    const docs = await findPhotos;
+    return docs.map(photo => {
+        return {
+            name: photo.photoName,
+            description: photo.description
+        };
+    });
 }
 
 function savePhotoDescription({albumName, photoName}, desc) {
