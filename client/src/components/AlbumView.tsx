@@ -42,7 +42,7 @@ export const AlbumView = () => {
   return (
     <div>
       <Pagination>
-        <Pagination.Prev onClick={prevPage} />
+        <Pagination.Prev onClick={prevPage} disabled={(page < 2)} />
         <Pagination.Next onClick={nextPage} />
       </Pagination>
       <AblumViewBody albums={albums}/>
