@@ -14,14 +14,10 @@ export const AlbumView = () => {
 
   const fetchAlbums = (options: {skip: number}) => {
     const { skip } = options;
-    Albums.fecthAll({limit: PAGE_SIZE, skip})
+    Albums.fecthAll({pageSize: PAGE_SIZE, skip})
       .then( (photoCol : PhotoCollection[]) => {
         setAlbums(photoCol);
       });
-  }
-
-  const firstPage = () => {
-    fetchAlbums({skip: 0});
   }
 
   const nextPage = () => {
@@ -31,7 +27,7 @@ export const AlbumView = () => {
   }
 
   useEffect(() => {
-    firstPage();
+    fetchAlbums({skip: 0});
   }, []);
 
   return (

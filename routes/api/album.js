@@ -3,9 +3,9 @@ const router = express.Router();
 const album = require('../../album');
 
 /** fetch all albums with photo names */
-function fetchAll(limit) {
-  if (limit) {
-    return album.list().slice(0, limit).map(albumEntry);
+function fetchAll(skip, pageSize) {
+  if (pageSize) {
+    return album.list().slice(skip * pageSize, (skip + 1) * pageSize).map(albumEntry);
   } else {
     return album.list().map(albumEntry);
   }
@@ -20,8 +20,9 @@ async function albumEntry(albumName) {
 }
 
 router.get('/', function(req, res, next) {
-  const limit = req.query.limit;
-  Promise.all(fetchAll(limit))
+  const pageSize = req.query.pageSize;
+  const skip = req.query.skip;
+  Promise.all(fetchAll(skip, pageSize))
     .then(albums => {
       res.json({ 
         albums
