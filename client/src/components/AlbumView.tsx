@@ -22,8 +22,13 @@ export const AlbumView = () => {
 
   const nextPage = () => {
     setPage(page + 1);
-    const skip = page;
-    fetchAlbums({skip})
+    fetchAlbums({skip: page});
+  }
+
+  const prevPage = () => {
+    const newPage = (page - 1 < 0 ? 0 : page -1);
+    setPage(newPage);
+    fetchAlbums({skip: newPage - 1});
   }
 
   useEffect(() => {
@@ -33,7 +38,7 @@ export const AlbumView = () => {
   return (
     <div>
       <Pagination>
-        <Pagination.Prev />
+        <Pagination.Prev onClick={prevPage} />
         <Pagination.Next onClick={nextPage} />
       </Pagination>
       <AblumViewBody albums={albums}/>
