@@ -4,18 +4,27 @@ import { PhotoCollectionRow } from './PhotoCollectionRow';
 import { PhotoCollection } from '../models/Photo';
 import * as Albums from '../api/Albums';
 
+const PAGE_SIZE = 3;
+
 export const AlbumView = () => {
 
   const [albums, setAlbums] = useState([] as PhotoCollection[]);
 
   useEffect(() => {
-    Albums.fecthAll(3)
+    Albums.fecthAll(PAGE_SIZE)
       .then( (photoCol : PhotoCollection[]) => {
         setAlbums(photoCol);
       });
 
   }, []);
 
+  return (
+    <AblumViewBody albums={albums}/>
+  );
+}
+
+const AblumViewBody = (props: {albums: PhotoCollection[]})=> {
+  const { albums } = props;
   return (
     <div>
       {
