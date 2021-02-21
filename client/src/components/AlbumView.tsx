@@ -12,8 +12,8 @@ export const AlbumView = () => {
   const [albums, setAlbums] = useState([] as PhotoCollection[]);
   const [page, setPage] = useState(1);
 
-  const fetchAlbums = (options: {skip: number}) => {
-    const { skip } = options;
+  const fetchAlbums = (pageNumb: number = 0) => {
+    const skip = (pageNumb > 0 ? pageNumb - 1 : 0);
     Albums.fecthAll({pageSize: PAGE_SIZE, skip})
       .then( (photoCol : PhotoCollection[]) => {
         setAlbums(photoCol);
@@ -21,18 +21,22 @@ export const AlbumView = () => {
   }
 
   const nextPage = () => {
-    setPage(page + 1);
-    fetchAlbums({skip: page});
+    const newPage = page + 1;
+    setPage(newPage);
+    fetchAlbums(newPage);
   }
 
   const prevPage = () => {
-    const newPage = (page - 1 < 0 ? 0 : page -1);
+    const newPage = (page < 1 ? 0 : page - 1);
     setPage(newPage);
-    fetchAlbums({skip: newPage - 1});
+    fetchAlbums(newPage);
   }
 
   useEffect(() => {
-    fetchAlbums({skip: 0});
+    const firstPage = () => {
+      fetchAlbums();
+    }
+    firstPage();
   }, []);
 
   return (
