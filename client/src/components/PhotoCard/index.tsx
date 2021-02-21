@@ -11,7 +11,7 @@ export const PhotoCard = (props: {albumName: string, photo: Photo}) => {
   }
 
   return (
-    <div>
+    <div className="border rounded border-light my-2 mx-1 p-1">
       <PhotoImage albumName={albumName} photo={photo} />
       <Description description={photo.description} handleSave={saveDescription}/>
     </div>

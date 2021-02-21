@@ -12,7 +12,7 @@ const DescriptionBox = (props: { description?: string }) => {
   const { description } = props;
   if (description) {
     return (
-      <div style={showLineBreak} className="border border-light rounded text-secondary">
+      <div style={showLineBreak} >
         {description}
       </div>
     )
