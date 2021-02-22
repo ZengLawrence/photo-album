@@ -6,47 +6,53 @@ import * as Albums from '../api/Albums';
 import { Pagination } from 'react-bootstrap';
 
 const PAGE_SIZE = 3;
+const FIRST_PAGE = 1;
 
 export const AlbumView = () => {
 
   const [albums, setAlbums] = useState([] as PhotoCollection[]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(FIRST_PAGE);
 
-  const fetchAlbums = (pageNumb: number = 0) => {
+  const fetchAlbums = (pageNumb: number) => {
     const skip = (pageNumb > 0 ? pageNumb - 1 : 0);
     Albums.fecthAll({pageSize: PAGE_SIZE, skip})
       .then( (photoCol : PhotoCollection[]) => {
         setAlbums(photoCol);
       });
-  }
-
-  const nextPage = () => {
-    const newPage = page + 1;
-    setPage(newPage);
-    fetchAlbums(newPage);
-  }
-
-  const prevPage = () => {
-    const newPage = (page < 1 ? 0 : page - 1);
-    setPage(newPage);
-    fetchAlbums(newPage);
+      setPage(pageNumb);
   }
 
   useEffect(() => {
     const firstPage = () => {
-      fetchAlbums();
+      fetchAlbums(FIRST_PAGE);
     }
     firstPage();
   }, []);
 
   return (
     <div>
-      <Pagination>
-        <Pagination.Prev onClick={prevPage} disabled={(page < 2)} />
-        <Pagination.Next onClick={nextPage} />
-      </Pagination>
+      <AlbumViewNav currentPage={page} onPage={fetchAlbums} />
       <AblumViewBody albums={albums}/>
     </div>
+  );
+}
+
+const AlbumViewNav = (props: { currentPage: number, onPage: (pageNumber: number) => void }) => {
+  const { currentPage, onPage } = props;
+
+  const nextPage = () => {
+    onPage(currentPage + 1);
+  }
+
+  const prevPage = () => {
+    onPage(currentPage - 1);
+  }
+
+  return (
+    <Pagination>
+      <Pagination.Prev onClick={prevPage} disabled={(currentPage < 2)} />
+      <Pagination.Next onClick={nextPage} />
+    </Pagination>
   );
 }
 
