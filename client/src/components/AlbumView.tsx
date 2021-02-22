@@ -11,7 +11,6 @@ const FIRST_PAGE = 1;
 export const AlbumView = () => {
 
   const [albums, setAlbums] = useState([] as PhotoCollection[]);
-  const [page, setPage] = useState(FIRST_PAGE);
 
   const fetchAlbums = (pageNumb: number) => {
     const skip = (pageNumb > 0 ? pageNumb - 1 : 0);
@@ -19,7 +18,6 @@ export const AlbumView = () => {
       .then( (photoCol : PhotoCollection[]) => {
         setAlbums(photoCol);
       });
-      setPage(pageNumb);
   }
 
   useEffect(() => {
@@ -28,21 +26,27 @@ export const AlbumView = () => {
 
   return (
     <div>
-      <AlbumViewNav currentPage={page} onPage={fetchAlbums} />
+      <AlbumViewNav onPage={fetchAlbums} />
       <AblumViewBody albums={albums}/>
     </div>
   );
 }
 
-const AlbumViewNav = (props: { currentPage: number, onPage: (pageNumber: number) => void }) => {
-  const { currentPage, onPage } = props;
+const AlbumViewNav = (props: { onPage: (pageNumber: number) => void }) => {
+  const { onPage } = props;
+  const [currentPage, setCurrentPage] = useState(FIRST_PAGE);
+
+  const goToPage = (pageNumb: number) => {
+    setCurrentPage(pageNumb);
+    onPage(pageNumb);
+  }
 
   const nextPage = () => {
-    onPage(currentPage + 1);
+    goToPage(currentPage + 1);
   }
 
   const prevPage = () => {
-    onPage(currentPage - 1);
+    goToPage(currentPage - 1);
   }
 
   return (
