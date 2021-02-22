@@ -23,10 +23,7 @@ export const AlbumView = () => {
   }
 
   useEffect(() => {
-    const firstPage = () => {
-      fetchAlbums(FIRST_PAGE);
-    }
-    firstPage();
+    fetchAlbums(FIRST_PAGE);
   }, []);
 
   return (
