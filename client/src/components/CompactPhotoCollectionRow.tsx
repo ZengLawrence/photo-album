@@ -10,7 +10,7 @@ export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollecti
       <div className="d-flex overflow-auto">
         {photos.map(p => (
           // Without the `key`, React will fire a key warning
-          <PhotoImage key={p.name} albumName={title} photo={p} maxSize={100} />
+          <PhotoImage key={p.name} albumName={title} photo={p} maxSize={100} className="mr-1"/>
         ))}
       </div>      
     </div>
