@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import { PhotoCollection } from '../models/Photo';
 import * as Albums from '../api/Albums';
-import { Pagination, Row } from 'react-bootstrap';
-import { PhotoCollectionCarousel } from './PhotoCollectionCarousel';
+import { Pagination } from 'react-bootstrap';
+import { CompactPhotoCollectionRow } from './CompactPhotoCollectionRow';
 
 const PAGE_SIZE = 3;
 const FIRST_PAGE = 1;
@@ -60,13 +60,13 @@ const AlbumViewNav = (props: { onPage: (pageNumber: number) => void }) => {
 const AblumViewBody = (props: {albums: PhotoCollection[]})=> {
   const { albums } = props;
   return (
-    <Row>
+    <div>
       {
         albums.map(albm => (
           // Without the `key`, React will fire a key warning
-          <PhotoCollectionCarousel key={albm.title} photoCollection={albm} />
+          <CompactPhotoCollectionRow key={albm.title} photoCollection={albm} />
         ))
       }
-    </Row>
+    </div>
   );
 }
