@@ -1,9 +1,9 @@
 /** Photo thumbnails by album */
-import React, { useEffect, useState } from 'react';
-import { PhotoCollectionRow } from './PhotoCollectionRow';
+import { useEffect, useState } from 'react';
 import { PhotoCollection } from '../models/Photo';
 import * as Albums from '../api/Albums';
-import { Pagination } from 'react-bootstrap';
+import { Pagination, Row } from 'react-bootstrap';
+import { PhotoCollectionCarousel } from './PhotoCollectionCarousel';
 
 const PAGE_SIZE = 3;
 const FIRST_PAGE = 1;
@@ -60,13 +60,13 @@ const AlbumViewNav = (props: { onPage: (pageNumber: number) => void }) => {
 const AblumViewBody = (props: {albums: PhotoCollection[]})=> {
   const { albums } = props;
   return (
-    <div>
+    <Row>
       {
         albums.map(albm => (
           // Without the `key`, React will fire a key warning
-          <PhotoCollectionRow key={albm.title} photoCollection={albm} />
+          <PhotoCollectionCarousel key={albm.title} photoCollection={albm} />
         ))
       }
-    </div>
+    </Row>
   );
 }
