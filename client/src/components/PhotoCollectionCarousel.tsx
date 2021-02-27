@@ -19,7 +19,7 @@ const PhotoCarousel = (props: {albumName: string, photos: Photo[]}) => {
         {photos.map(p => (
           // Without the `key`, React will fire a key warning
           <Carousel.Item  key={p.name}>
-            <PhotoImage albumName={albumName} photo={p} />
+            <PhotoImage albumName={albumName} photo={p} maxSize={100} />
           </Carousel.Item>
         ))}
     </Carousel>

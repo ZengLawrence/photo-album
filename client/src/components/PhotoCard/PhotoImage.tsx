@@ -1,16 +1,17 @@
 import Image from 'react-bootstrap/Image';
 import { Photo } from "../../models/Photo";
 
-const SIZE = 300;
+const DEFAULT_SIZE = 300;
 
-export const PhotoImage = (props: {albumName: string, photo: Photo}) => {
+export const PhotoImage = (props: {albumName: string, photo: Photo, maxSize?: number}) => {
   const {albumName, photo} = props;
-  const src = thumbnailLink(albumName, photo.name);
+  const maxSize = (props.maxSize ? props.maxSize : DEFAULT_SIZE);
+  const src = thumbnailLink(albumName, photo.name, maxSize);
   return (
     <Image src={src} alt={photo.name} />
   );
 }
 
-function thumbnailLink(albumName: string, photoName: string) {
-  return "/api/media/" + albumName + "/" + photoName + "?maxSize=" + SIZE;
+function thumbnailLink(albumName: string, photoName: string, maxSize: number) {
+  return "/api/media/" + albumName + "/" + photoName + "?maxSize=" + maxSize;
 }
