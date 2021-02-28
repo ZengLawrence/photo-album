@@ -24,3 +24,10 @@ export async function fecthAll(options: {pageSize: number, skip: number}): Promi
     }
   );
 }
+
+export async function fetch(albumName: string): Promise<Photo[]> {
+  const urlPath = urljoin('/api/albums', albumName);
+  const res = await axios.get(urlPath);
+  const data = res.data;
+  return data.photos;
+}

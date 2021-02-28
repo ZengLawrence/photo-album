@@ -31,6 +31,17 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.get('/:albumName', function(req, res, next) {
+  const albumName = req.params['albumName'];
+  album.fetchPhotoMetadata(albumName)
+    .then(photos => {
+      res.json({ 
+        photos
+        });
+    
+    });
+});
+
 router.put('/:albumName/photos/:photoName/description', function(req, res, next) {
   const albumName = req.params['albumName'];
   const photoName = req.params['photoName'];
