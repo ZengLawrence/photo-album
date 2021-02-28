@@ -23,7 +23,7 @@ function findFocusedPhoto(photos: Photo[], focusOnPhotoName?: string) {
   }
 }
 
-export const NavigablePhotoView = (props: { title: string, photos: Photo[], focusOnPhotoName?: string}) => {
+export const NavigablePhotoView = (props: { title: string, photos: Photo[], focusOnPhotoName?: string, onPhotoUpdated: (photo: Photo)=>void}) => {
   const { title, photos } = props;
   const [ focusOnPhotoName, setFocusOnPhotoName ] = useState(props.focusOnPhotoName);
   const [ focusedPhoto, setFocusedPhoto ] = useState(findFocusedPhoto(photos, focusOnPhotoName));
@@ -36,7 +36,7 @@ export const NavigablePhotoView = (props: { title: string, photos: Photo[], focu
     <div>
       <h1 className="text-center">{title}</h1>
       {focusedPhoto && 
-        <PhotoCard albumName={title} photo={focusedPhoto} maxSize={300} />
+        <PhotoCard albumName={title} photo={focusedPhoto} maxSize={300} onPhotoUpdated={props.onPhotoUpdated}/>
         }
       <PhotoNavBar albumName={title} photos={photos} onSelectPhoto={setFocusOnPhotoName} />
     </div>

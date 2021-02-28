@@ -3,11 +3,12 @@ import { Description } from './Description';
 import { PhotoImage } from './PhotoImage';
 import * as photoApi from '../../api/Photos';
 
-export const PhotoCard = (props: {albumName: string, photo: Photo, maxSize?: number}) => {
+export const PhotoCard = (props: {albumName: string, photo: Photo, maxSize?: number, onPhotoUpdated: (photo: Photo)=>void }) => {
   const {albumName, photo, maxSize} = props;
 
   const saveDescription = (description?: string) => {
     photoApi.saveDescription(albumName, photo, description);
+    props.onPhotoUpdated && props.onPhotoUpdated({...photo, description});
   }
 
   return (
