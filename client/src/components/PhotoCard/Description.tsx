@@ -48,10 +48,8 @@ const DescriptionEdit = (props: {
 
 export const Description = (props: { description?: string, handleSave: (description?: string) => void }) => {
   const [edit, setEdit] = useState(false);
-  const [description, setDecription] = useState(props.description);
 
   const save = (newDescription?: string) => {
-    setDecription(newDescription);
     setEdit(false);
     props.handleSave(newDescription);
   }
@@ -62,9 +60,9 @@ export const Description = (props: { description?: string, handleSave: (descript
         <FontAwesomeIcon icon={faEdit} onClick={() => setEdit(true)} />
       </div>
       {edit ?
-        <DescriptionEdit description={description} handleSave={save} handleCancel={() => setEdit(false)} />
+        <DescriptionEdit description={props.description} handleSave={save} handleCancel={() => setEdit(false)} />
         :
-        <DescriptionBox description={description} />
+        <DescriptionBox description={props.description} />
       }
 
     </div>
