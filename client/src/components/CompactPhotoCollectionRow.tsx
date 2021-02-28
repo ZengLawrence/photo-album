@@ -1,9 +1,10 @@
 /** A row of photo thumbnails with title */
+import urljoin from 'url-join';
 import {Photo, PhotoCollection} from '../models/Photo';
 import { PhotoImage } from './PhotoCard/PhotoImage';
 
 function href(albumName: string, photo: Photo) {
-  return "/albums/" + albumName + "/photos/" + photo.name;
+  return urljoin("/albums/", albumName, "?focusOn=" + photo.name);
 }
 
 export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollection}) => {
