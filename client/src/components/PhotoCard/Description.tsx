@@ -1,7 +1,7 @@
 import Form from "react-bootstrap/Form";
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 
 const showLineBreak: CSSProperties = {
@@ -47,6 +47,7 @@ const DescriptionEdit = (props: {
 }
 
 export const Description = (props: { description?: string, handleSave: (description?: string) => void }) => {
+  const {description} = props;
   const [edit, setEdit] = useState(false);
 
   const save = (newDescription?: string) => {
@@ -54,15 +55,20 @@ export const Description = (props: { description?: string, handleSave: (descript
     props.handleSave(newDescription);
   }
 
+  useEffect(()=> {
+    // description could change if click another photo on nagvigation bar
+    setEdit(false);
+  }, [description]);
+
   return (
     <div>
       <div className="text-sm text-secondary">
         <FontAwesomeIcon icon={faEdit} onClick={() => setEdit(true)} />
       </div>
       {edit ?
-        <DescriptionEdit description={props.description} handleSave={save} handleCancel={() => setEdit(false)} />
+        <DescriptionEdit description={description} handleSave={save} handleCancel={() => setEdit(false)} />
         :
-        <DescriptionBox description={props.description} />
+        <DescriptionBox description={description} />
       }
 
     </div>
