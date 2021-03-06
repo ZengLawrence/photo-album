@@ -1,4 +1,5 @@
 /** A row of photo thumbnails with title */
+import { Link } from 'react-router-dom';
 import urljoin from 'url-join';
 import {Photo, PhotoCollection} from '../models/Photo';
 import { PhotoImage } from './PhotoCard/PhotoImage';
@@ -15,9 +16,9 @@ export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollecti
       <div className="d-flex overflow-auto">
         {photos.map(p => (
           // Without the `key`, React will fire a key warning
-          <a key={p.name} href={href(title, p)} className="mr-1">
+          <Link key={p.name} to={href(title, p)} className="mr-1">
             <PhotoImage albumName={title} photo={p} maxSize={100} />
-          </a>
+          </Link>
         ))}
       </div>      
     </div>
