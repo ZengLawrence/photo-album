@@ -43,7 +43,7 @@ export const NavigablePhotoView = (props: { title: string, photos: Photo[], focu
       </Row>
       {focusedPhoto && 
             <Row className="justify-content-center">
-              <PhotoCard albumName={title} photo={focusedPhoto} maxSize={300} onPhotoUpdated={props.onPhotoUpdated}/>
+              <PhotoCard albumName={title} photo={focusedPhoto} maxSize={600} onPhotoUpdated={props.onPhotoUpdated}/>
             </Row>      
         }
     </div>
