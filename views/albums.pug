@@ -4,7 +4,7 @@ block content
   h1= title
   each album in albums
     h2 
-      - var thumbnailLink = "/thumbnails/" + album.name + "/_cover"
+      - var thumbnailLink = "/html/thumbnails/" + album.name + "/_cover"
       img(src=thumbnailLink, width=thumbnailSize.width, height=thumbnailSize.height)
-      - var albumLink = '/albums/' + album.name + "/"
+      - var albumLink = '/html/albums/' + album.name + "/"
       a(href=albumLink) #{album.name}

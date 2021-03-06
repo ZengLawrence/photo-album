@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var album = require('../album');
-const image = require('../image');
+var album = require('../../album');
+const image = require('../../image');
 
 /* GET one photo */
 router.get('/:albumName/:photoName', function(req, res, next) {

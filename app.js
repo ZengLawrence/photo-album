@@ -13,12 +13,6 @@ setTimeout(() => {
     })
   }, 1000);
 
-var indexRouter = require('./routes/index');
-var albumRouter = require('./routes/album');
-var thumbnailsRouter = require('./routes/thumbnails');
-var yearsRouter = require('./routes/years');
-var apiRouter = require('./routes/api');
-
 var app = express();
 
 // view engine setup
@@ -31,11 +25,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/albums', albumRouter);
-app.use('/thumbnails', thumbnailsRouter);
-app.use('/years', yearsRouter);
-app.use('/api', apiRouter);
+app.use('/html', require('./routes/html'));
+app.use('/api', require('./routes/api'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

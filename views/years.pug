@@ -11,7 +11,7 @@ block content
     h1= val.year
     p 
       each photo in val.photos
-        - var thumbnailLink = "/thumbnails/" + photo.albumName + "/" + photo.photoName
-        - var photolLink = "/albums/" + photo.albumName + "/" + photo.photoName
+        - var thumbnailLink = "/html/thumbnails/" + photo.albumName + "/" + photo.photoName
+        - var photolLink = "/html/albums/" + photo.albumName + "/" + photo.photoName
         a(href=photolLink)
           img(src=thumbnailLink, width=50, height=50)
