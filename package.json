@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "PORT=4000 node ./bin/www",
-    "build": "./build.sh"
+    "clean": "rm -r ./dist",
+    "build": "./build.sh",
+    "dist-run": "cd ./dist; ./photo-album.sh"
   },
   "dependencies": {
     "async": "^0.2.10",
