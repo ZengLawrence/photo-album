@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Row } from "react-bootstrap";
 import { Photo } from "../models/Photo";
 import { PhotoCard } from "./PhotoCard";
 import { PhotoImage } from "./PhotoCard/PhotoImage";
@@ -34,11 +35,17 @@ export const NavigablePhotoView = (props: { title: string, photos: Photo[], focu
 
   return (
     <div>
-      <h1 className="text-center">{title}</h1>
+      <Row className="justify-content-center">
+        <h1>{title}</h1>        
+      </Row>
       {focusedPhoto && 
-        <PhotoCard albumName={title} photo={focusedPhoto} maxSize={300} onPhotoUpdated={props.onPhotoUpdated}/>
+            <Row className="justify-content-center">
+              <PhotoCard albumName={title} photo={focusedPhoto} maxSize={300} onPhotoUpdated={props.onPhotoUpdated}/>
+            </Row>      
         }
-      <PhotoNavBar albumName={title} photos={photos} onSelectPhoto={setFocusOnPhotoName} />
+      <Row className="justify-content-center">
+        <PhotoNavBar albumName={title} photos={photos} onSelectPhoto={setFocusOnPhotoName} />
+      </Row>
     </div>
   )
 }
