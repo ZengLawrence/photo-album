@@ -2,19 +2,7 @@ import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 import { Photo } from "../models/Photo";
 import { PhotoCard } from "./PhotoCard";
-import { PhotoImage } from "./PhotoCard/PhotoImage";
-
-function PhotoNavBar(props: { albumName: string, photos: Photo[], onSelectPhoto: (photoName: string) => void }) {
-  const { albumName, photos, onSelectPhoto } = props;
-  return (
-    <div className="d-flex overflow-auto">
-      {photos.map(p => (
-        // Without the `key`, React will fire a key warning
-        <PhotoImage key={p.name} albumName={albumName} photo={p} maxSize={100} onClick={() => onSelectPhoto(p.name)} className="mr-1" />
-      ))}
-    </div>
-  );
-}
+import { PhotoNavBar } from "./PhotoNavBar";
 
 function findFocusedPhoto(photos: Photo[], focusOnPhotoName?: string) {
   if (photos.length > 1 && focusOnPhotoName) {
