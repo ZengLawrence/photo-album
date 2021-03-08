@@ -27,7 +27,7 @@ export const NavigablePhotoView = (props: { title: string, photos: Photo[], focu
         <h1>{title}</h1>        
       </Row>
       <Row className="justify-content-center">
-        <PhotoNavBar albumName={title} photos={photos} onSelectPhoto={setFocusOnPhotoName} />
+        <PhotoNavBar albumName={title} photos={photos} selectedPhotoName={focusOnPhotoName} onSelectPhoto={setFocusOnPhotoName} />
       </Row>
       {focusedPhoto && 
             <Row className="justify-content-center">
