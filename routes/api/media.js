@@ -21,7 +21,7 @@ router.get('/:albumName/:photoName', function (req, res) {
       .status(200)
       .append('Content-Type', 'image/jpeg')
       .append('Content-Length', data.length)
-      .append('Cache-Control', 'public, max-age=86400') // 1 day
+      .append('Cache-Control', 'private, max-age=86400') // 1 day
       .end(data);
   }).catch(err => {
       console.error(err);
