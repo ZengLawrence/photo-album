@@ -1,5 +1,6 @@
 import { HTMLProps } from 'react';
 import Image from 'react-bootstrap/Image';
+import urljoin from 'url-join';
 import { Photo } from "../../models/Photo";
 
 const DEFAULT_SIZE = 300;
@@ -14,5 +15,5 @@ export const PhotoImage = (props: {albumName: string, photo: Photo, maxSize?: nu
 }
 
 function thumbnailLink(albumName: string, photoName: string, maxSize: number) {
-  return "/api/media/" + albumName + "/" + photoName + "?maxSize=" + maxSize;
+  return urljoin("/api/media/", albumName, "/", photoName, "?maxSize=" + maxSize);
 }

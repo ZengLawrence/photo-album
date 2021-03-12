@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import urljoin from 'url-join';
 import {Photo, PhotoCollection} from '../models/Photo';
-import { PhotoImage } from './PhotoCard/PhotoImage';
+import { PhotoThumbnail } from './PhotoThumbnail';
 
 function href(albumName: string, photo: Photo) {
   return urljoin("/albums/", albumName, "?focusOn=" + photo.name);
@@ -17,7 +17,7 @@ export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollecti
         {photos.map(p => (
           // Without the `key`, React will fire a key warning
           <Link key={p.name} to={href(title, p)} className="mr-1">
-            <PhotoImage albumName={title} photo={p} maxSize={100} />
+            <PhotoThumbnail albumName={title} photo={p} maxSize={100} />
           </Link>
         ))}
       </div>      

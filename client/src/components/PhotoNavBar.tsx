@@ -1,8 +1,8 @@
 import { Photo } from "../models/Photo";
-import { PhotoImage } from "./PhotoCard/PhotoImage";
+import { PhotoThumbnail } from "./PhotoThumbnail";
 
 const NORMAL = "mr-1";
-const SELECTED = "border border-primary mr-1 p-1";
+const SELECTED = "border border-primary mr-1";
 
 export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
   const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
@@ -10,7 +10,7 @@ export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selecte
     <div className="d-flex overflow-auto">
       {photos.map(p => (
         // Without the `key`, React will fire a key warning
-        <PhotoImage 
+        <PhotoThumbnail 
           key={p.name} 
           albumName={albumName} 
           photo={p} 

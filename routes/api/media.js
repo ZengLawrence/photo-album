@@ -1,3 +1,4 @@
+const { mapSeries } = require('async');
 var express = require('express');
 var router = express.Router();
 var album = require('../../album');
@@ -10,24 +11,29 @@ router.get('/:albumName/:photoName', function (req, res) {
   const maxSize = getIntOrDefault(req.query.maxSize, 50);
 
   const filePath = album.getPhotoFileName(albumName, photoName);
-  image.resize(
-      {
-        filePath,
-        width: maxSize,
-        height: maxSize,
-        fit: image.FitEnum.inside
-      }).then(data => {
-    res
-      .status(200)
-      .append('Content-Type', 'image/jpeg')
-      .append('Content-Length', data.length)
-      .append('Cache-Control', 'private, max-age=86400') // 1 day
-      .end(data);
-  }).catch(err => {
+  image.resize(withOption(filePath, maxSize, req.query.square))
+    .then(data => {
+      res
+        .status(200)
+        .append('Content-Type', 'image/jpeg')
+        .append('Content-Length', data.length)
+        //.append('Cache-Control', 'private, max-age=86400') // 1 day
+        .end(data);
+    }).catch(err => {
       console.error(err);
       res.status(404).end();
     });
 });
+
+function withOption(filePath, maxSize, square) {
+  const fit = square != null ? image.FitEnum.cover : image.FitEnum.inside;
+  return {
+    filePath,
+    width: maxSize,
+    height: maxSize,
+    fit
+  };
+}
 
 function getIntOrDefault(val, defaultVal) {
   return val ? parseInt(val) : defaultVal;
