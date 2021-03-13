@@ -7,16 +7,12 @@ const NORMAL = "";
 const SELECTED = "PA-Border border-primary";
 const THUMBNAIL_SIZE = 100;
 
-export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
-  const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
+function selectedPhotoLeft(photos: Photo[], selectedPhotoName?: string) {
+  const i = photos.findIndex(p => p.name === selectedPhotoName);
+  return THUMBNAIL_SIZE * i;
+}
 
-  const scrollDivRef: RefObject<HTMLDivElement> = useRef(null);
-
-  const selectPhotoLeft = () => {
-    const i = photos.findIndex(p => p.name === selectedPhotoName);
-    return THUMBNAIL_SIZE * i;
-  }
-
+function useSetInitialScrollPosition(scrollDivRef: RefObject<HTMLDivElement> | null, selectedPhotoLeft: ()=> number) {
   useEffect(()=> {
     if (scrollDivRef && scrollDivRef.current) {
       const {
@@ -25,13 +21,21 @@ export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selecte
       } = scrollDivRef.current;
 
       if (scrollLeft === 0) {
-        const newScrollLeft = selectPhotoLeft();
+        const newScrollLeft = selectedPhotoLeft();
         if (newScrollLeft > scrollLeft + clientWidth) {
           scrollDivRef.current.scrollLeft = newScrollLeft - (THUMBNAIL_SIZE * 5);
         }
       }
     }
   });
+
+}
+
+export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
+  const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
+
+  const scrollDivRef: RefObject<HTMLDivElement> = useRef(null);
+  useSetInitialScrollPosition(scrollDivRef, ()=>selectedPhotoLeft(photos, selectedPhotoName));
 
   return (
     <div ref={scrollDivRef} className="d-flex overflow-auto">
