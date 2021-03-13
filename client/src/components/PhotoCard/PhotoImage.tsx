@@ -10,7 +10,12 @@ export const PhotoImage = (props: {albumName: string, photo: Photo, maxSize?: nu
   const maxSize = (props.maxSize ? props.maxSize : DEFAULT_SIZE);
   const src = thumbnailLink(albumName, photo.name, maxSize);
   return (
-    <Image src={src} alt={photo.name} className={className} onClick={props.onClick} />
+    <Image 
+      src={src} 
+      alt={photo.description ? photo.description : photo.name} 
+      className={className} 
+      style={{objectFit: "contain"}}
+      onClick={props.onClick} />
   );
 }
 

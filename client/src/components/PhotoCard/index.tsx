@@ -12,8 +12,9 @@ export const PhotoCard = (props: {albumName: string, photo: Photo, maxSize?: num
   }
 
   return (
-    <div className="border rounded border-light my-2 mx-1 p-1">
-      <PhotoImage albumName={albumName} photo={photo} maxSize={maxSize}/>
+    <div className="d-flex flex-row justify-content-center border rounded border-light w-100 my-2 mx-1 p-1" style={{height: maxSize}} >
+      <div style={{width: "200px"}}/>
+      <PhotoImage albumName={albumName} photo={photo} maxSize={maxSize} className="border rounded border-light" />
       <Description description={photo.description} handleSave={saveDescription}/>
     </div>
   )

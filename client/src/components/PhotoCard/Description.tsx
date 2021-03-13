@@ -61,7 +61,7 @@ export const Description = (props: { description?: string, handleSave: (descript
   }, [description]);
 
   return (
-    <div>
+    <div style={{width:"200px"}} >
       <div className="text-sm text-secondary">
         <FontAwesomeIcon icon={faEdit} onClick={() => setEdit(true)} />
       </div>
