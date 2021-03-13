@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-.PA-Thumbnail {
-  object-fit: scale-down;
-  margin: 1px;
+.PA-Border {
+  border-style:solid;
+  border-width: 3px;
 }

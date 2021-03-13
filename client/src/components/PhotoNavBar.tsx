@@ -3,7 +3,7 @@ import { Photo } from "../models/Photo";
 import { PhotoThumbnail } from "./PhotoThumbnail";
 
 const NORMAL = "";
-const SELECTED = "border border-primary";
+const SELECTED = "PA-Border border-primary";
 
 export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
   const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
