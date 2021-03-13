@@ -5,7 +5,7 @@ import * as Albums from '../api/Albums';
 import { Pagination } from 'react-bootstrap';
 import { CompactPhotoCollectionRow } from './CompactPhotoCollectionRow';
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 10;
 const FIRST_PAGE = 1;
 
 export const AlbumView = () => {

@@ -5,10 +5,17 @@ import { Photo } from "../models/Photo";
 
 const DEFAULT_SIZE = 100;
 
-export const PhotoThumbnail = (props: {albumName: string, photo: Photo, maxSize?: number} & HTMLProps<HTMLDivElement>) => {
-  const {albumName, photo, className} = props;
+interface PhotoThumbnailProps {
+  albumName: string, 
+  photo: Photo, 
+  maxSize: number,
+  visible?: boolean
+}
+
+export const PhotoThumbnail = (props: PhotoThumbnailProps & HTMLProps<HTMLDivElement>) => {
+  const {albumName, photo, visible, className} = props;
   const maxSize = (props.maxSize ? props.maxSize : DEFAULT_SIZE);
-  const src = thumbnailLink(albumName, photo.name, maxSize);
+  const src = (visible === undefined || visible) ? thumbnailLink(albumName, photo.name, maxSize) : "";
   return (
     <Image src={src} alt={photo.name} width={maxSize} height={maxSize} className={className} onClick={props.onClick} />
   );
