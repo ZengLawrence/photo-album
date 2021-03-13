@@ -19,16 +19,19 @@ export const Description = (props: { description?: string, handleSave: (descript
   }, [description]);
 
   return (
-    <div style={{width:"200px"}} >
-      <div className="text-sm text-secondary">
-        <FontAwesomeIcon icon={faEdit} onClick={() => setEdit(true)} />
-      </div>
+    <div  className="d-flex flex-column justify-content-end" style={{width:"200px"}} >
       {edit ?
         <DescriptionEdit description={description} handleSave={save} handleCancel={() => setEdit(false)} />
         :
-        <DescriptionBox description={description} />
+        (
+          <div>
+            <DescriptionBox description={description} />
+            <div className="text-sm text-secondary">
+              <FontAwesomeIcon icon={faEdit} onClick={() => setEdit(true)} />
+            </div>
+          </div>
+        )
       }
-
     </div>
   );
 }

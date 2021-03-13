@@ -16,7 +16,12 @@ export const DescriptionEdit = (props: {
 
   return (
     <Form>
-      <Form.Control as="textarea" defaultValue={description} rows={5} onChange={(e) => { setNewDecription(e.target.value); }} />
+      <Form.Control 
+        as="textarea" 
+        defaultValue={description} 
+        rows={10} 
+        onChange={(e) => { setNewDecription(e.target.value); }} 
+        />
       <Button variant="primary" type="submit" size="sm" onClick={() => save()}>
         Save
     </Button>
