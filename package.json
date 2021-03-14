@@ -3,10 +3,14 @@
   "version": "0.0.3",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "PORT=4000 node ./bin/www",
+    "clean": "rm -r ./dist",
+    "build": "./build.sh",
+    "dist-run": "cd ./dist; ./photo-album.sh"
   },
   "dependencies": {
     "async": "^0.2.10",
+    "axios": "^0.21.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "exif": "^0.6.0",

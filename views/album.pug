@@ -8,6 +8,6 @@ block content
   - var thumbnailHeight = 100, thumbnailWidth = 100
   each photo in photos
     - var photoLink = "./" + photo.name
-    - var thumbnailLink = "/thumbnails/" + albumName + "/" + photo.name + "?height=" + thumbnailHeight + "&width=" + thumbnailWidth
+    - var thumbnailLink = "/html/thumbnails/" + albumName + "/" + photo.name + "?height=" + thumbnailHeight + "&width=" + thumbnailWidth
     a(href=photoLink)
       img(src=thumbnailLink, alt=photo.name, height=thumbnailHeight, width=thumbnailWidth)

@@ -1,0 +1,1 @@
+NODE_ENV=production PORT=9000 node ./bin/www

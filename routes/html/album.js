@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var album = require('../album');
+var album = require('../../album');
 
 const THUMBNAIL_SIZE = {
   width: 50, height: 50
