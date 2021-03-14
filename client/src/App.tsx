@@ -3,7 +3,7 @@ import {
   Switch,
   Route} from "react-router-dom";
 import Container from 'react-bootstrap/Container';
-import {AlbumView} from './components/AlbumView';
+import {AlbumView} from './containers/AlbumView';
 import { AlbumDetailView } from './containers/AlbumDetailView';
 
 function App() {

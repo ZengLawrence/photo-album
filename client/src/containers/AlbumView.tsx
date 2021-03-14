@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { PhotoCollection } from '../models/Photo';
 import * as Albums from '../api/Albums';
 import { Pagination } from 'react-bootstrap';
-import { CompactPhotoCollectionRow } from './CompactPhotoCollectionRow';
+import { CompactPhotoCollectionRow } from '../components/CompactPhotoCollectionRow';
 
 const PAGE_SIZE = 10;
 const FIRST_PAGE = 1;
