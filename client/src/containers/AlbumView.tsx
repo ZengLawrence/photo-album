@@ -4,55 +4,53 @@ import { PhotoCollection } from '../models/Photo';
 import * as Albums from '../api/Albums';
 import { Pagination } from 'react-bootstrap';
 import { CompactPhotoCollectionRow } from '../components/CompactPhotoCollectionRow';
+import { useLocation } from 'react-router-dom';
 
 const PAGE_SIZE = 10;
-const FIRST_PAGE = 1;
+const FIRST_PAGE = "1";
+
+// A custom hook that builds on useLocation to parse
+// the query string for you.
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export const AlbumView = () => {
 
   const [albums, setAlbums] = useState([] as PhotoCollection[]);
 
+  const query = useQuery();
+  const pageNumber = parseInt(query.get("page") || FIRST_PAGE);
+
   const fetchAlbums = (pageNumb: number) => {
+
     const skip = (pageNumb > 0 ? pageNumb - 1 : 0);
     Albums.fecthAll({pageSize: PAGE_SIZE, skip})
       .then( (photoCol : PhotoCollection[]) => {
         setAlbums(photoCol);
-      });
+        });
   }
+  
 
   useEffect(() => {
-    fetchAlbums(FIRST_PAGE);
-  }, []);
+    fetchAlbums(pageNumber);    
+  }, [pageNumber]);
 
   return (
     <div>
-      <AlbumViewNav onPage={fetchAlbums} />
+      <AlbumViewNav currentPage={pageNumber} />
       <AblumViewBody albums={albums}/>
     </div>
   );
 }
 
-const AlbumViewNav = (props: { onPage: (pageNumber: number) => void }) => {
-  const { onPage } = props;
-  const [currentPage, setCurrentPage] = useState(FIRST_PAGE);
-
-  const goToPage = (pageNumb: number) => {
-    setCurrentPage(pageNumb);
-    onPage(pageNumb);
-  }
-
-  const nextPage = () => {
-    goToPage(currentPage + 1);
-  }
-
-  const prevPage = () => {
-    goToPage(currentPage - 1);
-  }
+const AlbumViewNav = (props: { currentPage: number }) => {
+  const { currentPage } = props;
 
   return (
     <Pagination>
-      <Pagination.Prev onClick={prevPage} disabled={(currentPage < 2)} />
-      <Pagination.Next onClick={nextPage} />
+      <Pagination.Prev href={"/albums?page=" + (currentPage - 1)} disabled={(currentPage < 2)} />
+      <Pagination.Next  href={"/albums?page=" + (currentPage + 1)}/>
     </Pagination>
   );
 }
