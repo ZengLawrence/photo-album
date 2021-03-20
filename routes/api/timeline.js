@@ -25,9 +25,9 @@ function groupByYear(map, { createTimestamp, albumName, photoName }) {
   const year = createTimestamp.substring(0, 4);
   var photosByYear = map[year];
   if (photosByYear) {
-    photosByYear.push({albumName, photoName, createTimestamp});
+    photosByYear.push({albumName, name: photoName, createTimestamp});
   } else {
-    photosByYear = [{albumName, photoName, createTimestamp}];
+    photosByYear = [{albumName, name: photoName, createTimestamp}];
   }
   map[year] = photosByYear;
   return map;
