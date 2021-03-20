@@ -9,12 +9,14 @@ function href(albumName: string, photo: Photo) {
   return urljoin("/albums/", albumName, "?focusOn=" + photo.name);
 }
 
-export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollection}) => {
+export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollection, overflow?: boolean}) => {
+  const {overflow} = props;
+  const className = overflow ? "d-flex overflow-auto" : "d-flex flex-wrap";
   const {title, photos} = props.photoCollection;
   return (
     <div>
       <h1>{title}</h1>
-      <div className="d-flex overflow-auto">
+      <div className={className}>
         {photos.map(p => (
           // Without the `key`, React will fire a key warning
           <Link key={p.name} to={href(title, p)} >
