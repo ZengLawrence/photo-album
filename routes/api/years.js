@@ -21,13 +21,13 @@ function yearsView(metadatas) {
   return photosByYear;
 }
 
-function groupByYear(map, { createTimestamp, albumName, photoName, description }) {
+function groupByYear(map, { createTimestamp, albumName, photoName }) {
   const year = createTimestamp.substring(0, 4);
   var photosByYear = map[year];
   if (photosByYear) {
-    photosByYear.push({albumName, name: photoName, description, createTimestamp});
+    photosByYear.push({albumName, name: photoName});
   } else {
-    photosByYear = [{albumName, name: photoName, description, createTimestamp}];
+    photosByYear = [{albumName, name: photoName}];
   }
   map[year] = photosByYear;
   return map;
