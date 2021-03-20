@@ -6,7 +6,7 @@ import {
 import Container from 'react-bootstrap/Container';
 import {AlbumView} from './containers/AlbumView';
 import { AlbumDetailView } from './containers/AlbumDetailView';
-import { TimelineView } from "./containers/TimelineView";
+import { YearsView } from "./containers/YearsView";
 
 function App() {
   return (
@@ -16,8 +16,8 @@ function App() {
             <Route exact path="/">
               <Redirect to="/albums" />
             </Route>
-            <Route exact path="/timeline">
-              <TimelineView />
+            <Route exact path="/years">
+              <YearsView />
             </Route>
             <Route exact path="/albums">
               <AlbumView />
