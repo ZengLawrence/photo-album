@@ -18,7 +18,7 @@ export const YearsView = () => {
       {
         photosByYear.map(pby => (
           // Without the `key`, React will fire a key warning
-          <CompactPhotoCollectionRow key={pby.title} photoCollection={pby} />
+          <CompactPhotoCollectionRow key={pby.title} photoCollection={pby} linkUrlRoot="/years" />
         ))
       }
     </div>
