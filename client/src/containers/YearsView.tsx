@@ -20,14 +20,14 @@ export const YearsView = () => {
   return (
     <div>
       {
-        photosByYear.map(pby => (
+        photosByYear.map(byYear => (
           // Without the `key`, React will fire a key warning
           <div>
-            <h1>{pby.year}</h1>
-            {pby.photosByDate.map(pbd => {
+            <h1>{byYear.year}</h1>
+            {byYear.photosByDate.map(byDate => {
               return (
                 // Without the `key`, React will fire a key warning
-                <CompactPhotoCollectionRow key={pbd.date} photoCollection={photoCollection(pbd)} linkUrlRoot="/years" />
+                <CompactPhotoCollectionRow key={byDate.date} photoCollection={photoCollection(byDate)} linkUrlRoot="/years" />
               )
             })}
           </div>
