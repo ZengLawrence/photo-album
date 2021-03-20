@@ -22,4 +22,20 @@ function albumPhotoMetadatas(skipPage = 0) {
   });
 }
 
+function allMetadatas() {
+  return new Promise((resolve, reject) => {
+    db.photos
+      .find({})
+      .sort({ createTimestamp: 1 })
+      .exec((err, docs) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(docs);
+        }
+      });
+  });
+}
+
 exports.albumPhotoMetadatas = albumPhotoMetadatas
+exports.allMetadatas = allMetadatas

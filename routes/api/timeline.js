@@ -4,7 +4,7 @@ var chrono = require('../../chrono');
 
 /* GET list all years */
 router.get('/', function (req, res, next) {
-  chrono.albumPhotoMetadatas().then(metadatas => {
+  chrono.allMetadatas().then(metadatas => {
     res.json({
       years: yearsView(metadatas),
     });
@@ -21,13 +21,13 @@ function yearsView(metadatas) {
   return photosByYear;
 }
 
-function groupByYear(map, { createTimestamp, albumName, photoName }) {
+function groupByYear(map, { createTimestamp, albumName, photoName, description }) {
   const year = createTimestamp.substring(0, 4);
   var photosByYear = map[year];
   if (photosByYear) {
-    photosByYear.push({albumName, name: photoName, createTimestamp});
+    photosByYear.push({albumName, name: photoName, description, createTimestamp});
   } else {
-    photosByYear = [{albumName, name: photoName, createTimestamp}];
+    photosByYear = [{albumName, name: photoName, description, createTimestamp}];
   }
   map[year] = photosByYear;
   return map;
