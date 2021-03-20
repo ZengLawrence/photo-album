@@ -1,5 +1,6 @@
 export interface Photo {
   name: string,
+  albumName?: string,
   description?: string,
 }
 
