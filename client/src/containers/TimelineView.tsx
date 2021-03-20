@@ -15,7 +15,7 @@ export const TimelineView = () => {
 
   return (
     <div>
-      <h1>Timeline</h1>
+      <h1 className="text-center">Timeline</h1>
       <div>
         {
           photosByYear.map(pby => (
