@@ -20,7 +20,7 @@ export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollecti
           <Link key={p.name} to={href(title, p)} >
             <VisibilitySensor>
               {({isVisible}) =>
-                  <PhotoThumbnail albumName={p.albumName ? p.albumName : title} photo={p} maxSize={100} visible={isVisible} />
+                  <PhotoThumbnail albumName={p.albumName ? p.albumName : title} photoName={p.name} maxSize={100} visible={isVisible} />
               }
             </VisibilitySensor>
           </Link>

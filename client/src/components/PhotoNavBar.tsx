@@ -45,7 +45,7 @@ export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selecte
           {({ isVisible }) =>
             <PhotoThumbnail
               albumName={albumName}
-              photo={p}
+              photoName={p.name}
               maxSize={THUMBNAIL_SIZE}
               onClick={() => onSelectPhoto(p.name)}
               className={p.name === selectedPhotoName ? SELECTED : NORMAL}
