@@ -8,3 +8,13 @@ export interface PhotoCollection {
   title: string,
   photos: Photo[]
 }
+
+export interface PhotosByDate {
+  date: string,
+  photos: Photo[],
+}
+
+export interface PhotosByYear {
+  year: string,
+  photosByDate: PhotosByDate[]
+}

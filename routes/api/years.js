@@ -13,21 +13,33 @@ router.get('/', function (req, res, next) {
 });
 
 function yearsView(metadatas) {
-  const yearPhotosMap = metadatas.reduce(groupByYear, {});
-  var photosByYear = [];
-  for (const [year, photos] of Object.entries(yearPhotosMap)) {
-    photosByYear.push({ year, photos });
-  }
-  return photosByYear;
+  const datePhotosMap = metadatas.reduce(groupByDate, {});
+  const yearPhotosMap = Object.entries(datePhotosMap)
+    .map(([date, photos]) => { return { date, photos }; })
+    .reduce(groupByYear, {});
+  return Object.entries(yearPhotosMap)
+  .map(([year, photosByDate]) => { return { year, photosByDate }; })
 }
 
-function groupByYear(map, { createTimestamp, albumName, photoName }) {
-  const year = createTimestamp.substring(0, 4);
+function groupByDate(map, { createTimestamp, albumName, photoName }) {
+  const date = createTimestamp.substring(0, 10);
+  var photosByDate = map[date];
+  if (photosByDate) {
+    photosByDate.push({albumName, name: photoName});
+  } else {
+    photosByDate = [{albumName, name: photoName}];
+  }
+  map[date] = photosByDate;
+  return map;
+}
+
+function groupByYear(map, { date, photos }) {
+  const year = date.substring(0, 4);
   var photosByYear = map[year];
   if (photosByYear) {
-    photosByYear.push({albumName, name: photoName});
+    photosByYear.push({ date, photos });
   } else {
-    photosByYear = [{albumName, name: photoName}];
+    photosByYear = [{ date, photos }];
   }
   map[year] = photosByYear;
   return map;

@@ -1,16 +1,8 @@
 import axios from "axios";
-import { Photo, PhotoCollection } from "../models/Photo";
+import { PhotosByYear } from "../models/Photo";
 
-export async function fecthAll(): Promise<PhotoCollection[]> {
+export async function fecthAll() : Promise<PhotosByYear[]> {
   const res = await axios.get('/api/years');
   const data = res.data;
-  const byYears = data.years;
-  return byYears.map(
-    (photosByYear: { year: string; photos: Photo[]; }) => {
-      return {
-        title: photosByYear.year,
-        photos: photosByYear.photos
-      };
-    }
-  );
+  return data.years;
 }
