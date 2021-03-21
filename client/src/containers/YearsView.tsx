@@ -23,7 +23,7 @@ export const YearsView = () => {
         photosByYear.map(byYear => (
           // Without the `key`, React will fire a key warning
           <div>
-            <h1>{byYear.year}</h1>
+            <h1 className="bg-primary text-white">{byYear.year}</h1>
             {byYear.photosByDate.map(byDate => {
               return (
                 // Without the `key`, React will fire a key warning
