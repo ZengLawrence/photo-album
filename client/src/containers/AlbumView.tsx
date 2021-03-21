@@ -62,7 +62,7 @@ const AblumViewBody = (props: {albums: PhotoCollection[]})=> {
       {
         albums.map(albm => (
           // Without the `key`, React will fire a key warning
-          <CompactPhotoCollectionRow key={albm.title} photoCollection={albm} />
+          <CompactPhotoCollectionRow key={albm.title} photoCollection={albm} overflow />
         ))
       }
     </div>

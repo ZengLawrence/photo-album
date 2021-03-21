@@ -6,11 +6,21 @@ const moment = require('moment');
 async function fileCreateTimestamp(filePath) {
   const stat = util.promisify(fs.stat);
   const data = await stat(filePath);
-  return moment(data.birthtime).format("YYYY:MM:DD HH:mm:ss");
+  return moment(data.birthtime).format("YYYY-MM-DD HH:mm:ss");
 }
 
 function createTimestamp(exif) {
   return (exif.CreateDate != null ? exif.CreateDate : exif.DateTimeOriginal);
+}
+
+// convert date part to ISO format i.e. replace ':' with '-'
+function isoDate(timestamp) {
+  return isValidTimestamp(timestamp) ? replaceColon(timestamp) : timestamp;
+}
+
+function replaceColon(timestamp) {
+  const [date, time] = timestamp.split(" ", 2);
+  return date.replaceAll(":", "-") + " " + time;
 }
 
 function isValidTimestamp(ts) {
@@ -23,7 +33,7 @@ async function metadata(filePath) {
   const exifMetadata = util.promisify(exif);
   try {
     const data = await exifMetadata(filePath);
-    const ts = createTimestamp(data.exif);
+    const ts = isoDate(createTimestamp(data.exif));
     if (!isValidTimestamp(ts)) {
       return fileCreateTimestamp(filePath);
     }
