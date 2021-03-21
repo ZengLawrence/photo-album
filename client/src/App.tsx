@@ -14,7 +14,7 @@ function App() {
       <Container>
         <Switch>
             <Route exact path="/">
-              <Redirect to="/albums" />
+              <Redirect to="/years" />
             </Route>
             <Route exact path="/years">
               <YearsView />
