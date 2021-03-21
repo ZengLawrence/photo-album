@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import * as YearsAPI from "../api/Years";
-import { CompactPhotoCollectionRow } from "../components/CompactPhotoCollectionRow";
+import { ThumbnailCollageCard } from "../components/ThumbnailCollageCard";
 import { PhotoCollection, PhotosByDate, PhotosByYear } from "../models/Photo";
 
 function photoSummary(photosByYear: PhotosByYear) : PhotoCollection {
@@ -35,7 +35,7 @@ export const YearsView = () => {
         photosByYear.map(pby => {
           return (
             // Without the `key`, React will fire a key warning
-            <CompactPhotoCollectionRow key={pby.year} photoCollection={photoSummary(pby)} />
+            <ThumbnailCollageCard key={pby.year} photoCollection={photoSummary(pby)} />
           )
         })
       }
