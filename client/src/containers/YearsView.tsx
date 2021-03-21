@@ -1,8 +1,20 @@
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import * as YearsAPI from "../api/Years";
-import { PhotosByYearView } from "../components/PhotosByYearView";
-import { PhotosByYear } from "../models/Photo";
+import { CompactPhotoCollectionRow } from "../components/CompactPhotoCollectionRow";
+import { PhotoCollection, PhotosByDate, PhotosByYear } from "../models/Photo";
+
+function photoSummary(photosByYear: PhotosByYear) : PhotoCollection {
+  return {
+    title: photosByYear.year,
+    photos: sample(photosByYear.photosByDate),
+  }
+}
+
+function sample(photosByDate: PhotosByDate[]) {
+  return _.sampleSize(_.flatten(photosByDate.flatMap(pbd => pbd.photos)), 30);
+}
 
 export const YearsView = () => {
   const [photosByYear, setPhotosByYear] = useState([] as PhotosByYear[]);
@@ -23,7 +35,7 @@ export const YearsView = () => {
         photosByYear.map(pby => {
           return (
             // Without the `key`, React will fire a key warning
-            <PhotosByYearView key={pby.year} photosByYear={pby} />
+            <CompactPhotoCollectionRow key={pby.year} photoCollection={photoSummary(pby)} />
           )
         })
       }
