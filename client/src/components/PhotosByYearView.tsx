@@ -27,7 +27,7 @@ export const PhotosByYearView = (props: { photosByYear: PhotosByYear; }) => {
   const { photosByYear } = props;
   return (
     <div>
-      <h1 className="bg-primary text-white mt-2">{photosByYear.year}</h1>
+      <h1 className="bg-secondary text-white mt-2">{photosByYear.year}</h1>
       <PhotosByDateView photosByDate={photosByYear.photosByDate} />
     </div>
   );
