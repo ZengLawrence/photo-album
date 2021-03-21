@@ -4,6 +4,7 @@ import urljoin from 'url-join';
 import VisibilitySensor from  'react-visibility-sensor';
 import {Photo, PhotoCollection} from '../models/Photo';
 import { PhotoThumbnail } from './PhotoThumbnail';
+import { Card } from 'react-bootstrap';
 
 function href(urlRoot: string, albumName: string, photo: Photo) {
   return urljoin(urlRoot, albumName, "?focusOn=" + photo.name);
@@ -16,9 +17,9 @@ export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollecti
   const linkUrlRoot = props.linkUrlRoot ? props.linkUrlRoot : "/albums/";
 
   return (
-    <div>
-      <h1>{title}</h1>
-      <div className={className}>
+    <Card>
+      <Card.Header><h2>{title}</h2></Card.Header>
+      <Card.Body className={className}>
         {photos.map(p => (
           // Without the `key`, React will fire a key warning
           <Link key={p.name} to={href(linkUrlRoot, title, p)} >
@@ -29,7 +30,7 @@ export const CompactPhotoCollectionRow = (props: {photoCollection: PhotoCollecti
             </VisibilitySensor>
           </Link>
         ))}
-      </div>      
-    </div>
+      </Card.Body>      
+    </Card>
   );
 }
