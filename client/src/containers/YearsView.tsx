@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import * as YearsAPI from "../api/Years";
 import { ThumbnailCollageCard } from "../components/ThumbnailCollageCard";
 import { PhotoCollection, PhotosByDate, PhotosByYear } from "../models/Photo";
@@ -35,7 +36,9 @@ export const YearsView = () => {
         photosByYear.map(pby => {
           return (
             // Without the `key`, React will fire a key warning
-            <ThumbnailCollageCard key={pby.year} photoCollection={photoSummary(pby)} />
+            <Link key={pby.year} to={{pathname:"/years/" + pby.year, state: pby}}>
+              <ThumbnailCollageCard photoCollection={photoSummary(pby)} />
+            </Link>
           )
         })
       }

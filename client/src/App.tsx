@@ -9,6 +9,8 @@ import {AlbumView} from './containers/AlbumView';
 import { AlbumDetailView } from './containers/AlbumDetailView';
 import { YearsView } from "./containers/YearsView";
 import { Nav, Navbar } from "react-bootstrap";
+import { DatesPage } from "./containers/DatesPage";
+import { PhotosByYear } from "./models/Photo";
 
 const AppNavBar = () => {
   const location = useLocation();
@@ -23,6 +25,13 @@ const AppNavBar = () => {
   );
 }
 
+const DatesPageRoute = () => {
+  const location = useLocation();
+  const photosByYear  = location.state as PhotosByYear;
+
+  return (<DatesPage photosByYear={photosByYear} />)
+}
+
 function App() {
   return (
     <Router>
@@ -35,6 +44,9 @@ function App() {
             </Route>
             <Route exact path="/years">
               <YearsView />
+            </Route>
+            <Route path="/years/:year">
+              <DatesPageRoute />
             </Route>
             <Route exact path="/albums">
               <AlbumView />
