@@ -17,7 +17,7 @@ function sample(photosByDate: PhotosByDate[]) {
   return _.sampleSize(_.flatten(photosByDate.flatMap(pbd => pbd.photos)), 30);
 }
 
-export const YearsView = () => {
+export const YearsPage = () => {
   const [photosByYear, setPhotosByYear] = useState([] as PhotosByYear[]);
   const [loading, setLoading] = useState(true);
 

@@ -10,7 +10,7 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-export const AlbumDetailView = () => {
+export const AlbumDetailPage = () => {
 
   const query = useQuery();
   const photoName = query.get("focusOn") || undefined;

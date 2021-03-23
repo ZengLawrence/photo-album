@@ -5,9 +5,9 @@ import {
   Redirect,
   useLocation} from "react-router-dom";
 import Container from 'react-bootstrap/Container';
-import {AlbumView} from './containers/AlbumView';
-import { AlbumDetailView } from './containers/AlbumDetailView';
-import { YearsView } from "./containers/YearsView";
+import {AlbumPage} from './containers/AlbumPage';
+import { AlbumDetailPage } from './containers/AlbumDetailPage';
+import { YearsPage } from "./containers/YearsPage";
 import { Nav, Navbar } from "react-bootstrap";
 import { DatesPage } from "./containers/DatesPage";
 import { PhotosByYear } from "./models/Photo";
@@ -43,15 +43,15 @@ function App() {
               <Redirect to="/years" />
             </Route>
             <Route exact path="/years">
-              <YearsView />
+              <YearsPage />
             </Route>
             <Route path="/years/:year">
               <DatesPageRoute />
             </Route>
             <Route exact path="/albums">
-              <AlbumView />
+              <AlbumPage />
             </Route>
-            <Route path="/albums/:albumName" children={<AlbumDetailView />} />
+            <Route path="/albums/:albumName" children={<AlbumDetailPage />} />
         </Switch>
       </Container>
     </Router>
