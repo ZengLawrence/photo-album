@@ -1,29 +1,45 @@
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import * as YearsAPI from "../api/Years";
 import { ThumbnailCollageCard } from "../components/ThumbnailCollageCard";
-import { PhotoCollection, PhotosByDate, PhotosByYear } from "../models/Photo";
+import { PhotoCollection, PhotosByDate } from "../models/Photo";
 
-function photoSummary(photosByYear: PhotosByYear) : PhotoCollection {
+function year(photosByDate: PhotosByDate) {
+  return photosByDate.date.substring(0, 4);
+}
+
+function photoCollection(photosByDate: PhotosByDate[], year: string) : PhotoCollection {
   return {
-    title: photosByYear.year,
-    photos: sample(photosByYear.photosByDate),
+    title: year,
+    photos: _.flatMap(photosByDate, 'photos'),
   }
 }
 
-function sample(photosByDate: PhotosByDate[]) {
-  return _.sampleSize(_.flatten(photosByDate.flatMap(pbd => pbd.photos)), 30);
+function yearView(photosByDate: PhotosByDate[]) : PhotoCollection[] {
+  const groupByYear = _.groupBy(photosByDate, year);
+  return _.map(groupByYear, photoCollection);
+}
+
+function yearSummary(photosByDate: PhotosByDate[]) : PhotoCollection[] {
+  return _.map(yearView(photosByDate), sample);
+}
+
+function sample(photoCollection: PhotoCollection) : PhotoCollection {
+  const { title, photos} = photoCollection;
+  return {
+    title,
+    photos: _.sampleSize(_.flatten(photos), 30)
+  };
 }
 
 export const YearsPage = () => {
-  const [photosByYear, setPhotosByYear] = useState([] as PhotosByYear[]);
+  const [photoCollections, setPhotoCollections] = useState([] as PhotoCollection[]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     YearsAPI.fecthAll().then(data => {
-      setPhotosByYear(data);
+      setPhotoCollections(yearSummary(data));
       setLoading(false);
     }
     );
@@ -33,12 +49,10 @@ export const YearsPage = () => {
     <div>
       {loading && <Spinner animation="border" variant="primary" />}
       {
-        photosByYear.map(pby => {
+        photoCollections.map(pc => {
           return (
             // Without the `key`, React will fire a key warning
-            <Link key={pby.year} to={{pathname:"/years/" + pby.year, state: pby}}>
-              <ThumbnailCollageCard photoCollection={photoSummary(pby)} />
-            </Link>
+            <ThumbnailCollageCard key={pc.title} photoCollection={pc} />
           )
         })
       }
