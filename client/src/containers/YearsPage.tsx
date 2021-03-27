@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import * as YearsAPI from "../api/Years";
-import { ThumbnailCollageCard } from "../components/ThumbnailCollageCard";
+import { PhotoCollectionView } from "../components/PhotoCollectionView";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
 
 function year(photosByDate: PhotosByDate) {
@@ -48,14 +48,7 @@ export const YearsPage = () => {
   return (
     <div>
       {loading && <Spinner animation="border" variant="primary" />}
-      {
-        photoCollections.map(pc => {
-          return (
-            // Without the `key`, React will fire a key warning
-            <ThumbnailCollageCard key={pc.title} photoCollection={pc} />
-          )
-        })
-      }
+      <PhotoCollectionView photoCollections={photoCollections} />
     </div>
   );
 }
