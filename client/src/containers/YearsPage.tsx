@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { useEffect, useReducer } from "react";
 import { Spinner } from "react-bootstrap";
+import ReactVisibilitySensor from "react-visibility-sensor";
 import * as YearsAPI from "../api/Years";
 import { PhotoCollectionView } from "../components/PhotoCollectionView";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
@@ -33,10 +34,17 @@ function sample(photoCollection: PhotoCollection): PhotoCollection {
   };
 }
 
-function reducer(state: YearsPageState, action: { type: string, photoCollections: PhotoCollection[] }) {
+function viewablePhotoCollections(state: YearsPageState) {
+  return _.slice(state.photoCollections, 0, state.viewableCount);
+}
+
+function reducer(state: YearsPageState, action: { type: string, photoCollections?: PhotoCollection[] }) {
   switch (action.type) {
     case 'loaded':
-      return { ...state, loading: false, photoCollections: action.photoCollections };
+      const photoCollections = action.photoCollections ? action.photoCollections : state.photoCollections;
+      return { ...state, loading: false, photoCollections };
+    case 'show_more':
+      return { ...state, viewableCount: state.viewableCount + 1 };
     default:
       throw new Error();
   }
@@ -45,6 +53,7 @@ function reducer(state: YearsPageState, action: { type: string, photoCollections
 interface YearsPageState {
   photoCollections: PhotoCollection[],
   loading: boolean,
+  viewableCount: number,
 }
 
 export const YearsPage = () => {
@@ -52,7 +61,8 @@ export const YearsPage = () => {
     reducer,
     {
       photoCollections: [],
-      loading: true
+      loading: true,
+      viewableCount: 5,
     }
   )
   useEffect(() => {
@@ -65,7 +75,13 @@ export const YearsPage = () => {
   return (
     <div>
       {state.loading && <Spinner animation="border" variant="primary" />}
-      <PhotoCollectionView photoCollections={state.photoCollections} />
+      <PhotoCollectionView photoCollections={viewablePhotoCollections(state)} />
+      {
+        state.viewableCount < _.size(state.photoCollections) &&
+        <ReactVisibilitySensor onChange={(isVisible) => { isVisible && dispatch({ type: "show_more" }) }} >
+          <Spinner animation="border" variant="primary" />
+        </ReactVisibilitySensor>
+      }
     </div>
   );
 }
