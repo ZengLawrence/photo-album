@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useEffect, useReducer } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import { Spinner } from "react-bootstrap";
 import ReactVisibilitySensor from "react-visibility-sensor";
 import * as YearsAPI from "../api/Years";
@@ -34,15 +34,15 @@ function sample(photoCollection: PhotoCollection): PhotoCollection {
   };
 }
 
-function viewablePhotoCollections(state: YearsPageState) {
-  return _.slice(state.photoCollections, 0, state.viewableCount);
+function viewablePhotoCollections(photoCollections: PhotoCollection[], viewableCount: number) {
+  return _.slice(photoCollections, 0, viewableCount);
 }
 
-function reducer(state: YearsPageState, action: { type: string, photoCollections?: PhotoCollection[] }) {
+function reducer(state: YearsPageState, action: { type: string, photosByDates?: PhotosByDate[] }) {
   switch (action.type) {
     case 'loaded':
-      const photoCollections = action.photoCollections ? action.photoCollections : state.photoCollections;
-      return { ...state, loading: false, photoCollections };
+      const photosByDates = action.photosByDates ? action.photosByDates : state.photosByDates;
+      return { ...state, loading: false, photosByDates };
     case 'show_more':
       return { ...state, viewableCount: state.viewableCount + 1 };
     default:
@@ -51,7 +51,7 @@ function reducer(state: YearsPageState, action: { type: string, photoCollections
 }
 
 interface YearsPageState {
-  photoCollections: PhotoCollection[],
+  photosByDates: PhotosByDate[],
   loading: boolean,
   viewableCount: number,
 }
@@ -60,24 +60,29 @@ export const YearsPage = () => {
   const [state, dispatch] = useReducer(
     reducer,
     {
-      photoCollections: [],
+      photosByDates: [],
       loading: true,
       viewableCount: 5,
     }
   )
   useEffect(() => {
     YearsAPI.fecthAll().then(data => {
-      dispatch({ type: "loaded", photoCollections: yearSummary(data) });
+      dispatch({ type: "loaded", photosByDates: data });
     }
     );
   }, []);
 
+  const { photosByDates } = state;
+  const photoCollections = useMemo(() => {
+    return yearSummary(photosByDates);
+  }, [photosByDates]);
+
   return (
     <div>
       {state.loading && <Spinner animation="border" variant="primary" />}
-      <PhotoCollectionView photoCollections={viewablePhotoCollections(state)} />
+      <PhotoCollectionView photoCollections={viewablePhotoCollections(photoCollections, state.viewableCount)} />
       {
-        state.viewableCount < _.size(state.photoCollections) &&
+        state.viewableCount < _.size(photoCollections) &&
         <ReactVisibilitySensor onChange={(isVisible) => { isVisible && dispatch({ type: "show_more" }) }} >
           <Spinner animation="border" variant="primary" />
         </ReactVisibilitySensor>
