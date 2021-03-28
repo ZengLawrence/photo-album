@@ -6,41 +6,40 @@ import * as YearsAPI from "../api/Years";
 import { PhotoCollectionView } from "../components/PhotoCollectionView";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
 
-function year(photosByDate: PhotosByDate) {
-  return photosByDate.date.substring(0, 4);
+function yearView(photosByDate: PhotosByDate[]) {
+  const year = (photosByDate: PhotosByDate) => {
+    return photosByDate.date.substring(0, 4);
+  };
+  const photoCollection = (photosByDate: PhotosByDate[], year: string): PhotoCollection => {
+    return {
+      title: year,
+      photos: _.flatMap(photosByDate, 'photos'),
+    }
+  };
+
+  return _.map(_.groupBy(photosByDate, year), photoCollection);
 }
 
-function photoCollection(photosByDate: PhotosByDate[], year: string): PhotoCollection {
-  return {
-    title: year,
-    photos: _.flatMap(photosByDate, 'photos'),
-  }
-}
+function yearSummary(photosByDate: PhotosByDate[]) {
+  const sample = (photoCollection: PhotoCollection): PhotoCollection => {
+    const { title, photos } = photoCollection;
+    return {
+      title,
+      photos: _.sampleSize(_.flatten(photos), 30)
+    };
+  };
 
-function yearView(photosByDate: PhotosByDate[]): PhotoCollection[] {
-  const groupByYear = _.groupBy(photosByDate, year);
-  return _.map(groupByYear, photoCollection);
-}
-
-function yearSummary(photosByDate: PhotosByDate[]): PhotoCollection[] {
   return _.map(yearView(photosByDate), sample);
 }
 
-function sample(photoCollection: PhotoCollection): PhotoCollection {
-  const { title, photos } = photoCollection;
-  return {
-    title,
-    photos: _.sampleSize(_.flatten(photos), 30)
-  };
-}
-
-function photoCollections(photosByDates: PhotosByDate[]): PhotoCollection[] {
-  return _.map(photosByDates, pbd => {
+function photoCollections(photosByDates: PhotosByDate[]) {
+  const photoCollection = (pbd: PhotosByDate): PhotoCollection => {
     return {
       title: pbd.date,
       photos: pbd.photos,
     }
-  });
+  }
+  return _.map(photosByDates, photoCollection);
 }
 
 function viewablePhotoCollections(photoCollections: PhotoCollection[], viewableCount: number) {
