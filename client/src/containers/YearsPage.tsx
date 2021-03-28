@@ -7,15 +7,11 @@ import { PhotoCollectionView } from "../components/PhotoCollectionView";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
 
 function yearView(photosByDate: PhotosByDate[]) {
-  const year = (photosByDate: PhotosByDate) => {
-    return photosByDate.date.substring(0, 4);
-  };
-  const photoCollection = (photosByDate: PhotosByDate[], year: string): PhotoCollection => {
-    return {
-      title: year,
-      photos: _.flatMap(photosByDate, 'photos'),
-    }
-  };
+  const year = (photosByDate: PhotosByDate) => photosByDate.date.substring(0, 4);
+  const photoCollection = (photosByDate: PhotosByDate[], year: string): PhotoCollection => ({
+    title: year,
+    photos: _.flatMap(photosByDate, 'photos'),
+  });
 
   return _.map(_.groupBy(photosByDate, year), photoCollection);
 }
@@ -33,12 +29,10 @@ function yearSummary(photosByDate: PhotosByDate[]) {
 }
 
 function photoCollections(photosByDates: PhotosByDate[]) {
-  const photoCollection = (pbd: PhotosByDate): PhotoCollection => {
-    return {
-      title: pbd.date,
-      photos: pbd.photos,
-    }
-  }
+  const photoCollection = (pbd: PhotosByDate): PhotoCollection => ({
+    title: pbd.date,
+    photos: pbd.photos,
+  });
   return _.map(photosByDates, photoCollection);
 }
 
@@ -76,9 +70,8 @@ export const YearsPage = (props: { summaryView?: boolean }) => {
     }
   )
   useEffect(() => {
-    YearsAPI.fecthAll().then(data => {
-      dispatch({ type: "loaded", photosByDates: data });
-    }
+    YearsAPI.fecthAll().then(data => 
+      dispatch({ type: "loaded", photosByDates: data })
     );
   }, []);
 
