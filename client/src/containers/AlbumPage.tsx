@@ -15,7 +15,7 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-export const AlbumView = () => {
+export const AlbumPage = () => {
 
   const [albums, setAlbums] = useState([] as PhotoCollection[]);
 

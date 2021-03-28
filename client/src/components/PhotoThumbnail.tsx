@@ -8,7 +8,7 @@ interface PhotoThumbnailProps {
   albumName: string, 
   photoName: string, 
   maxSize: number,
-  visible?: boolean
+  visible?: boolean // by default, it is true
 }
 
 export const PhotoThumbnail = (props: PhotoThumbnailProps & HTMLProps<HTMLDivElement>) => {
