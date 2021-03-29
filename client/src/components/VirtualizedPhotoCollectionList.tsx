@@ -26,16 +26,16 @@ function keyValue(photo: Photo) {
 }
 
 interface RowProps {
-  data: ListItemData[], 
-  index: number, 
+  data: ListItemData[],
+  index: number,
   style: CSSProperties,
   onSelect?: (key: string) => void,
 }
 
 const Row = (props: RowProps) => {
-  const { data, index, style, onSelect: onSelected } = props;
+  const { data, index, style, onSelect } = props;
   const rowData = data[index];
-  const handleOnClick = () => onSelected && onSelected(rowData.key);
+  const handleOnClick = () => onSelect && onSelect(rowData.key);
 
   if (rowData.title) {
     return (
@@ -54,7 +54,7 @@ const Row = (props: RowProps) => {
   }
 }
 
-export type KeyedPhotoCollection = (PhotoCollection & {key: string});
+export type KeyedPhotoCollection = (PhotoCollection & { key: string });
 
 interface Props {
   data: KeyedPhotoCollection[],
@@ -65,20 +65,21 @@ interface Props {
 
 export const VirtualizedPhotoCollectionList = (props: Props) => {
   const itemData = listData(props.data);
-  const {height, width, onSelect} = props;
+  const { height, width, onSelect } = props;
 
   const getItemSize = (index: number) => (itemData[index].title ? 50 : 100);
 
   return (
     <List
       height={height}
+      width={width}
       itemCount={_.size(itemData)}
       itemSize={getItemSize}
       itemData={itemData}
-      width={width}
+      useIsScrolling
     >
-      {({ data, index, style }) => (
-        <Row data={data} index={index} style={style} onSelect={onSelect} />
+      {(props) => (
+        <Row {...props} onSelect={onSelect} />
       )}
     </List>
   );

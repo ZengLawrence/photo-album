@@ -97,6 +97,6 @@ export const YearsPage = () => {
   return (state.loading ? <LoadingSpinner />
     : <PhotoList
       photoCollections={_photoCollections}
-      onSelect={handleOnSelect}
+      onSelect={summaryView ? handleOnSelect : undefined}
     />);
 }
