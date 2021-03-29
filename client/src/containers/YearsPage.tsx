@@ -1,9 +1,8 @@
 import _ from "lodash";
 import { useEffect, useMemo, useReducer } from "react";
 import { Spinner } from "react-bootstrap";
-import ReactVisibilitySensor from "react-visibility-sensor";
 import * as YearsAPI from "../api/Years";
-import { PhotoCollectionView } from "../components/PhotoCollectionView";
+import { VirtualizedPhotoCollectionList } from "../components/VirtualizedPhotoCollectionList";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
 
 function yearView(photosByDate: PhotosByDate[]) {
@@ -70,7 +69,7 @@ export const YearsPage = (props: { summaryView?: boolean }) => {
     }
   )
   useEffect(() => {
-    YearsAPI.fecthAll().then(data => 
+    YearsAPI.fecthAll().then(data =>
       dispatch({ type: "loaded", photosByDates: data })
     );
   }, []);
@@ -83,13 +82,7 @@ export const YearsPage = (props: { summaryView?: boolean }) => {
   return (
     <div>
       {state.loading && <Spinner animation="border" variant="primary" />}
-      <PhotoCollectionView photoCollections={viewablePhotoCollections(_photoCollections, state.viewableCount)} />
-      {
-        state.viewableCount < _.size(_photoCollections) &&
-        <ReactVisibilitySensor onChange={(isVisible) => { isVisible && dispatch({ type: "show_more" }) }} >
-          <Spinner animation="border" variant="primary" />
-        </ReactVisibilitySensor>
-      }
+      <VirtualizedPhotoCollectionList data={_photoCollections} />
     </div>
   );
 }
