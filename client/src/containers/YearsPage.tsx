@@ -38,13 +38,28 @@ function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[]
   return _.map(photosByDates, photoCollection);
 }
 
-function reducer(state: YearsPageState, action: { type: string, photosByDates?: PhotosByDate[] }) {
+interface Action {
+  type: string,
+}
+
+interface LoadAction extends Action {
+  type: "loaded",
+  photosByDates: PhotosByDate[],
+}
+
+interface DateViewAction extends Action {
+  type: "date_view",
+  year: string,
+}
+
+function reducer(state: YearsPageState, action: Action) {
   switch (action.type) {
     case 'loaded':
-      const photosByDates = action.photosByDates ? action.photosByDates : state.photosByDates;
+      const { photosByDates } = action as LoadAction;
       return { ...state, loading: false, photosByDates };
     case 'date_view':
-      return {...state, summaryView: false};
+      const { year: scrollToYear } = action as DateViewAction;
+      return { ...state, summaryView: false, scrollToYear };
     default:
       throw new Error();
   }
@@ -52,12 +67,17 @@ function reducer(state: YearsPageState, action: { type: string, photosByDates?: 
 
 const LoadingSpinner = () => <Spinner animation="border" variant="primary" />;
 
-const PhotoList = (props: { photoCollections: KeyedPhotoCollection[], onSelect?: (key: string) => void }) => (
+interface PhotoListProps {
+  data: KeyedPhotoCollection[],
+  onSelect?: (key: string) => void,
+}
+
+const PhotoList = (props: PhotoListProps) => (
   <div style={{ height: "90%" }}>
     <AutoSizer>
       {({ height, width }) => (
         <VirtualizedPhotoCollectionList
-          data={props.photoCollections}
+          {...props}
           width={width}
           height={height}
           onSelect={props.onSelect}
@@ -71,6 +91,7 @@ interface YearsPageState {
   photosByDates: PhotosByDate[],
   loading: boolean,
   summaryView: boolean,
+  scrollToYear?: string,
 }
 
 export const YearsPage = () => {
@@ -84,10 +105,10 @@ export const YearsPage = () => {
   )
   useEffect(() => {
     YearsAPI.fecthAll().then(data =>
-      dispatch({ type: "loaded", photosByDates: data })
+      dispatch({ type: "loaded", photosByDates: data } as LoadAction)
     );
   }, []);
-  const handleOnSelect = (key: string) => dispatch({ type: "date_view", });
+  const handleOnSelect = (key: string) => dispatch({ type: "date_view", year: key } as DateViewAction);
 
   const { photosByDates, summaryView } = state;
   const _photoCollections = useMemo(() => {
@@ -96,7 +117,7 @@ export const YearsPage = () => {
 
   return (state.loading ? <LoadingSpinner />
     : <PhotoList
-      photoCollections={_photoCollections}
+      data={_photoCollections}
       onSelect={summaryView ? handleOnSelect : undefined}
     />);
 }
