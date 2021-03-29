@@ -3,7 +3,7 @@ import { useEffect, useMemo, useReducer } from "react";
 import { Spinner } from "react-bootstrap";
 import AutoSizer from "react-virtualized-auto-sizer";
 import * as YearsAPI from "../api/Years";
-import { VirtualizedPhotoCollectionList } from "../components/VirtualizedPhotoCollectionList";
+import { KeyedPhotoCollection, VirtualizedPhotoCollectionList } from "../components/VirtualizedPhotoCollectionList";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
 
 function yearView(photosByDate: PhotosByDate[]) {
@@ -16,22 +16,24 @@ function yearView(photosByDate: PhotosByDate[]) {
   return _.map(_.groupBy(photosByDate, year), photoCollection);
 }
 
-function yearSummary(photosByDate: PhotosByDate[]) {
-  const sample = (photoCollection: PhotoCollection): PhotoCollection => {
+function yearSummary(photosByDate: PhotosByDate[]): KeyedPhotoCollection[] {
+  const sample = (photoCollection: PhotoCollection) => {
     const { title, photos } = photoCollection;
     return {
       title,
-      photos: _.sampleSize(_.flatten(photos), 30)
+      photos: _.sampleSize(_.flatten(photos), 30),
+      key: title,
     };
   };
 
   return _.map(yearView(photosByDate), sample);
 }
 
-function photoCollections(photosByDates: PhotosByDate[]) {
-  const photoCollection = (pbd: PhotosByDate): PhotoCollection => ({
+function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[] {
+  const photoCollection = (pbd: PhotosByDate) => ({
     title: pbd.date,
     photos: pbd.photos,
+    key: pbd.date,
   });
   return _.map(photosByDates, photoCollection);
 }
@@ -41,6 +43,8 @@ function reducer(state: YearsPageState, action: { type: string, photosByDates?: 
     case 'loaded':
       const photosByDates = action.photosByDates ? action.photosByDates : state.photosByDates;
       return { ...state, loading: false, photosByDates };
+    case 'date_view':
+      return {...state, summaryView: false};
     default:
       throw new Error();
   }
@@ -48,7 +52,7 @@ function reducer(state: YearsPageState, action: { type: string, photosByDates?: 
 
 const LoadingSpinner = () => <Spinner animation="border" variant="primary" />;
 
-const PhotoList = (props: { photoCollections: PhotoCollection[] }) => (
+const PhotoList = (props: { photoCollections: KeyedPhotoCollection[], onSelect?: (key: string) => void }) => (
   <div style={{ height: "90%" }}>
     <AutoSizer>
       {({ height, width }) => (
@@ -56,6 +60,7 @@ const PhotoList = (props: { photoCollections: PhotoCollection[] }) => (
           data={props.photoCollections}
           width={width}
           height={height}
+          onSelect={props.onSelect}
         />
       )}
     </AutoSizer>
@@ -74,7 +79,7 @@ export const YearsPage = (props: { summaryView?: boolean }) => {
     {
       photosByDates: [],
       loading: true,
-      summaryView: props.summaryView || false,
+      summaryView: props.summaryView || true,
     }
   )
   useEffect(() => {
@@ -82,11 +87,16 @@ export const YearsPage = (props: { summaryView?: boolean }) => {
       dispatch({ type: "loaded", photosByDates: data })
     );
   }, []);
+  const handleOnSelect = (key: string) => dispatch({ type: "date_view", });
 
   const { photosByDates, summaryView } = state;
   const _photoCollections = useMemo(() => {
     return summaryView ? yearSummary(photosByDates) : photoCollections(photosByDates);
   }, [photosByDates, summaryView]);
 
-  return (state.loading ? <LoadingSpinner /> : <PhotoList photoCollections={_photoCollections} />);
+  return (state.loading ? <LoadingSpinner />
+    : <PhotoList
+      photoCollections={_photoCollections}
+      onSelect={handleOnSelect}
+    />);
 }
