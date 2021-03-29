@@ -24,17 +24,18 @@ function keyValue(photo: Photo) {
   return photo.albumName + "/" + photo.name;
 }
 
-const Row = (props: { itemData: ListItemData, style: CSSProperties }) => {
-  const { itemData, style } = props;
-  if (itemData.title) {
+const Row = (props: { data: PhotoCollection[], index: number, style: CSSProperties }) => {
+  const { data, index, style } = props;
+  const rowData = data[index];
+  if (rowData.title) {
     return (
-      <h1 style={style} >{itemData.title}</h1>
+      <h1 style={style} >{rowData.title}</h1>
     );
   } else {
     return (
       <div style={style} className="d-flex">
-        {itemData.photos &&
-          itemData.photos.map(p => (
+        {rowData.photos &&
+          rowData.photos.map(p => (
             // Without the `key`, React will fire a key warning
             <PhotoThumbnail key={keyValue(p)} albumName={p.albumName || ""} photoName={p.name} maxSize={100} />
           ))}
@@ -50,20 +51,21 @@ interface Props {
 }
 
 export const VirtualizedPhotoCollectionList = (props: Props) => {
-  const _listData = listData(props.data);
+  const itemData = listData(props.data);
   const {height, width} = props;
 
-  const getItemSize = (index: number) => (_listData[index].title ? 50 : 100);
+  const getItemSize = (index: number) => (itemData[index].title ? 50 : 100);
 
   return (
     <List
       height={height}
-      itemCount={_.size(_listData)}
+      itemCount={_.size(itemData)}
       itemSize={getItemSize}
+      itemData={itemData}
       width={width}
     >
-      {({ index, style }) => (
-        <Row itemData={_listData[index]} style={style} />
+      {({ data, index, style }) => (
+        <Row data={data} index={index} style={style} />
       )}
     </List>
   );
