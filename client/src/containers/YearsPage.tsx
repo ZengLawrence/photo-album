@@ -41,8 +41,6 @@ function reducer(state: YearsPageState, action: { type: string, photosByDates?: 
     case 'loaded':
       const photosByDates = action.photosByDates ? action.photosByDates : state.photosByDates;
       return { ...state, loading: false, photosByDates };
-    case 'show_more':
-      return { ...state, viewableCount: state.viewableCount + 1 };
     default:
       throw new Error();
   }
@@ -67,7 +65,6 @@ const PhotoList = (props: { photoCollections: PhotoCollection[] }) => (
 interface YearsPageState {
   photosByDates: PhotosByDate[],
   loading: boolean,
-  viewableCount: number,
   summaryView: boolean,
 }
 
@@ -77,7 +74,6 @@ export const YearsPage = (props: { summaryView?: boolean }) => {
     {
       photosByDates: [],
       loading: true,
-      viewableCount: 5,
       summaryView: props.summaryView || false,
     }
   )
