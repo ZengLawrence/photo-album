@@ -29,11 +29,12 @@ interface RowProps {
   data: ListItemData[],
   index: number,
   style: CSSProperties,
+  isScrolling?: boolean,
   onSelect?: (key: string) => void,
 }
 
 const Row = (props: RowProps) => {
-  const { data, index, style, onSelect } = props;
+  const { data, index, style, isScrolling, onSelect } = props;
   const rowData = data[index];
   const handleOnClick = () => onSelect && onSelect(rowData.key);
 
@@ -47,7 +48,13 @@ const Row = (props: RowProps) => {
         {rowData.photos &&
           rowData.photos.map(p => (
             // Without the `key`, React will fire a key warning
-            <PhotoThumbnail key={keyValue(p)} albumName={p.albumName || ""} photoName={p.name} maxSize={100} />
+            <PhotoThumbnail 
+              key={keyValue(p)} 
+              albumName={p.albumName || ""} 
+              photoName={p.name} 
+              maxSize={100} 
+              visible={!isScrolling}
+              />
           ))}
       </div>
     );
