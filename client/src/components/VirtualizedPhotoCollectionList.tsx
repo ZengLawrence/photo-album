@@ -43,17 +43,24 @@ const Row = (props: { itemData: ListItemData, style: CSSProperties }) => {
   }
 }
 
-export const VirtualizedPhotoCollectionList = (props: { data: PhotoCollection[] }) => {
+interface Props {
+  data: PhotoCollection[],
+  height: number,
+  width: number,
+}
+
+export const VirtualizedPhotoCollectionList = (props: Props) => {
   const _listData = listData(props.data);
+  const {height, width} = props;
 
   const getItemSize = (index: number) => (_listData[index].title ? 50 : 100);
 
   return (
     <List
-      height={400}
+      height={height}
       itemCount={_.size(_listData)}
       itemSize={getItemSize}
-      width={510}
+      width={width}
     >
       {({ index, style }) => (
         <Row itemData={_listData[index]} style={style} />

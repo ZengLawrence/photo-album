@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { useEffect, useMemo, useReducer } from "react";
 import { Spinner } from "react-bootstrap";
+import AutoSizer from "react-virtualized-auto-sizer";
 import * as YearsAPI from "../api/Years";
 import { VirtualizedPhotoCollectionList } from "../components/VirtualizedPhotoCollectionList";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
@@ -35,10 +36,6 @@ function photoCollections(photosByDates: PhotosByDate[]) {
   return _.map(photosByDates, photoCollection);
 }
 
-function viewablePhotoCollections(photoCollections: PhotoCollection[], viewableCount: number) {
-  return _.slice(photoCollections, 0, viewableCount);
-}
-
 function reducer(state: YearsPageState, action: { type: string, photosByDates?: PhotosByDate[] }) {
   switch (action.type) {
     case 'loaded':
@@ -50,6 +47,22 @@ function reducer(state: YearsPageState, action: { type: string, photosByDates?: 
       throw new Error();
   }
 }
+
+const LoadingSpinner = () => <Spinner animation="border" variant="primary" />;
+
+const PhotoList = (props: { photoCollections: PhotoCollection[] }) => (
+  <div style={{ height: "90%" }}>
+    <AutoSizer>
+      {({ height, width }) => (
+        <VirtualizedPhotoCollectionList
+          data={props.photoCollections}
+          width={width}
+          height={height}
+        />
+      )}
+    </AutoSizer>
+  </div>
+);
 
 interface YearsPageState {
   photosByDates: PhotosByDate[],
@@ -79,10 +92,5 @@ export const YearsPage = (props: { summaryView?: boolean }) => {
     return summaryView ? yearSummary(photosByDates) : photoCollections(photosByDates);
   }, [photosByDates, summaryView]);
 
-  return (
-    <div>
-      {state.loading && <Spinner animation="border" variant="primary" />}
-      <VirtualizedPhotoCollectionList data={_photoCollections} />
-    </div>
-  );
+  return (state.loading ? <LoadingSpinner /> : <PhotoList photoCollections={_photoCollections} />);
 }

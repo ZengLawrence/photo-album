@@ -35,7 +35,7 @@ const DatesPageRoute = () => {
 function App() {
   return (
     <Router>
-      <Container>
+      <Container className="h-100">
         <AppNavBar />
 
         <Switch>
