@@ -73,13 +73,13 @@ interface YearsPageState {
   summaryView: boolean,
 }
 
-export const YearsPage = (props: { summaryView?: boolean }) => {
+export const YearsPage = () => {
   const [state, dispatch] = useReducer(
     reducer,
     {
       photosByDates: [],
       loading: true,
-      summaryView: props.summaryView || true,
+      summaryView: true,
     }
   )
   useEffect(() => {
