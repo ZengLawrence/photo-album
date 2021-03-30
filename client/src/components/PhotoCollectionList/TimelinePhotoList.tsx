@@ -19,7 +19,13 @@ function listItemData(pc: KeyedPhotoCollection) {
   return _.concat(titleItem, photoItems);
 }
 
-export const TimelinePhotoList = (props: { summaryView: boolean; photosByDates: PhotosByDate[]; onSelectYear: (year: string) => void; }) => {
+interface Props {
+  summaryView: boolean;
+  photosByDates: PhotosByDate[]; 
+  onSelectYear: (year: string) => void;
+}
+
+export const TimelinePhotoList = (props: Props) => {
   const { summaryView, photosByDates, onSelectYear } = props;
   const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates)),
     [photosByDates]);
