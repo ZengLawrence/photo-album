@@ -1,9 +1,9 @@
 import _ from "lodash";
-import { useEffect, useMemo, useReducer } from "react";
+import { RefObject, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import AutoSizer from "react-virtualized-auto-sizer";
+import { VariableSizeList as List } from 'react-window';
 import * as YearsAPI from "../api/Years";
-import { KeyedPhotoCollection, VirtualizedPhotoCollectionList } from "../components/VirtualizedPhotoCollectionList";
+import { KeyedPhotoCollection, listData, Row } from "../components/PhotoCollectionList";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
 
 function yearView(photosByDate: PhotosByDate[]) {
@@ -67,26 +67,6 @@ function reducer(state: YearsPageState, action: Action) {
 
 const LoadingSpinner = () => <Spinner animation="border" variant="primary" />;
 
-interface PhotoListProps {
-  data: KeyedPhotoCollection[],
-  onSelect?: (key: string) => void,
-}
-
-const PhotoList = (props: PhotoListProps) => (
-  <div style={{ height: "90%" }}>
-    <AutoSizer>
-      {({ height, width }) => (
-        <VirtualizedPhotoCollectionList
-          {...props}
-          width={width}
-          height={height}
-          onSelect={props.onSelect}
-        />
-      )}
-    </AutoSizer>
-  </div>
-);
-
 interface YearsPageState {
   photosByDates: PhotosByDate[],
   loading: boolean,
@@ -108,16 +88,55 @@ export const YearsPage = () => {
       dispatch({ type: "loaded", photosByDates: data } as LoadAction)
     );
   }, []);
-  const handleOnSelect = (key: string) => dispatch({ type: "date_view", year: key } as DateViewAction);
 
-  const { photosByDates, summaryView } = state;
-  const _photoCollections = useMemo(() => {
-    return summaryView ? yearSummary(photosByDates) : photoCollections(photosByDates);
-  }, [photosByDates, summaryView]);
 
-  return (state.loading ? <LoadingSpinner />
-    : <PhotoList
-      data={_photoCollections}
-      onSelect={summaryView ? handleOnSelect : undefined}
-    />);
+  const { photosByDates } = state;
+  const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates)),
+    [photosByDates]);
+  const getItemSize = (index: number) => (yearSummaryItemData[index].title ? 50 : 100);
+  const dateItemData = useMemo(() => listData(photoCollections(photosByDates)),
+    [photosByDates]);
+  const getDateItemSize = (index: number) => (dateItemData[index].title ? 50 : 100);
+
+  const dateListRef = useRef() as RefObject<List>;
+  const [summaryWidth, setSummaryWidth] = useState(300);
+  const [dateWidth, setDateWidth] = useState(0);
+  const handleOnSelect = (key: string) => {
+    setSummaryWidth(0); 
+    setDateWidth(300);
+    const index = _.findIndex(dateItemData, item => item.key.startsWith(key) );
+    dateListRef.current?.scrollToItem(index, "start");
+  };
+
+  return (
+    state.loading
+      ? <LoadingSpinner />
+      : <div className="d-flex">
+        <List
+          height={400}
+          width={summaryWidth}
+          itemCount={_.size(yearSummaryItemData)}
+          itemSize={getItemSize}
+          itemData={yearSummaryItemData}
+          useIsScrolling
+        >
+          {(props) => (
+            <Row {...props} onSelect={handleOnSelect} />
+          )}
+        </List>
+ 
+        <List
+          ref={dateListRef}
+          height={400}
+          width={dateWidth}
+          itemCount={_.size(dateItemData)}
+          itemSize={getDateItemSize}
+          itemData={dateItemData}
+        >
+          {(props) => (
+            <Row {...props} />
+          )}
+        </List>
+     </div>
+  );
 }
