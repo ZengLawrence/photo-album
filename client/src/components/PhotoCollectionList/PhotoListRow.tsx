@@ -3,11 +3,11 @@ import { Photo } from "../../models/Photo";
 import { PhotoThumbnail } from "../PhotoThumbnail";
 import { ListItemData } from "./ListItemData";
 
-export function keyValue(photo: Photo) {
+function keyValue(photo: Photo) {
   return photo.albumName + "/" + photo.name;
 }
 
-export interface RowProps {
+interface RowProps {
   data: ListItemData[];
   index: number;
   style: CSSProperties;
@@ -15,7 +15,7 @@ export interface RowProps {
   onSelect?: (key: string) => void;
 }
 
-export const Row = (props: RowProps) => {
+export const PhotoListRow = (props: RowProps) => {
   const { data, index, style, isScrolling, onSelect } = props;
   const rowData = data[index];
   const handleOnClick = () => onSelect && onSelect(rowData.key);

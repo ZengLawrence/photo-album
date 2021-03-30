@@ -2,9 +2,9 @@ import _ from "lodash";
 import { useEffect, useReducer } from "react";
 import { Button, Spinner } from "react-bootstrap";
 import * as YearsAPI from "../api/Years";
-import { KeyedPhotoCollection } from "../components/PhotoCollectionList";
-import { PhotoCollection, PhotosByDate } from "../models/Photo";
+import { KeyedPhotoCollection } from "../components/PhotoCollectionList/KeyedPhotoCollection";
 import { TimelinePhotoList } from "../components/PhotoCollectionList/TimelinePhotoList";
+import { PhotoCollection, PhotosByDate } from "../models/Photo";
 
 function yearView(photosByDate: PhotosByDate[]) {
   const year = (photosByDate: PhotosByDate) => photosByDate.date.substring(0, 4);
