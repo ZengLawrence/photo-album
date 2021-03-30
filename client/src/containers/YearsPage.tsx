@@ -1,11 +1,10 @@
 import _ from "lodash";
-import { Fragment, RefObject, useEffect, useMemo, useReducer, useRef } from "react";
+import { useEffect, useReducer } from "react";
 import { Button, Spinner } from "react-bootstrap";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { VariableSizeList as List } from 'react-window';
 import * as YearsAPI from "../api/Years";
-import { KeyedPhotoCollection, listData, Row } from "../components/PhotoCollectionList";
+import { KeyedPhotoCollection } from "../components/PhotoCollectionList";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
+import { TimelinePhotoList } from "../components/PhotoCollectionList/TimelinePhotoList";
 
 function yearView(photosByDate: PhotosByDate[]) {
   const year = (photosByDate: PhotosByDate) => photosByDate.date.substring(0, 4);
@@ -17,7 +16,7 @@ function yearView(photosByDate: PhotosByDate[]) {
   return _.map(_.groupBy(photosByDate, year), photoCollection);
 }
 
-function yearSummary(photosByDate: PhotosByDate[]): KeyedPhotoCollection[] {
+export function yearSummary(photosByDate: PhotosByDate[]): KeyedPhotoCollection[] {
   const sample = (photoCollection: PhotoCollection) => {
     const { title, photos } = photoCollection;
     return {
@@ -30,7 +29,7 @@ function yearSummary(photosByDate: PhotosByDate[]): KeyedPhotoCollection[] {
   return _.map(yearView(photosByDate), sample);
 }
 
-function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[] {
+export function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[] {
   const photoCollection = (pbd: PhotosByDate) => ({
     title: pbd.date,
     photos: pbd.photos,
@@ -97,69 +96,22 @@ export const YearsPage = () => {
   }, []);
 
 
-  const { photosByDates } = state;
-  const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates)),
-    [photosByDates]);
-  const getItemSize = (index: number) => (yearSummaryItemData[index].title ? 50 : 100);
-  const dateItemData = useMemo(() => listData(photoCollections(photosByDates)),
-    [photosByDates]);
-  const getDateItemSize = (index: number) => (dateItemData[index].title ? 50 : 100);
-
-  const dateListRef = useRef() as RefObject<List>;
-  const handleOnSelect = (key: string) => {
-    dispatch({ type: 'date_view', year: key } as DateViewAction);
-    const index = _.findIndex(dateItemData, item => item.key.startsWith(key));
-    dateListRef.current?.scrollToItem(index, "start");
-  };
+  const { summaryView, photosByDates } = state;
 
   return (
     state.loading
       ? <LoadingSpinner />
       :
-      <div className="d-flex" style={{height: "90%"}}>
+      <div className="d-flex" style={{ height: "90%" }}>
         <div>
           {!state.summaryView &&
             <Button variant="primary" onClick={() => dispatch({ type: 'summary_view' } as SummaryViewAction)}>Back</Button>}
         </div>
-        <Fragment>
-          <AutoSizer>
-            {({ height, width }) => (
-              <Fragment>
-                <div>
-
-                  <List
-                    height={state.summaryView ? height : 0}
-                    width={state.summaryView ? width : 0}
-                    itemCount={_.size(yearSummaryItemData)}
-                    itemSize={getItemSize}
-                    itemData={yearSummaryItemData}
-                    useIsScrolling
-                  >
-                    {(props) => (
-                      <Row {...props} onSelect={handleOnSelect} />
-                    )}
-                  </List>
-                </div>
-
-                <div>
-                  <List
-                    ref={dateListRef}
-                    height={state.summaryView ? 0 : height}
-                    width={state.summaryView ? 0 : width}
-                    itemCount={_.size(dateItemData)}
-                    itemSize={getDateItemSize}
-                    itemData={dateItemData}
-                  >
-                    {(props) => (
-                      <Row {...props} />
-                    )}
-                  </List>
-                </div>
-              </Fragment>
-            )
-            }
-          </AutoSizer>
-        </Fragment>
+        <TimelinePhotoList 
+          summaryView={summaryView} 
+          photosByDates={photosByDates} 
+          onSelectYear={year => dispatch({ type: "date_view", year } as DateViewAction)} 
+          />
       </div>
   );
 }
