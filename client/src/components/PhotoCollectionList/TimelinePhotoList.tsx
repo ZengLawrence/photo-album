@@ -19,6 +19,10 @@ function listItemData(pc: KeyedPhotoCollection) {
   return _.concat(titleItem, photoItems);
 }
 
+function getItemSize(item: ListItemData) {
+  return item.title ? 50 : 100;
+}
+
 interface Props {
   summaryView: boolean;
   photosByDates: PhotosByDate[]; 
@@ -29,10 +33,10 @@ export const TimelinePhotoList = (props: Props) => {
   const { summaryView, photosByDates, onSelectYear } = props;
   const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates)),
     [photosByDates]);
-  const getItemSize = (index: number) => (yearSummaryItemData[index].title ? 50 : 100);
+  const getSummaryItemSize = (index: number) => getItemSize(yearSummaryItemData[index]);
   const dateItemData = useMemo(() => listData(photoCollections(photosByDates)),
     [photosByDates]);
-  const getDateItemSize = (index: number) => (dateItemData[index].title ? 50 : 100);
+  const getDateItemSize = (index: number) => getItemSize(dateItemData[index]);
 
   const dateListRef = useRef() as RefObject<List>;
   const handleOnSelect = (key: string) => {
@@ -50,7 +54,7 @@ export const TimelinePhotoList = (props: Props) => {
               height={summaryView ? height : 0}
               width={summaryView ? width : 0}
               itemCount={_.size(yearSummaryItemData)}
-              itemSize={getItemSize}
+              itemSize={getSummaryItemSize}
               itemData={yearSummaryItemData}
               useIsScrolling
             >
