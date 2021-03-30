@@ -1,6 +1,7 @@
 import _ from "lodash";
-import { RefObject, useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { Spinner } from "react-bootstrap";
+import { Fragment, RefObject, useEffect, useMemo, useReducer, useRef } from "react";
+import { Button, Spinner } from "react-bootstrap";
+import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from 'react-window';
 import * as YearsAPI from "../api/Years";
 import { KeyedPhotoCollection, listData, Row } from "../components/PhotoCollectionList";
@@ -52,6 +53,10 @@ interface DateViewAction extends Action {
   year: string,
 }
 
+interface SummaryViewAction extends Action {
+  type: "summary_view"
+}
+
 function reducer(state: YearsPageState, action: Action) {
   switch (action.type) {
     case 'loaded':
@@ -60,6 +65,8 @@ function reducer(state: YearsPageState, action: Action) {
     case 'date_view':
       const { year: scrollToYear } = action as DateViewAction;
       return { ...state, summaryView: false, scrollToYear };
+    case 'summary_view':
+      return { ...state, summaryView: true };
     default:
       throw new Error();
   }
@@ -99,44 +106,60 @@ export const YearsPage = () => {
   const getDateItemSize = (index: number) => (dateItemData[index].title ? 50 : 100);
 
   const dateListRef = useRef() as RefObject<List>;
-  const [summaryWidth, setSummaryWidth] = useState(300);
-  const [dateWidth, setDateWidth] = useState(0);
   const handleOnSelect = (key: string) => {
-    setSummaryWidth(0); 
-    setDateWidth(300);
-    const index = _.findIndex(dateItemData, item => item.key.startsWith(key) );
+    dispatch({ type: 'date_view', year: key } as DateViewAction);
+    const index = _.findIndex(dateItemData, item => item.key.startsWith(key));
     dateListRef.current?.scrollToItem(index, "start");
   };
 
   return (
     state.loading
       ? <LoadingSpinner />
-      : <div className="d-flex">
-        <List
-          height={400}
-          width={summaryWidth}
-          itemCount={_.size(yearSummaryItemData)}
-          itemSize={getItemSize}
-          itemData={yearSummaryItemData}
-          useIsScrolling
-        >
-          {(props) => (
-            <Row {...props} onSelect={handleOnSelect} />
-          )}
-        </List>
- 
-        <List
-          ref={dateListRef}
-          height={400}
-          width={dateWidth}
-          itemCount={_.size(dateItemData)}
-          itemSize={getDateItemSize}
-          itemData={dateItemData}
-        >
-          {(props) => (
-            <Row {...props} />
-          )}
-        </List>
-     </div>
+      :
+      <div className="d-flex" style={{height: "90%"}}>
+        <div>
+          {!state.summaryView &&
+            <Button variant="primary" onClick={() => dispatch({ type: 'summary_view' } as SummaryViewAction)}>Back</Button>}
+        </div>
+        <Fragment>
+          <AutoSizer>
+            {({ height, width }) => (
+              <Fragment>
+                <div>
+
+                  <List
+                    height={state.summaryView ? height : 0}
+                    width={state.summaryView ? width : 0}
+                    itemCount={_.size(yearSummaryItemData)}
+                    itemSize={getItemSize}
+                    itemData={yearSummaryItemData}
+                    useIsScrolling
+                  >
+                    {(props) => (
+                      <Row {...props} onSelect={handleOnSelect} />
+                    )}
+                  </List>
+                </div>
+
+                <div>
+                  <List
+                    ref={dateListRef}
+                    height={state.summaryView ? 0 : height}
+                    width={state.summaryView ? 0 : width}
+                    itemCount={_.size(dateItemData)}
+                    itemSize={getDateItemSize}
+                    itemData={dateItemData}
+                  >
+                    {(props) => (
+                      <Row {...props} />
+                    )}
+                  </List>
+                </div>
+              </Fragment>
+            )
+            }
+          </AutoSizer>
+        </Fragment>
+      </div>
   );
 }
