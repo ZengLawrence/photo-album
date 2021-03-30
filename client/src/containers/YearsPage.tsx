@@ -39,21 +39,12 @@ export function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoColle
 }
 
 interface Action {
-  type: string,
+  type: "loaded" | "date_view" | "summary_view",
 }
 
 interface LoadAction extends Action {
   type: "loaded",
   photosByDates: PhotosByDate[],
-}
-
-interface DateViewAction extends Action {
-  type: "date_view",
-  year: string,
-}
-
-interface SummaryViewAction extends Action {
-  type: "summary_view"
 }
 
 function reducer(state: YearsPageState, action: Action) {
@@ -62,8 +53,7 @@ function reducer(state: YearsPageState, action: Action) {
       const { photosByDates } = action as LoadAction;
       return { ...state, loading: false, photosByDates };
     case 'date_view':
-      const { year: scrollToYear } = action as DateViewAction;
-      return { ...state, summaryView: false, scrollToYear };
+      return { ...state, summaryView: false };
     case 'summary_view':
       return { ...state, summaryView: true };
     default:
@@ -105,13 +95,13 @@ export const YearsPage = () => {
       <div className="d-flex" style={{ height: "90%" }}>
         <div>
           {!state.summaryView &&
-            <Button variant="primary" onClick={() => dispatch({ type: 'summary_view' } as SummaryViewAction)}>Back</Button>}
+            <Button variant="primary" onClick={() => dispatch({ type: 'summary_view' })}>Back</Button>}
         </div>
-        <TimelinePhotoList 
-          summaryView={summaryView} 
-          photosByDates={photosByDates} 
-          onSelectYear={year => dispatch({ type: "date_view", year } as DateViewAction)} 
-          />
+        <TimelinePhotoList
+          summaryView={summaryView}
+          photosByDates={photosByDates}
+          onSelectYear={() => dispatch({ type: "date_view" })}
+        />
       </div>
   );
 }
