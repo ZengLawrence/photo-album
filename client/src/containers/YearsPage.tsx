@@ -92,7 +92,7 @@ export const YearsPage = () => {
     state.loading
       ? <LoadingSpinner />
       :
-      <div className="d-flex" style={{ height: "90%" }}>
+      <div style={{ height: "90%" }}>
         <div>
           {!state.summaryView &&
             <Button variant="primary" onClick={() => dispatch({ type: 'summary_view' })}>Back</Button>}
