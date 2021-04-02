@@ -8,22 +8,9 @@ import Container from 'react-bootstrap/Container';
 import {AlbumPage} from './containers/AlbumPage';
 import { AlbumDetailPage } from './containers/AlbumDetailPage';
 import { YearsPage } from "./containers/YearsPage";
-import { Nav, Navbar } from "react-bootstrap";
 import { DatesPage } from "./containers/DatesPage";
 import { PhotosByYear } from "./models/Photo";
-
-const AppNavBar = () => {
-  const location = useLocation();
-
-  return (
-    <Navbar>
-      <Nav variant="pills" className="mr-auto">
-        <Nav.Link href="/years" active={location.pathname.startsWith("/years")} >Timeline</Nav.Link>
-        <Nav.Link href="/albums" active={location.pathname.startsWith("/albums")} >Albums</Nav.Link>
-      </Nav>
-    </Navbar>
-  );
-}
+import { AppNavBar } from "./components/AppNavBar";
 
 const DatesPageRoute = () => {
   const location = useLocation();
