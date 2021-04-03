@@ -3,17 +3,8 @@ import axios from "axios";
 import urljoin from 'url-join';
 import { Album, Photo } from "../models";
 
-function url(basePath: string, queryParams: {pageSize: number, skip: number}) {
-  const { pageSize, skip } = queryParams;
-  var urlParts = [basePath];
-  urlParts.push('?pageSize=' + pageSize);
-  urlParts.push('?skip=' + skip);
-  return urljoin(urlParts);
-}
-
-export async function fecthAll(options: {pageSize: number, skip: number}): Promise<Album[]> {
-  const urlPath = url('/api/albums', options);
-  const res = await axios.get(urlPath);
+export async function fecthAll(): Promise<Album[]> {
+  const res = await axios.get('/api/albums');
   const data = res.data;
   const albums = data.albums;
   return albums.map(
