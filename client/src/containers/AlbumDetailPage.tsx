@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import * as albumsApi from '../api/Albums';
+import { AppNavBar } from "../components/AppNavBar";
 import { NavigablePhotoView } from "../components/NavigablePhotoView";
 import { Photo } from "../models";
-import * as albumsApi from '../api/Albums';
 
 // A custom hook that builds on useLocation to parse
 // the query string for you.
@@ -14,10 +15,10 @@ export const AlbumDetailPage = () => {
 
   const query = useQuery();
   const photoName = query.get("focusOn") || undefined;
-  const { albumName } = useParams() as {albumName: string};
+  const { albumName } = useParams() as { albumName: string };
   const [photos, setPhotos] = useState([] as Photo[]);
 
-  useEffect(() =>{
+  useEffect(() => {
     albumsApi.fetch(albumName)
       .then(data => setPhotos(data))
   }, [albumName]);
@@ -28,8 +29,18 @@ export const AlbumDetailPage = () => {
     setPhotos([...photos.slice(0, removedIndex), photo, ...photos.slice(removedIndex + 1)])
   }
 
+  const history = useHistory();
+
   return (
-    <NavigablePhotoView title={albumName} photos={photos} focusOnPhotoName={photoName} onPhotoUpdated={onPhotoUpdated} />
+    <Fragment>
+      <AppNavBar lowerLevelNav onBack={()=>{history.push("/albums")}}/>
+      <NavigablePhotoView 
+        title={albumName} 
+        photos={photos} 
+        focusOnPhotoName={photoName} 
+        onPhotoUpdated={onPhotoUpdated} 
+        />
+    </Fragment>
   )
 }
 
