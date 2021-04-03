@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
-import { Photo } from "../models/Photo";
+import { Photo } from "../models";
 import { PhotoCard } from "./PhotoCard";
 import { PhotoNavBar } from "./PhotoNavBar";
 

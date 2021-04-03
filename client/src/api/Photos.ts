@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Photo } from "../models/Photo";
+import { Photo } from "../models";
 
 function descriptionUrl(albumName: string, photo: Photo){
   return '/api/albums/' + albumName + '/photos/' + photo.name + "/description";

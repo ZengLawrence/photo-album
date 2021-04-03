@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useRef } from 'react';
 import VisibilitySensor from  'react-visibility-sensor';
-import { Photo } from "../models/Photo";
+import { Photo } from "../models";
 import { PhotoThumbnail } from "./PhotoThumbnail";
 
 const NORMAL = "";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { NavigablePhotoView } from "../components/NavigablePhotoView";
-import { Photo } from "../models/Photo";
+import { Photo } from "../models";
 import * as albumsApi from '../api/Albums';
 
 // A custom hook that builds on useLocation to parse
