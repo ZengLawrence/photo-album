@@ -1,10 +1,11 @@
 /** Photo thumbnails by album */
-import { useEffect, useState } from 'react';
-import { PhotoCollection } from '../models/Photo';
-import * as Albums from '../api/Albums';
+import { Fragment, useEffect, useState } from 'react';
 import { Pagination } from 'react-bootstrap';
-import { CompactPhotoCollectionRow } from '../components/CompactPhotoCollectionRow';
 import { useLocation } from 'react-router-dom';
+import * as Albums from '../api/Albums';
+import { AppNavBar } from '../components/AppNavBar';
+import { CompactPhotoCollectionRow } from '../components/CompactPhotoCollectionRow';
+import { PhotoCollection } from '../models/Photo';
 
 const PAGE_SIZE = 10;
 const FIRST_PAGE = "1";
@@ -25,22 +26,22 @@ export const AlbumPage = () => {
   const fetchAlbums = (pageNumb: number) => {
 
     const skip = (pageNumb > 0 ? pageNumb - 1 : 0);
-    Albums.fecthAll({pageSize: PAGE_SIZE, skip})
-      .then( (photoCol : PhotoCollection[]) => {
+    Albums.fecthAll({ pageSize: PAGE_SIZE, skip })
+      .then((photoCol: PhotoCollection[]) => {
         setAlbums(photoCol);
-        });
+      });
   }
-  
+
 
   useEffect(() => {
-    fetchAlbums(pageNumber);    
+    fetchAlbums(pageNumber);
   }, [pageNumber]);
 
   return (
-    <div>
+    <Fragment>
       <AlbumViewNav currentPage={pageNumber} />
-      <AblumViewBody albums={albums}/>
-    </div>
+      <AblumViewBody albums={albums} />
+    </Fragment>
   );
 }
 
@@ -48,14 +49,17 @@ const AlbumViewNav = (props: { currentPage: number }) => {
   const { currentPage } = props;
 
   return (
-    <Pagination>
-      <Pagination.Prev href={"/albums?page=" + (currentPage - 1)} disabled={(currentPage < 2)} />
-      <Pagination.Next  href={"/albums?page=" + (currentPage + 1)}/>
-    </Pagination>
+    <Fragment>
+      <AppNavBar />
+      <Pagination>
+        <Pagination.Prev href={"/albums?page=" + (currentPage - 1)} disabled={(currentPage < 2)} />
+        <Pagination.Next href={"/albums?page=" + (currentPage + 1)} />
+      </Pagination>
+    </Fragment>
   );
 }
 
-const AblumViewBody = (props: {albums: PhotoCollection[]})=> {
+const AblumViewBody = (props: { albums: PhotoCollection[] }) => {
   const { albums } = props;
   return (
     <div>
