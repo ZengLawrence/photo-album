@@ -4,24 +4,9 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from 'react-window';
 import { photoCollections, yearSummary } from "../../containers/YearsPage";
 import { PhotosByDate } from "../../models";
-import { KeyedPhotoCollection } from "./KeyedPhotoCollection";
-import { ListItemData } from "./ListItemData";
+import { listData } from "./listData";
+import { getItemSize } from "./ListItemData";
 import { PhotoListRow } from "./PhotoListRow";
-
-function listData(data: KeyedPhotoCollection[]): ListItemData[] {
-  return _.flatten(_.map(data, listItemData));
-}
-
-// normalize PhotoCollection into a list item data
-function listItemData(pc: KeyedPhotoCollection) {
-  const titleItem: ListItemData = { title: pc.title, key: pc.key };
-  const photoItems: ListItemData[] = _.map(_.chunk(pc.photos, 5), photos => ({ photos, key: pc.key }));
-  return _.concat(titleItem, photoItems);
-}
-
-function getItemSize(item: ListItemData) {
-  return item.title ? 50 : 100;
-}
 
 interface Props {
   summaryView: boolean;
@@ -31,10 +16,10 @@ interface Props {
 
 export const TimelinePhotoList = (props: Props) => {
   const { summaryView, photosByDates, onSelectYear } = props;
-  const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates)),
+  const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates), 5),
     [photosByDates]);
   const getSummaryItemSize = (index: number) => getItemSize(yearSummaryItemData[index]);
-  const dateItemData = useMemo(() => listData(photoCollections(photosByDates)),
+  const dateItemData = useMemo(() => listData(photoCollections(photosByDates), 5),
     [photosByDates]);
   const getDateItemSize = (index: number) => getItemSize(dateItemData[index]);
 
