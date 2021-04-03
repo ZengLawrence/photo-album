@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { Photo } from "../../models/Photo";
+import { Photo } from "../../models";
 import { PhotoThumbnail } from "../PhotoThumbnail";
 import { ListItemData } from "./ListItemData";
 

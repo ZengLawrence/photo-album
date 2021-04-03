@@ -3,7 +3,7 @@ import { Fragment, RefObject, useMemo, useRef } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from 'react-window';
 import { photoCollections, yearSummary } from "../../containers/YearsPage";
-import { PhotosByDate } from "../../models/Photo";
+import { PhotosByDate } from "../../models";
 import { KeyedPhotoCollection } from "./KeyedPhotoCollection";
 import { ListItemData } from "./ListItemData";
 import { PhotoListRow } from "./PhotoListRow";

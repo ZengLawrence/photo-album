@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { PhotoCollection } from "../models/Photo";
+import { PhotoCollection } from "../models";
 import { ThumbnailCollageCard } from "./ThumbnailCollageCard";
 
 export const PhotoCollectionView = (props: { photoCollections: PhotoCollection[] }) => {

@@ -1,4 +1,4 @@
-import { PhotoCollection } from '../../models/Photo';
+import { PhotoCollection } from '../../models';
 
 
 export type KeyedPhotoCollection = (PhotoCollection & { key: string; });

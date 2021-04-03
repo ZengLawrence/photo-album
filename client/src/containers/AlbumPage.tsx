@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import * as Albums from '../api/Albums';
 import { AppNavBar } from '../components/AppNavBar';
 import { CompactPhotoCollectionRow } from '../components/CompactPhotoCollectionRow';
-import { PhotoCollection } from '../models/Photo';
+import { PhotoCollection } from '../models';
 
 const PAGE_SIZE = 10;
 const FIRST_PAGE = "1";

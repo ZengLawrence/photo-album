@@ -1,6 +1,6 @@
 /** A collage of photo thumbnails with title */
 import { Card } from 'react-bootstrap';
-import { Photo, PhotoCollection } from '../models/Photo';
+import { Photo, PhotoCollection } from '../models';
 import { PhotoThumbnail } from './PhotoThumbnail';
 
 function keyValue(photo: Photo) {

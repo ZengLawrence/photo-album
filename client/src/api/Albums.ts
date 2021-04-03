@@ -1,6 +1,6 @@
 import axios from "axios";
 import urljoin from 'url-join';
-import { Photo, PhotoCollection } from "../models/Photo";
+import { Photo, PhotoCollection } from "../models";
 
 function url(basePath: string, queryParams: {pageSize: number, skip: number}) {
   const { pageSize, skip } = queryParams;

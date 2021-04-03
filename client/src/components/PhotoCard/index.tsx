@@ -1,4 +1,4 @@
-import { Photo } from '../../models/Photo';
+import { Photo } from '../../models';
 import { Description } from './Description';
 import { PhotoImage } from './PhotoImage';
 import * as photoApi from '../../api/Photos';

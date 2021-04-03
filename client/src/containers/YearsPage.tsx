@@ -5,7 +5,7 @@ import * as YearsAPI from "../api/Years";
 import { AppNavBar } from "../components/AppNavBar";
 import { KeyedPhotoCollection } from "../components/PhotoCollectionList/KeyedPhotoCollection";
 import { TimelinePhotoList } from "../components/PhotoCollectionList/TimelinePhotoList";
-import { PhotoCollection, PhotosByDate } from "../models/Photo";
+import { PhotoCollection, PhotosByDate } from "../models";
 
 function yearView(photosByDate: PhotosByDate[]) {
   const year = (photosByDate: PhotosByDate) => photosByDate.date.substring(0, 4);

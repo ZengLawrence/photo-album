@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import urljoin from 'url-join';
 import VisibilitySensor from  'react-visibility-sensor';
-import {Photo, PhotoCollection} from '../models/Photo';
+import {Photo, PhotoCollection} from '../models';
 import { PhotoThumbnail } from './PhotoThumbnail';
 import { Card } from 'react-bootstrap';
 

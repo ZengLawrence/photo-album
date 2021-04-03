@@ -1,7 +1,7 @@
 import { HTMLProps } from 'react';
 import Image from 'react-bootstrap/Image';
 import urljoin from 'url-join';
-import { Photo } from "../../models/Photo";
+import { Photo } from "../../models";
 
 const DEFAULT_SIZE = 300;
 
