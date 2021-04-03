@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { useMemo } from "react";
+import { useHistory } from "react-router";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from 'react-window';
 import { Album, Photo } from "../../models";
@@ -30,6 +31,8 @@ export const AlbumPhotoList = (props: Props) => {
   const itemData = useMemo(() => listData(photoCollections(albums), 5),
     [albums]);
 
+  const history = useHistory();
+
   return (
     <AutoSizer>
       {({ height, width }) => (
@@ -42,7 +45,11 @@ export const AlbumPhotoList = (props: Props) => {
           useIsScrolling
         >
           {(props) => (
-            <PhotoListRow {...props} />
+            <PhotoListRow
+              {...props}
+              onSelect={albumName => history.push("/albums/" + albumName)}
+              onSelectPhoto={(albumName, photoName) => history.push("/albums/" + albumName + "?focusOn=" + photoName)}
+            />
           )}
         </List>
       )}
