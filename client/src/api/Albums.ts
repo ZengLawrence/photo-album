@@ -6,15 +6,7 @@ import { Album, Photo } from "../models";
 export async function fecthAll(): Promise<Album[]> {
   const res = await axios.get('/api/albums');
   const data = res.data;
-  const albums = data.albums;
-  return albums.map(
-    (albm: { albumName: string; photos: Photo[]; }) => {
-      return {
-        name: albm.albumName,
-        photoNames: _.map(albm.photos, "name")
-      };
-    }
-  );
+  return data.albums;
 }
 
 export async function fetch(albumName: string): Promise<Photo[]> {
