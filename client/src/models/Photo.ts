@@ -13,8 +13,3 @@ export interface PhotosByDate {
   date: string,
   photos: Photo[],
 }
-
-export interface PhotosByYear {
-  year: string,
-  photosByDate: PhotosByDate[]
-}

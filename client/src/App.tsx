@@ -2,21 +2,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
-  useLocation} from "react-router-dom";
+  Redirect} from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import {AlbumPage} from './containers/AlbumPage';
 import { AlbumDetailPage } from './containers/AlbumDetailPage';
 import { YearsPage } from "./containers/YearsPage";
-import { DatesPage } from "./containers/DatesPage";
-import { PhotosByYear } from "./models/Photo";
-
-const DatesPageRoute = () => {
-  const location = useLocation();
-  const photosByYear  = location.state as PhotosByYear;
-
-  return (<DatesPage photosByYear={photosByYear} />)
-}
 
 function App() {
   return (
@@ -29,9 +19,6 @@ function App() {
             </Route>
             <Route exact path="/years">
               <YearsPage />
-            </Route>
-            <Route path="/years/:year">
-              <DatesPageRoute />
             </Route>
             <Route exact path="/albums">
               <AlbumPage />
