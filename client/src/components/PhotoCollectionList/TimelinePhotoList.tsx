@@ -2,11 +2,43 @@ import _ from "lodash";
 import { Fragment, RefObject, useMemo, useRef } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from 'react-window';
-import { photoCollections, yearSummary } from "../../containers/YearsPage";
-import { PhotosByDate } from "../../models";
+import { PhotoCollection, PhotosByDate } from "../../models";
+import { KeyedPhotoCollection } from "./KeyedPhotoCollection";
 import { listData } from "./listData";
 import { getItemSize } from "./ListItemData";
 import { PhotoListRow } from "./PhotoListRow";
+
+function yearView(photosByDate: PhotosByDate[]) {
+  const year = (photosByDate: PhotosByDate) => photosByDate.date.substring(0, 4);
+  const photoCollection = (photosByDate: PhotosByDate[], year: string): PhotoCollection => ({
+    title: year,
+    photos: _.flatMap(photosByDate, 'photos'),
+  });
+
+  return _.map(_.groupBy(photosByDate, year), photoCollection);
+}
+
+function yearSummary(photosByDate: PhotosByDate[]): KeyedPhotoCollection[] {
+  const sample = (photoCollection: PhotoCollection) => {
+    const { title, photos } = photoCollection;
+    return {
+      title,
+      photos: _.sampleSize(_.flatten(photos), 30),
+      key: title,
+    };
+  };
+
+  return _.map(yearView(photosByDate), sample);
+}
+
+function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[] {
+  const photoCollection = (pbd: PhotosByDate) => ({
+    title: pbd.date,
+    photos: pbd.photos,
+    key: pbd.date,
+  });
+  return _.map(photosByDates, photoCollection);
+}
 
 interface Props {
   summaryView: boolean;

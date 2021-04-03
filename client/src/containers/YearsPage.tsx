@@ -1,43 +1,9 @@
-import _ from "lodash";
 import { Fragment, useEffect, useReducer } from "react";
 import { Spinner } from "react-bootstrap";
 import * as YearsAPI from "../api/Years";
 import { AppNavBar } from "../components/AppNavBar";
-import { KeyedPhotoCollection } from "../components/PhotoCollectionList/KeyedPhotoCollection";
 import { TimelinePhotoList } from "../components/PhotoCollectionList/TimelinePhotoList";
-import { PhotoCollection, PhotosByDate } from "../models";
-
-function yearView(photosByDate: PhotosByDate[]) {
-  const year = (photosByDate: PhotosByDate) => photosByDate.date.substring(0, 4);
-  const photoCollection = (photosByDate: PhotosByDate[], year: string): PhotoCollection => ({
-    title: year,
-    photos: _.flatMap(photosByDate, 'photos'),
-  });
-
-  return _.map(_.groupBy(photosByDate, year), photoCollection);
-}
-
-export function yearSummary(photosByDate: PhotosByDate[]): KeyedPhotoCollection[] {
-  const sample = (photoCollection: PhotoCollection) => {
-    const { title, photos } = photoCollection;
-    return {
-      title,
-      photos: _.sampleSize(_.flatten(photos), 30),
-      key: title,
-    };
-  };
-
-  return _.map(yearView(photosByDate), sample);
-}
-
-export function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[] {
-  const photoCollection = (pbd: PhotosByDate) => ({
-    title: pbd.date,
-    photos: pbd.photos,
-    key: pbd.date,
-  });
-  return _.map(photosByDates, photoCollection);
-}
+import { PhotosByDate } from "../models";
 
 interface Action {
   type: "loaded" | "date_view" | "summary_view",
