@@ -1,4 +1,3 @@
-import _ from "lodash";
 import axios from "axios";
 import urljoin from 'url-join';
 import { Album, Photo } from "../models";
