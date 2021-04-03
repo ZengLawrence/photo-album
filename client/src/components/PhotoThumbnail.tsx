@@ -1,5 +1,4 @@
-import { HTMLProps } from 'react';
-import Image from 'react-bootstrap/Image';
+import Image, { ImageProps } from 'react-bootstrap/Image';
 import urljoin from 'url-join';
 
 const DEFAULT_SIZE = 100;
@@ -11,12 +10,12 @@ interface PhotoThumbnailProps {
   visible?: boolean // by default, it is true
 }
 
-export const PhotoThumbnail = (props: PhotoThumbnailProps & HTMLProps<HTMLDivElement>) => {
-  const {albumName, photoName, visible, className} = props;
+export const PhotoThumbnail = (props: PhotoThumbnailProps & ImageProps) => {
+  const {albumName, photoName, visible} = props;
   const maxSize = (props.maxSize ? props.maxSize : DEFAULT_SIZE);
   const src = (visible === undefined || visible) ? thumbnailLink(albumName, photoName, maxSize) : "";
   return (
-    <Image src={src} alt={photoName} width={maxSize} height={maxSize} className={className} onClick={props.onClick} />
+    <Image {...props} src={src} alt={photoName} width={maxSize} height={maxSize} onClick={props.onClick} />
   );
 }
 
