@@ -1,11 +1,11 @@
 import { useLocation } from "react-router-dom";
 import { Button, Image, Nav, Navbar } from "react-bootstrap";
 
-export const AppNavBar = (props: { secondaryLevelNav?: boolean, onBack?: () => void }) => {
-  const { secondaryLevelNav, onBack } = props;
+export const AppNavBar = (props: { lowerLevelNav?: boolean, onBack?: () => void }) => {
+  const { lowerLevelNav, onBack } = props;
   const location = useLocation();
 
-  const expandBreakPoint = secondaryLevelNav ? "xl" : "sm";
+  const expandBreakPoint = lowerLevelNav ? "xl" : "sm";
 
   return (
     <Navbar collapseOnSelect expand={expandBreakPoint}>
@@ -16,10 +16,10 @@ export const AppNavBar = (props: { secondaryLevelNav?: boolean, onBack?: () => v
           height="30"
           className="d-inline-block align-top"
           alt="Photo Album logo"
-        />{secondaryLevelNav ? "" : " Photo Album"}
+        />{lowerLevelNav ? "" : " Photo Album"}
       </Navbar.Brand>
 
-      {secondaryLevelNav &&
+      {lowerLevelNav &&
         <Nav className="mr-auto">
           <Button variant="outline-secondary" onClick={onBack}>Back</Button>
         </Nav>

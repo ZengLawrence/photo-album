@@ -94,7 +94,7 @@ export const YearsPage = () => {
       ? <LoadingSpinner />
       :
       <Fragment>
-        <AppNavBar secondaryLevelNav={!summaryView} onBack={() => dispatch({ type: 'summary_view' })} />
+        <AppNavBar lowerLevelNav={!summaryView} onBack={() => dispatch({ type: 'summary_view' })} />
         <div style={{ height: "90%" }}>
           <TimelinePhotoList
             summaryView={summaryView}
