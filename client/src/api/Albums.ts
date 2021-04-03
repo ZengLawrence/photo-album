@@ -1,6 +1,7 @@
+import _ from "lodash";
 import axios from "axios";
 import urljoin from 'url-join';
-import { Photo, PhotoCollection } from "../models";
+import { Album, Photo } from "../models";
 
 function url(basePath: string, queryParams: {pageSize: number, skip: number}) {
   const { pageSize, skip } = queryParams;
@@ -10,7 +11,7 @@ function url(basePath: string, queryParams: {pageSize: number, skip: number}) {
   return urljoin(urlParts);
 }
 
-export async function fecthAll(options: {pageSize: number, skip: number}): Promise<PhotoCollection[]> {
+export async function fecthAll(options: {pageSize: number, skip: number}): Promise<Album[]> {
   const urlPath = url('/api/albums', options);
   const res = await axios.get(urlPath);
   const data = res.data;
@@ -18,8 +19,8 @@ export async function fecthAll(options: {pageSize: number, skip: number}): Promi
   return albums.map(
     (albm: { albumName: string; photos: Photo[]; }) => {
       return {
-        title: albm.albumName,
-        photos: albm.photos
+        name: albm.albumName,
+        photoNames: _.map(albm.photos, "name")
       };
     }
   );
