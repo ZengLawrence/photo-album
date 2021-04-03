@@ -1,7 +1,8 @@
 import _ from "lodash";
-import { useEffect, useReducer } from "react";
-import { Button, Spinner } from "react-bootstrap";
+import { Fragment, useEffect, useReducer } from "react";
+import { Spinner } from "react-bootstrap";
 import * as YearsAPI from "../api/Years";
+import { AppNavBar } from "../components/AppNavBar";
 import { KeyedPhotoCollection } from "../components/PhotoCollectionList/KeyedPhotoCollection";
 import { TimelinePhotoList } from "../components/PhotoCollectionList/TimelinePhotoList";
 import { PhotoCollection, PhotosByDate } from "../models/Photo";
@@ -92,16 +93,15 @@ export const YearsPage = () => {
     state.loading
       ? <LoadingSpinner />
       :
-      <div style={{ height: "90%" }}>
-        <div>
-          {!state.summaryView &&
-            <Button variant="primary" onClick={() => dispatch({ type: 'summary_view' })}>Back</Button>}
+      <Fragment>
+        <AppNavBar secondaryLevelNav={!summaryView} onBack={() => dispatch({ type: 'summary_view' })} />
+        <div style={{ height: "90%" }}>
+          <TimelinePhotoList
+            summaryView={summaryView}
+            photosByDates={photosByDates}
+            onSelectYear={() => dispatch({ type: "date_view" })}
+          />
         </div>
-        <TimelinePhotoList
-          summaryView={summaryView}
-          photosByDates={photosByDates}
-          onSelectYear={() => dispatch({ type: "date_view" })}
-        />
-      </div>
+      </Fragment>
   );
 }

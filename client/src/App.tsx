@@ -10,7 +10,6 @@ import { AlbumDetailPage } from './containers/AlbumDetailPage';
 import { YearsPage } from "./containers/YearsPage";
 import { DatesPage } from "./containers/DatesPage";
 import { PhotosByYear } from "./models/Photo";
-import { AppNavBar } from "./components/AppNavBar";
 
 const DatesPageRoute = () => {
   const location = useLocation();
@@ -23,7 +22,6 @@ function App() {
   return (
     <Router>
       <Container className="h-100">
-        <AppNavBar />
 
         <Switch>
             <Route exact path="/">
