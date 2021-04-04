@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { RefObject, useRef, useState } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeList as List } from 'react-window';
+import { Align, FixedSizeList as List } from 'react-window';
 import { Photo } from "../models";
 import { PhotoThumbnail } from "./PhotoThumbnail";
 
@@ -13,18 +13,24 @@ function photoName(photo: Photo) {
   return photo.name;
 }
 
-export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
-  const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
-  
+function useFirstScroll(index: number, align?: Align) : [RefObject<List>, () => void]{
   const [firstRender, setFirstRender] = useState(true);
   const listRef = useRef() as RefObject<List>;
-  const focusedPhotoIndex = _.findIndex(photos, p => p.name === selectedPhotoName);
   const firstScroll = () => {
     if (firstRender) {
       setFirstRender(false)
-      listRef.current?.scrollToItem(focusedPhotoIndex, "center");
+      listRef.current?.scrollToItem(index, align);
     }
   };
+  return [listRef, firstScroll];
+}
+
+export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
+  const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
+
+  const selected = (photo: Photo) => photo.name === selectedPhotoName;
+  const focusedPhotoIndex = _.findIndex(photos, selected);
+  const [listRef, firstScroll] = useFirstScroll(focusedPhotoIndex, "center");
 
   return (
     <div className="w-100">
@@ -47,7 +53,7 @@ export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selecte
                 photoName={photoName(data[index])}
                 maxSize={THUMBNAIL_SIZE}
                 onClick={() => onSelectPhoto(photoName(data[index]))}
-                className={photoName(data[index]) === selectedPhotoName ? SELECTED : NORMAL}
+                className={selected(data[index]) ? SELECTED : NORMAL}
                 visible={!isScrolling}
                 style={style}
               />
