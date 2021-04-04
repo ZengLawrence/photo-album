@@ -16,6 +16,11 @@ function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[]
   return _.map(photosByDates, photoCollection);
 }
 
+function calcScrollOffset(scrollToIndex: number, getItemSize: (index: number) => number) {
+  const sumOffset = (sum: number, i: number) => sum + getItemSize(i);
+  return _.reduce(_.range(scrollToIndex), sumOffset);
+}
+
 interface Props {
   height: number;
   width: number;
@@ -32,9 +37,7 @@ export const TimelinePhotoList = (props: Props) => {
   const getDateItemSize = (index: number) => getItemSize(dateItemData[index]);
 
   const scrollToIndex = scrollToYear ? _.findIndex(dateItemData, item => item.key.startsWith(scrollToYear)) : 0;
-  const initialScrollOffset = _.reduce(_.range(scrollToIndex), function(sum, i) {
-    return sum + getDateItemSize(i);
-  });
+  const initialScrollOffset = calcScrollOffset(scrollToIndex, getDateItemSize);
 
   return (
     <List
