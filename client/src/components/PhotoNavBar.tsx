@@ -1,9 +1,9 @@
 import _ from "lodash";
-import { RefObject, useRef, useState } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { Align, FixedSizeList as List } from 'react-window';
+import { FixedSizeList as List } from 'react-window';
 import { Photo } from "../models";
 import { PhotoThumbnail } from "./PhotoThumbnail";
+import { useFirstScroll } from "./useFirstScroll";
 
 const NORMAL = "";
 const SELECTED = "PA-Border border-primary";
@@ -13,24 +13,12 @@ function photoName(photo: Photo) {
   return photo.name;
 }
 
-function useFirstScroll(index: number, align?: Align) : [RefObject<List>, () => void]{
-  const [firstRender, setFirstRender] = useState(true);
-  const listRef = useRef() as RefObject<List>;
-  const firstScroll = () => {
-    if (firstRender) {
-      setFirstRender(false)
-      listRef.current?.scrollToItem(index, align);
-    }
-  };
-  return [listRef, firstScroll];
-}
-
 export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
   const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
 
   const selected = (photo: Photo) => photo.name === selectedPhotoName;
   const focusedPhotoIndex = _.findIndex(photos, selected);
-  const [listRef, firstScroll] = useFirstScroll(focusedPhotoIndex, "center");
+  const [listRef, firstScroll] = useFirstScroll<List>(focusedPhotoIndex, "center");
 
   return (
     <div className="w-100">
