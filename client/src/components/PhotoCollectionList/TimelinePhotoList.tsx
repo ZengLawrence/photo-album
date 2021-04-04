@@ -1,34 +1,12 @@
 import _ from "lodash";
 import { Fragment, RefObject, useMemo, useRef } from "react";
 import { VariableSizeList as List } from 'react-window';
-import { PhotoCollection, PhotosByDate } from "../../models";
+import { PhotosByDate } from "../../models";
 import { KeyedPhotoCollection } from "./KeyedPhotoCollection";
 import { listData } from "./listData";
 import { getItemSize } from "./ListItemData";
 import { PhotoListRow } from "./PhotoListRow";
-
-function yearView(photosByDate: PhotosByDate[]) {
-  const year = (photosByDate: PhotosByDate) => photosByDate.date.substring(0, 4);
-  const photoCollection = (photosByDate: PhotosByDate[], year: string): PhotoCollection => ({
-    title: year,
-    photos: _.flatMap(photosByDate, 'photos'),
-  });
-
-  return _.map(_.groupBy(photosByDate, year), photoCollection);
-}
-
-function yearSummary(photosByDate: PhotosByDate[]): KeyedPhotoCollection[] {
-  const sample = (photoCollection: PhotoCollection) => {
-    const { title, photos } = photoCollection;
-    return {
-      title,
-      photos: _.sampleSize(_.flatten(photos), 30),
-      key: title,
-    };
-  };
-
-  return _.map(yearView(photosByDate), sample);
-}
+import { TimelineSummaryPhotoList } from "./TimelineSummaryPhotoList";
 
 function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[] {
   const photoCollection = (pbd: PhotosByDate) => ({
@@ -50,9 +28,6 @@ interface Props {
 export const TimelinePhotoList = (props: Props) => {
   const { height, width, summaryView, photosByDates, onSelectYear } = props;
   const numbOfPhotosPerRow = Math.floor(width / 100);
-  const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates), numbOfPhotosPerRow),
-    [photosByDates, numbOfPhotosPerRow]);
-  const getSummaryItemSize = (index: number) => getItemSize(yearSummaryItemData[index]);
   const dateItemData = useMemo(() => listData(photoCollections(photosByDates), numbOfPhotosPerRow),
     [photosByDates, numbOfPhotosPerRow]);
   const getDateItemSize = (index: number) => getItemSize(dateItemData[index]);
@@ -67,18 +42,12 @@ export const TimelinePhotoList = (props: Props) => {
   return (
     <Fragment>
       <div>
-        <List
+        <TimelineSummaryPhotoList
           height={summaryView ? height : 0}
           width={summaryView ? width : 0}
-          itemCount={_.size(yearSummaryItemData)}
-          itemSize={getSummaryItemSize}
-          itemData={yearSummaryItemData}
-          useIsScrolling
-        >
-          {(props) => (
-            <PhotoListRow {...props} onSelect={handleOnSelect} />
-          )}
-        </List>
+          photosByDates={photosByDates}
+          onSelectYear={handleOnSelect}
+        />
       </div>
 
       <div>
