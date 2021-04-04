@@ -45,7 +45,7 @@ async function fetchPhotoMetadata(albumName) {
 
 async function fetchAllAlbums() {
     const allAlbums = new Promise((resolve, reject) => {
-        db.photos.find({}, {albumName: 1, photoName: 1}).sort({albumName: 1}).exec((err, docs) => {
+        db.photos.find({}, {albumName: 1, photoName: 1}).sort({albumName: 1, photoName: 1}).exec((err, docs) => {
             if (err) reject(err);
             resolve(docs)
         });
