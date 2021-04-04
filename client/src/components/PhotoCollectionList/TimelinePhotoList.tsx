@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { Fragment, RefObject, useMemo, useRef } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeList as List } from 'react-window';
 import { PhotoCollection, PhotosByDate } from "../../models";
 import { KeyedPhotoCollection } from "./KeyedPhotoCollection";
@@ -41,18 +40,21 @@ function photoCollections(photosByDates: PhotosByDate[]): KeyedPhotoCollection[]
 }
 
 interface Props {
+  height: number;
+  width: number;
   summaryView: boolean;
-  photosByDates: PhotosByDate[]; 
+  photosByDates: PhotosByDate[];
   onSelectYear: (year: string) => void;
 }
 
 export const TimelinePhotoList = (props: Props) => {
-  const { summaryView, photosByDates, onSelectYear } = props;
-  const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates), 5),
-    [photosByDates]);
+  const { height, width, summaryView, photosByDates, onSelectYear } = props;
+  const numbOfPhotosPerRow = Math.floor(width / 100);
+  const yearSummaryItemData = useMemo(() => listData(yearSummary(photosByDates), numbOfPhotosPerRow),
+    [photosByDates, numbOfPhotosPerRow]);
   const getSummaryItemSize = (index: number) => getItemSize(yearSummaryItemData[index]);
-  const dateItemData = useMemo(() => listData(photoCollections(photosByDates), 5),
-    [photosByDates]);
+  const dateItemData = useMemo(() => listData(photoCollections(photosByDates), numbOfPhotosPerRow),
+    [photosByDates, numbOfPhotosPerRow]);
   const getDateItemSize = (index: number) => getItemSize(dateItemData[index]);
 
   const dateListRef = useRef() as RefObject<List>;
@@ -63,40 +65,36 @@ export const TimelinePhotoList = (props: Props) => {
   };
 
   return (
-    <AutoSizer>
-      {({ height, width }) => (
-        <Fragment>
-          <div>
-            <List
-              height={summaryView ? height : 0}
-              width={summaryView ? width : 0}
-              itemCount={_.size(yearSummaryItemData)}
-              itemSize={getSummaryItemSize}
-              itemData={yearSummaryItemData}
-              useIsScrolling
-            >
-              {(props) => (
-                <PhotoListRow {...props} onSelect={handleOnSelect} />
-              )}
-            </List>
-          </div>
+    <Fragment>
+      <div>
+        <List
+          height={summaryView ? height : 0}
+          width={summaryView ? width : 0}
+          itemCount={_.size(yearSummaryItemData)}
+          itemSize={getSummaryItemSize}
+          itemData={yearSummaryItemData}
+          useIsScrolling
+        >
+          {(props) => (
+            <PhotoListRow {...props} onSelect={handleOnSelect} />
+          )}
+        </List>
+      </div>
 
-          <div>
-            <List
-              ref={dateListRef}
-              height={summaryView ? 0 : height}
-              width={summaryView ? 0 : width}
-              itemCount={_.size(dateItemData)}
-              itemSize={getDateItemSize}
-              itemData={dateItemData}
-            >
-              {(props) => (
-                <PhotoListRow {...props} />
-              )}
-            </List>
-          </div>
-        </Fragment>
-      )}
-    </AutoSizer>
+      <div>
+        <List
+          ref={dateListRef}
+          height={summaryView ? 0 : height}
+          width={summaryView ? 0 : width}
+          itemCount={_.size(dateItemData)}
+          itemSize={getDateItemSize}
+          itemData={dateItemData}
+        >
+          {(props) => (
+            <PhotoListRow {...props} />
+          )}
+        </List>
+      </div>
+    </Fragment>
   );
 };

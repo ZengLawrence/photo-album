@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useReducer } from "react";
 import { Spinner } from "react-bootstrap";
+import AutoSizer from "react-virtualized-auto-sizer";
 import * as YearsAPI from "../api/Years";
 import { AppNavBar } from "../components/AppNavBar";
 import { TimelinePhotoList } from "../components/PhotoCollectionList/TimelinePhotoList";
@@ -62,11 +63,16 @@ export const YearsPage = () => {
       <Fragment>
         <AppNavBar lowerLevelNav={!summaryView} onBack={() => dispatch({ type: 'summary_view' })} />
         <div style={{ height: "90%" }}>
-          <TimelinePhotoList
-            summaryView={summaryView}
-            photosByDates={photosByDates}
-            onSelectYear={() => dispatch({ type: "date_view" })}
-          />
+          <AutoSizer>
+            {(props) => (
+              <TimelinePhotoList
+                {...props}
+                summaryView={summaryView}
+                photosByDates={photosByDates}
+                onSelectYear={() => dispatch({ type: "date_view" })}
+              />
+            )}
+          </AutoSizer>
         </div>
       </Fragment>
   );
