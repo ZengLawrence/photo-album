@@ -8,6 +8,10 @@ const NORMAL = "";
 const SELECTED = "PA-Border border-primary";
 const THUMBNAIL_SIZE = 100;
 
+function photoName(photo: Photo) {
+  return photo.name;
+}
+
 export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
   const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
 
@@ -27,10 +31,10 @@ export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selecte
             {({ data, index, style, isScrolling }) => (
               <PhotoThumbnail
                 albumName={albumName}
-                photoName={data[index].name}
+                photoName={photoName(data[index])}
                 maxSize={THUMBNAIL_SIZE}
-                onClick={() => onSelectPhoto(data[index].name)}
-                className={data[index].name === selectedPhotoName ? SELECTED : NORMAL}
+                onClick={() => onSelectPhoto(photoName(data[index]))}
+                className={photoName(data[index]) === selectedPhotoName ? SELECTED : NORMAL}
                 visible={!isScrolling}
                 style={style}
               />
