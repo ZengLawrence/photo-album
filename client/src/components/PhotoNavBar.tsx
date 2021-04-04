@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { RefObject, useRef, useState } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from 'react-window';
 import { Photo } from "../models";
@@ -14,12 +15,23 @@ function photoName(photo: Photo) {
 
 export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selectedPhotoName?: string; onSelectPhoto: (photoName: string) => void; }) {
   const { albumName, photos, selectedPhotoName, onSelectPhoto } = props;
+  
+  const [firstRender, setFirstRender] = useState(true);
+  const listRef = useRef() as RefObject<List>;
+  const focusedPhotoIndex = _.findIndex(photos, p => p.name === selectedPhotoName);
+  const firstScroll = () => {
+    if (firstRender) {
+      setFirstRender(false)
+      listRef.current?.scrollToItem(focusedPhotoIndex, "center");
+    }
+  };
 
   return (
     <div className="w-100">
       <AutoSizer disableHeight>
         {({ width }) => (
           <List
+            ref={listRef}
             height={THUMBNAIL_SIZE}
             width={width}
             itemCount={_.size(photos)}
@@ -27,6 +39,7 @@ export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selecte
             itemData={photos}
             layout="horizontal"
             useIsScrolling
+            onItemsRendered={firstScroll}
           >
             {({ data, index, style, isScrolling }) => (
               <PhotoThumbnail
