@@ -3,7 +3,6 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from 'react-window';
 import { Photo } from "../models";
 import { PhotoThumbnail } from "./PhotoThumbnail";
-import { useFirstScroll } from "./useFirstScroll";
 
 const NORMAL = "";
 const SELECTED = "PA-Border border-primary";
@@ -18,14 +17,13 @@ export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selecte
 
   const selected = (photo: Photo) => photo.name === selectedPhotoName;
   const focusedPhotoIndex = _.findIndex(photos, selected);
-  const [listRef, firstScroll] = useFirstScroll<List>(focusedPhotoIndex, "center");
+  const initialScrollOffset = focusedPhotoIndex * THUMBNAIL_SIZE;
 
   return (
     <div className="w-100">
       <AutoSizer disableHeight>
         {({ width }) => (
           <List
-            ref={listRef}
             height={THUMBNAIL_SIZE}
             width={width}
             itemCount={_.size(photos)}
@@ -33,7 +31,7 @@ export function PhotoNavBar(props: { albumName: string; photos: Photo[]; selecte
             itemData={photos}
             layout="horizontal"
             useIsScrolling
-            onItemsRendered={firstScroll}
+            initialScrollOffset={initialScrollOffset}
           >
             {({ data, index, style, isScrolling }) => (
               <PhotoThumbnail
