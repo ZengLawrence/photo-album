@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import AutoSizer from "react-virtualized-auto-sizer";
 import * as Albums from '../api/Albums';
 import { AppNavBar } from '../components/AppNavBar';
 import { AlbumPhotoList } from '../components/PhotoCollectionList/AlbumPhotoList';
@@ -19,7 +20,11 @@ export const AlbumPage = () => {
     <Fragment>
       <AppNavBar />
       <div style={{ height: "90%" }}>
-        <AlbumPhotoList albums={albums} />
+        <AutoSizer>
+          {props => (
+            <AlbumPhotoList {...props} albums={albums} />
+          )}
+        </AutoSizer>
       </div>
     </Fragment>
   );
