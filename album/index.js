@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const fs = require('fs');
 const scanner = require('./scanner');
 const albumUtil = require('./util');
@@ -42,6 +43,17 @@ async function fetchPhotoMetadata(albumName) {
     });
 }
 
+async function fetchAllAlbums() {
+    const allAlbums = new Promise((resolve, reject) => {
+        db.photos.find({}, {albumName: 1, photoName: 1}).sort({albumName: 1, photoName: 1}).exec((err, docs) => {
+            if (err) reject(err);
+            resolve(docs)
+        });
+    })
+    const docs = await allAlbums;
+    return _.map(_.groupBy(docs, "albumName"), (albums, name) => ({name, photoNames: _.map(albums, "photoName")}));
+}
+
 function savePhotoDescription({albumName, photoName}, desc) {
     return new Promise((resolve, reject) => {
         db.photos.update(
@@ -65,3 +77,4 @@ exports.getPhotoFileName = albumUtil.getPhotoFilePathName;
 exports.scanAlbumFolders = scanner.scanAlbumFolders;
 exports.savePhotoDescription = savePhotoDescription;
 exports.fetchPhotoMetadata = fetchPhotoMetadata;
+exports.fetchAllAlbums = fetchAllAlbums;

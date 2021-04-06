@@ -2,11 +2,33 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect} from "react-router-dom";
+  Redirect,
+  useLocation,
+  useParams} from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import {AlbumPage} from './containers/AlbumPage';
 import { AlbumDetailPage } from './containers/AlbumDetailPage';
 import { YearsPage } from "./containers/YearsPage";
+import { DatesPage } from "./containers/DatesPage";
+
+// A custom hook that builds on useLocation to parse
+// the query string for you.
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
+const DatesPageRoute = () => {
+  const query = useQuery();
+  const year = query.get("scrollToYear") || undefined;
+  return <DatesPage scrollToYear={year} />;
+}
+
+const AlbumDetailPageRoute = () => {
+  const { albumName } = useParams() as { albumName: string };
+  const query = useQuery();
+  const focusOnPhotoName = query.get("focusOn") || undefined;
+  return <AlbumDetailPage albumName={albumName} focusOnPhotoName={focusOnPhotoName} />;
+}
 
 function App() {
   return (
@@ -20,10 +42,13 @@ function App() {
             <Route exact path="/years">
               <YearsPage />
             </Route>
+            <Route path="/dates">
+              <DatesPageRoute />
+            </Route>
             <Route exact path="/albums">
               <AlbumPage />
             </Route>
-            <Route path="/albums/:albumName" children={<AlbumDetailPage />} />
+            <Route path="/albums/:albumName" children={<AlbumDetailPageRoute />} />
         </Switch>
       </Container>
     </Router>

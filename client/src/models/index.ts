@@ -13,3 +13,8 @@ export interface PhotosByDate {
   date: string,
   photos: Photo[],
 }
+
+export interface Album {
+  name: string,
+  photoNames: string[]
+}

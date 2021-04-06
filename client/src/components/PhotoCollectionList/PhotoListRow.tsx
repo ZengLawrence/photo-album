@@ -13,12 +13,14 @@ interface RowProps {
   style: CSSProperties;
   isScrolling?: boolean;
   onSelect?: (key: string) => void;
+  onSelectPhoto?: (albumName: string, photoName: string) => void;
 }
 
 export const PhotoListRow = (props: RowProps) => {
-  const { data, index, style, isScrolling, onSelect } = props;
+  const { data, index, style, isScrolling, onSelect, onSelectPhoto } = props;
   const rowData = data[index];
   const handleOnClick = () => onSelect && onSelect(rowData.key);
+  const handleOnClickPhotoRow = onSelectPhoto ? undefined : handleOnClick;
 
   if (rowData.title) {
     return (
@@ -26,7 +28,7 @@ export const PhotoListRow = (props: RowProps) => {
     );
   } else {
     return (
-      <div style={style} className="d-flex" onClick={handleOnClick}>
+      <div style={style} className="d-flex" onClick={handleOnClickPhotoRow}>
         {rowData.photos &&
           rowData.photos.map(p => (
             // Without the `key`, React will fire a key warning
@@ -35,7 +37,9 @@ export const PhotoListRow = (props: RowProps) => {
               albumName={p.albumName || ""}
               photoName={p.name}
               maxSize={100}
-              visible={!isScrolling} />
+              visible={!isScrolling}
+              onClick={() => onSelectPhoto && onSelectPhoto(p.albumName || "", p.name)}
+            />
           ))}
       </div>
     );

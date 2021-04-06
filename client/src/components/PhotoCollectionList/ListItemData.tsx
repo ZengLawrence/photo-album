@@ -5,3 +5,7 @@ export interface ListItemData {
   photos?: Photo[];
   key: string;
 }
+
+export function getItemSize(item: ListItemData) {
+  return item.title ? 50 : 100;
+}

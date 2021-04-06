@@ -20,14 +20,11 @@ async function albumEntry(albumName) {
 }
 
 router.get('/', function(req, res, next) {
-  const pageSize = parseInt(req.query.pageSize);
-  const skip = parseInt(req.query.skip);
-  Promise.all(fetchAll(skip, pageSize))
+  album.fetchAllAlbums()
     .then(albums => {
       res.json({ 
         albums
         });
-    
     });
 });
 
