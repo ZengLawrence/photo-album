@@ -1,17 +1,11 @@
 import _ from "lodash";
 import { Fragment, useEffect, useReducer } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as albumsApi from '../api/Albums';
 import { AppNavBar } from "../components/AppNavBar";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { NavigablePhotoView } from "../components/NavigablePhotoView";
 import { Photo } from "../models";
-
-// A custom hook that builds on useLocation to parse
-// the query string for you.
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
 
 interface Action {
   type: "loaded" | "update",
@@ -54,11 +48,14 @@ interface AlbumDetailPageState {
   loading: boolean,
 }
 
-export const AlbumDetailPage = () => {
+interface Props {
+  albumName: string;
+  focusOnPhotoName?: string
+}
 
-  const query = useQuery();
-  const photoName = query.get("focusOn") || undefined;
-  const { albumName } = useParams() as { albumName: string };
+export const AlbumDetailPage = (props: Props) => {
+
+  const { albumName, focusOnPhotoName } = props;
 
   const [state, dispatch] = useReducer(
     reducer,
@@ -89,7 +86,7 @@ export const AlbumDetailPage = () => {
         <NavigablePhotoView
           title={albumName}
           photos={photos}
-          focusOnPhotoName={photoName}
+          focusOnPhotoName={focusOnPhotoName}
           onPhotoUpdated={onPhotoUpdated}
         />
       }

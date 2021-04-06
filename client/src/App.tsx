@@ -3,7 +3,8 @@ import {
   Switch,
   Route,
   Redirect,
-  useLocation} from "react-router-dom";
+  useLocation,
+  useParams} from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import {AlbumPage} from './containers/AlbumPage';
 import { AlbumDetailPage } from './containers/AlbumDetailPage';
@@ -19,7 +20,14 @@ function useQuery() {
 const DatesPageRoute = () => {
   const query = useQuery();
   const year = query.get("scrollToYear") || undefined;
-  return <DatesPage scrollToYear={year} />
+  return <DatesPage scrollToYear={year} />;
+}
+
+const AlbumDetailPageRoute = () => {
+  const { albumName } = useParams() as { albumName: string };
+  const query = useQuery();
+  const focusOnPhotoName = query.get("focusOn") || undefined;
+  return <AlbumDetailPage albumName={albumName} focusOnPhotoName={focusOnPhotoName} />;
 }
 
 function App() {
@@ -40,7 +48,7 @@ function App() {
             <Route exact path="/albums">
               <AlbumPage />
             </Route>
-            <Route path="/albums/:albumName" children={<AlbumDetailPage />} />
+            <Route path="/albums/:albumName" children={<AlbumDetailPageRoute />} />
         </Switch>
       </Container>
     </Router>
