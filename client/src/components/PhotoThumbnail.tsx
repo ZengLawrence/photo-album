@@ -20,5 +20,5 @@ export const PhotoThumbnail = (props: PhotoThumbnailProps & ImageProps) => {
 }
 
 function thumbnailLink(albumName: string, photoName: string, maxSize: number) {
-  return urljoin("/api/media/", albumName, "/", photoName, "?maxSize=" + maxSize, "?square");
+  return urljoin("/api/media/", albumName, photoName, "?maxSize=" + maxSize, "?square");
 }
