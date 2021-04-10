@@ -10,8 +10,11 @@ function useNavigateTo() {
 
 function useActiveKey() {
   const matchAlbums = useRouteMatch("/albums");
+  const matchAbout = useRouteMatch("/about");
   return function () {
-    return matchAlbums ? "albums" : "timeline";
+    if (matchAlbums) return "albums";
+    if (matchAbout) return "about";
+    return "timeline";
   }
 }
 
@@ -44,6 +47,7 @@ export const AppNavBar = (props: { lowerLevelNav?: boolean, onBack?: () => void 
         <Nav activeKey={activeKey()} defaultActiveKey="timeline" className="mr-auto">
           <Nav.Link onClick={() => navigateTo("/years")} eventKey="timeline">Timeline</Nav.Link>
           <Nav.Link onClick={() => navigateTo("/albums")} eventKey="albums">Albums</Nav.Link>
+          <Nav.Link onClick={() => navigateTo("/about")} eventKey="about">About</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
