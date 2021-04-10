@@ -1,5 +1,5 @@
-import { useHistory, useLocation } from "react-router-dom";
 import { Button, Image, Nav, Navbar } from "react-bootstrap";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 function useNavigateTo() {
   const history = useHistory();
@@ -8,9 +8,16 @@ function useNavigateTo() {
   }
 }
 
+function useActiveKey() {
+  const matchAlbums = useRouteMatch("/albums");
+  return function () {
+    return matchAlbums ? "albums" : "timeline";
+  }
+}
+
 export const AppNavBar = (props: { lowerLevelNav?: boolean, onBack?: () => void }) => {
   const { lowerLevelNav, onBack } = props;
-  const location = useLocation();
+  const activeKey = useActiveKey();
   const navigateTo = useNavigateTo();
 
   const expandBreakPoint = lowerLevelNav ? "xl" : "sm";
@@ -34,9 +41,9 @@ export const AppNavBar = (props: { lowerLevelNav?: boolean, onBack?: () => void 
       }
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link onClick={() => navigateTo("/years")} active={location.pathname.startsWith("/years")}>Timeline</Nav.Link>
-          <Nav.Link onClick={() => navigateTo("/albums")} active={location.pathname.startsWith("/albums")}>Albums</Nav.Link>
+        <Nav activeKey={activeKey()} defaultActiveKey="timeline" className="mr-auto">
+          <Nav.Link onClick={() => navigateTo("/years")} eventKey="timeline">Timeline</Nav.Link>
+          <Nav.Link onClick={() => navigateTo("/albums")} eventKey="albums">Albums</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
