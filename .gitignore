@@ -1,3 +1,5 @@
 node_modules/**
 .eslintcache
 dist/**
+*.code-workspace
+.DS_Store
