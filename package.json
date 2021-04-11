@@ -1,10 +1,10 @@
 {
   "name": "photo-album",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "PORT=4000 node ./bin/www",
-    "clean": "rm -r ./dist",
+    "clean": "rm -rf ./dist",
     "build": "./build.sh",
     "dist-run": "cd ./dist; ./photo-album.sh"
   },

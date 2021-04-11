@@ -10,6 +10,7 @@ import {AlbumPage} from './containers/AlbumPage';
 import { AlbumDetailPage } from './containers/AlbumDetailPage';
 import { YearsPage } from "./containers/YearsPage";
 import { DatesPage } from "./containers/DatesPage";
+import { AboutPage } from "./containers/AboutPage";
 
 // A custom hook that builds on useLocation to parse
 // the query string for you.
@@ -49,6 +50,9 @@ function App() {
               <AlbumPage />
             </Route>
             <Route path="/albums/:albumName" children={<AlbumDetailPageRoute />} />
+            <Route exact path="/about">
+              <AboutPage />
+            </Route>
         </Switch>
       </Container>
     </Router>
