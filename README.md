@@ -38,7 +38,7 @@ Below instructions are tested on Raspberry Pi 4 with Raspberry Pi OS 64-bit (Deb
 
 When installing [sharp library](https://sharp.pixelplumbing.com), you may encounter _'fatal error: vips/vips8: No such file or directory'_.  That is because lib that comes with Debian Buster is an older version _'8.7.4-1+deb10u1'_ and sharp library needs a newer verison to build.
 
-Run below command to uninstall Debian verison of _libvips_.  **Note: Make sure global version of _libvips_ is uninstalled.  Or it would result in **
+Run below command to uninstall Debian verison of _libvips_.  **Note: Make sure global version of _libvips_ is uninstalled.  Or it would result in _vips_foreign_heif_compression_get_type_ error.**
 ```bash
 sudo apt remove libvips42
 ```
