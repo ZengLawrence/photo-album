@@ -42,7 +42,13 @@ Run below command to uninstall Debian verison of _libvips_.  **Note: Make sure g
 ```bash
 sudo apt remove libvips42
 ```
-Follow instructions on [sharp install page](https://sharp.pixelplumbing.com/install) to build a custom _libvips_.  Then install sharp using below command, which will complile using the custom _libvips_ library.
+Follow instructions on [sharp install page](https://sharp.pixelplumbing.com/install) to build a custom _libvips_.  Be sure to include following optional dev dependencies i.e. _libjpeg-dev_ for _libjpeg_, using _'apt install'_:
+* libjpeg
+* libexif
+* libtiff
+* imagemagick
+
+Then install sharp using below command, which will complile using the custom _libvips_ library.
 ```bash
 npm install sharp
 ```
